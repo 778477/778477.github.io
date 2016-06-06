@@ -21,8 +21,8 @@
 
 ‘.’ Matches any single character.
 ‘*’ Matches zero or more of the preceding element.">
-<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/89a4ae382fa08862778215d211fb5a0e766df6ba/img/Regular%20Expression%20Matching.png">
-<meta property="og:updated_time" content="2015-10-01T08:18:32.000Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Regular%20Expression%20Matching.png">
+<meta property="og:updated_time" content="2016-06-06T14:43:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Regular Expression Matching">
 <meta name="twitter:description" content="https://leetcode.com/problems/regular-expression-matching/
@@ -31,7 +31,7 @@
 
 ‘.’ Matches any single character.
 ‘*’ Matches zero or more of the preceding element.">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/778477/778477.github.io/89a4ae382fa08862778215d211fb5a0e766df6ba/img/Regular%20Expression%20Matching.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Regular%20Expression%20Matching.png">
   
   
     <link rel="icon" href="/favicon.png">
@@ -90,6 +90,10 @@
   <time datetime="2015-10-01T00:00:00.000Z" itemprop="datePublished">2015-10-01</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
+  </div>
+
       
     </div>
     <div class="article-entry" itemprop="articleBody">
@@ -116,8 +120,8 @@
 <p>case 1应该是这么理解 先是’*‘表示了一个在它前面的’.’，使得模式串变成了”..”，最后再去匹配。</p>
 <p>case 2也能这么解释。 </p>
 <p>case 3，第一个’*‘的存在把前面的’c’表示了0次，第二个’*‘的存在把前面的’a’表示了两次，把模式串变成了”aab”</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isMatch</span><span class="params">(<span class="keyword">char</span>* s, <span class="keyword">char</span>* p)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(*p == <span class="number">0</span>) <span class="keyword">return</span> *s == <span class="number">0</span>;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  因为 '*'优先级较高,且影响前一个字符。所以优先考虑'*'存在的情况</span><br><span class="line">     *  如果 当前字符的下一个字符不是 '*'的话, 进行正常的匹配。 注意'.'的情况。</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">if</span>(*(p+<span class="number">1</span>) != <span class="string">'*'</span>)&#123;</span><br><span class="line">        <span class="comment">// 当前字符匹配成功的条件是 *s 存在 且 *s和*p相同</span></span><br><span class="line">        <span class="keyword">if</span>(*s &amp;&amp; ((*s == *p) || (*p == <span class="string">'.'</span>)))&#123;</span><br><span class="line">            <span class="keyword">return</span> isMatch(s+<span class="number">1</span>,p+<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 当前字符匹配不通过，无须匹配后面的字符了。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="comment">// 枚举 '*'操作符 表示n次当前字符,直到当前字符失效(失效的意思就是说 '*'影响当前字符的所有情况都我们枚举过了,不能考虑'*'的意义了,做下一步工作吧)</span></span><br><span class="line">        <span class="keyword">while</span>(*s &amp;&amp; ((*s==*p) || (*p == <span class="string">'.'</span>)))&#123;</span><br><span class="line">            <span class="keyword">if</span>(isMatch(s, p+<span class="number">2</span>)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            s++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 放弃这个 '*'操作符的机会，也就是说'*'表示了前一次字符0次。</span></span><br><span class="line">        <span class="keyword">return</span> isMatch(s, p+<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/89a4ae382fa08862778215d211fb5a0e766df6ba/img/Regular%20Expression%20Matching.png" alt="Regular Expression Matching Accepted"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">bool isMatch(char* s, char* p) &#123;</span><br><span class="line">    if(*p == 0) return *s == 0;</span><br><span class="line">    /**</span><br><span class="line">     *  因为 &apos;*&apos;优先级较高,且影响前一个字符。所以优先考虑&apos;*&apos;存在的情况</span><br><span class="line">     *  如果 当前字符的下一个字符不是 &apos;*&apos;的话, 进行正常的匹配。 注意&apos;.&apos;的情况。</span><br><span class="line">     */</span><br><span class="line">    if(*(p+1) != &apos;*&apos;)&#123;</span><br><span class="line">        // 当前字符匹配成功的条件是 *s 存在 且 *s和*p相同</span><br><span class="line">        if(*s &amp;&amp; ((*s == *p) || (*p == &apos;.&apos;)))&#123;</span><br><span class="line">            return isMatch(s+1,p+1);</span><br><span class="line">        &#125;</span><br><span class="line">        // 当前字符匹配不通过，无须匹配后面的字符了。</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    else&#123;</span><br><span class="line">        // 枚举 &apos;*&apos;操作符 表示n次当前字符,直到当前字符失效(失效的意思就是说 &apos;*&apos;影响当前字符的所有情况都我们枚举过了,不能考虑&apos;*&apos;的意义了,做下一步工作吧)</span><br><span class="line">        while(*s &amp;&amp; ((*s==*p) || (*p == &apos;.&apos;)))&#123;</span><br><span class="line">            if(isMatch(s, p+2)) return true;</span><br><span class="line">            s++;</span><br><span class="line">        &#125;</span><br><span class="line">        // 放弃这个 &apos;*&apos;操作符的机会，也就是说&apos;*&apos;表示了前一次字符0次。</span><br><span class="line">        return isMatch(s, p+2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Regular%20Expression%20Matching.png" alt="Regular Expression Matching Accepted"></p>
 
       
     </div>

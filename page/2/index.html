@@ -168,42 +168,16 @@
 <p><a href="http://www.yifeiyang.net/iphone-development-techniques-of-environmental-chapter-7-distinguish-between-different-versions-of-the-iphone/" target="_blank" rel="external">iPhone开发技巧之环境篇（7）— 区分不同版本的iPhone</a></p>
 <p><a href="http://justsee.iteye.com/blog/1621533" target="_blank" rel="external">区分ios设备，os版本，sdk版本</a></p>
 <p>我们只关心文章最后的段落:iPhone OS SDK版本，我们希望在 iOS9下 编译我们的feature代码，在iOS9之前的系统版本不编译，不执行。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#if __IPHONE_OS_VERSION_MAX_ALLOWED &gt; __IPHONE_2_2</span><br><span class="line">    #if __IPHONE_OS_VERSION_MAX_ALLOWED &gt; __IPHONE_3_1</span><br><span class="line">        // iPhone OS SDK 4.0 以后版本的处理</span><br><span class="line">    #else</span><br><span class="line">        // iPhone OS SDK 3.0 ~ 4.0 版本的处理</span><br><span class="line">    #endif</span><br><span class="line">#else</span><br><span class="line">    // iPhone OS SDK 3.0 之前版本的处理</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
-<p>但是，这还是有一个坑。 我们来看一下 具体的宏定义在 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
-<p> #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED<br>    /<em> make sure a default max version is set </em>/</p>
-<pre><code>#ifndef __IPHONE_OS_VERSION_MAX_ALLOWED
-    #define __IPHONE_OS_VERSION_MAX_ALLOWED     __IPHONE_9_0
-#endif
-/* make sure a valid min is set */
-#if __IPHONE_OS_VERSION_MIN_REQUIRED &lt; __IPHONE_2_0
-    #undef __IPHONE_OS_VERSION_MIN_REQUIRED
-    #define __IPHONE_OS_VERSION_MIN_REQUIRED    __IPHONE_2_0 
-#endif
-</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">我查看的是iOS 9.0的定义，里面定义 ```__IPHONE_OS_VERSION_MAX_ALLOWED``` 为 ```__IPHONE_9_0```(90000)</span><br><span class="line"> </span><br><span class="line">相信每个iOS SDK发布，都会增加 一个宏来表示版本号</span><br></pre></td></tr></table></figure>
-<p>#define __IPHONE_2_0     20000</p>
-<p>#define __IPHONE_2_1     20100</p>
-<p>#define __IPHONE_2_2     20200</p>
-<p>#define __IPHONE_3_0     30000</p>
-<p>#define __IPHONE_3_1     30100</p>
-<p>#define __IPHONE_3_2     30200</p>
-<p>#define __IPHONE_4_0     40000</p>
-<p>#define __IPHONE_4_1     40100</p>
-<p>#define __IPHONE_4_2     40200</p>
-<p>#define __IPHONE_4_3     40300</p>
-<p>#define __IPHONE_5_0     50000</p>
-<p>#define __IPHONE_5_1     50100</p>
-<p>#define __IPHONE_6_0     60000</p>
-<p>#define __IPHONE_6_1     60100</p>
-<p>#define __IPHONE_7_0     70000</p>
-<p>#define __IPHONE_7_1     70100</p>
-<p>#define __IPHONE_8_0     80000</p>
-<p>#define __IPHONE_8_1     80100</p>
-<p>#define __IPHONE_8_2     80200</p>
-<p>#define __IPHONE_8_3     80300</p>
-<p>#define __IPHONE_8_4     80400</p>
-<p>#define <strong>IPHONE_9_0     90000<br>/* </strong>IPHONE_NA is not defined to a value but is uses as a token by macros to indicate that the API is unavailable */<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">问题来了：如果兼容代码中使用的 宏定义为 ```__IPHONE_8_4```，而我编译的iOS SDK使用的是 iOS8.3的话，```__IPHONE_8_4```其实是没定义的。</span><br></pre></td></tr></table></figure></p>
-<p>#if <strong>IPHONE_OS_VERSION_MAX_ALLOWED &gt; </strong>IPHONE_8_4<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这个比较语句其实取 ```__IPHONE_OS_VERSION_MAX_ALLOWED``` = ```__IPHONE_8_3``` = 80300 和 ```__IPHONE_8_4```所表示的数字做比较，是没有作用的。正确做法 **是直接使用数字**</span><br></pre></td></tr></table></figure></p>
-<p>#if __IPHONE_OS_VERSION_MAX_ALLOWED &gt; 80400<br>```</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; __IPHONE_2_2</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; __IPHONE_3_1</span></span><br><span class="line">        <span class="comment">// iPhone OS SDK 4.0 以后版本的处理</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">        <span class="comment">// iPhone OS SDK 3.0 ~ 4.0 版本的处理</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="comment">// iPhone OS SDK 3.0 之前版本的处理</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p>但是，这还是有一个坑。 我们来看一下 具体的宏定义在 <code>AvailabilityInternal.h</code> 中。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED</span><br><span class="line">   /* make sure a default max version is set */</span><br><span class="line">   #ifndef __IPHONE_OS_VERSION_MAX_ALLOWED</span><br><span class="line">       #define __IPHONE_OS_VERSION_MAX_ALLOWED     __IPHONE_9_0</span><br><span class="line">   #endif</span><br><span class="line">   /* make sure a valid min is set */</span><br><span class="line">   #if __IPHONE_OS_VERSION_MIN_REQUIRED &lt; __IPHONE_2_0</span><br><span class="line">       #undef __IPHONE_OS_VERSION_MIN_REQUIRED</span><br><span class="line">       #define __IPHONE_OS_VERSION_MIN_REQUIRED    __IPHONE_2_0 </span><br><span class="line">   #endif</span><br></pre></td></tr></table></figure>
+<p>我查看的是iOS 9.0的定义，里面定义 <code>__IPHONE_OS_VERSION_MAX_ALLOWED</code> 为 <code>__IPHONE_9_0</code>(90000)</p>
+<p>相信每个iOS SDK发布，都会增加 一个宏来表示版本号</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_2_0     20000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_2_1     20100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_2_2     20200</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_3_0     30000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_3_1     30100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_3_2     30200</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_4_0     40000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_4_1     40100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_4_2     40200</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_4_3     40300</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_5_0     50000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_5_1     50100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_6_0     60000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_6_1     60100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_7_0     70000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_7_1     70100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_8_0     80000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_8_1     80100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_8_2     80200</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_8_3     80300</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_8_4     80400</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_9_0     90000</span></span><br><span class="line"><span class="comment">/* __IPHONE_NA is not defined to a value but is uses as a token by macros to indicate that the API is unavailable */</span></span><br></pre></td></tr></table></figure>
+<p>问题来了：如果兼容代码中使用的 宏定义为 <code>__IPHONE_8_4</code> ，而我编译的iOS SDK使用的是 iOS8.3的话， <code>__IPHONE_8_4</code> 其实是没定义的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; __IPHONE_8_4</span></span><br></pre></td></tr></table></figure>
+<p>这个比较语句其实取 <code>__IPHONE_OS_VERSION_MAX_ALLOWED</code> = <code>__IPHONE_8_3</code> = 80300 和 <code>__IPHONE_8_4</code> 所表示的数字做比较，是没有作用的。正确做法 <strong>是直接使用数字</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; 80400</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -240,6 +214,10 @@
   <time datetime="2015-10-01T00:00:00.000Z" itemprop="datePublished">2015-10-01</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
+  </div>
+
       
     </div>
     <div class="article-entry" itemprop="articleBody">
@@ -266,8 +244,8 @@
 <p>case 1应该是这么理解 先是’*‘表示了一个在它前面的’.’，使得模式串变成了”..”，最后再去匹配。</p>
 <p>case 2也能这么解释。 </p>
 <p>case 3，第一个’*‘的存在把前面的’c’表示了0次，第二个’*‘的存在把前面的’a’表示了两次，把模式串变成了”aab”</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isMatch</span><span class="params">(<span class="keyword">char</span>* s, <span class="keyword">char</span>* p)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(*p == <span class="number">0</span>) <span class="keyword">return</span> *s == <span class="number">0</span>;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  因为 '*'优先级较高,且影响前一个字符。所以优先考虑'*'存在的情况</span><br><span class="line">     *  如果 当前字符的下一个字符不是 '*'的话, 进行正常的匹配。 注意'.'的情况。</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">if</span>(*(p+<span class="number">1</span>) != <span class="string">'*'</span>)&#123;</span><br><span class="line">        <span class="comment">// 当前字符匹配成功的条件是 *s 存在 且 *s和*p相同</span></span><br><span class="line">        <span class="keyword">if</span>(*s &amp;&amp; ((*s == *p) || (*p == <span class="string">'.'</span>)))&#123;</span><br><span class="line">            <span class="keyword">return</span> isMatch(s+<span class="number">1</span>,p+<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 当前字符匹配不通过，无须匹配后面的字符了。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="comment">// 枚举 '*'操作符 表示n次当前字符,直到当前字符失效(失效的意思就是说 '*'影响当前字符的所有情况都我们枚举过了,不能考虑'*'的意义了,做下一步工作吧)</span></span><br><span class="line">        <span class="keyword">while</span>(*s &amp;&amp; ((*s==*p) || (*p == <span class="string">'.'</span>)))&#123;</span><br><span class="line">            <span class="keyword">if</span>(isMatch(s, p+<span class="number">2</span>)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            s++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 放弃这个 '*'操作符的机会，也就是说'*'表示了前一次字符0次。</span></span><br><span class="line">        <span class="keyword">return</span> isMatch(s, p+<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/89a4ae382fa08862778215d211fb5a0e766df6ba/img/Regular%20Expression%20Matching.png" alt="Regular Expression Matching Accepted"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">bool isMatch(char* s, char* p) &#123;</span><br><span class="line">    if(*p == 0) return *s == 0;</span><br><span class="line">    /**</span><br><span class="line">     *  因为 &apos;*&apos;优先级较高,且影响前一个字符。所以优先考虑&apos;*&apos;存在的情况</span><br><span class="line">     *  如果 当前字符的下一个字符不是 &apos;*&apos;的话, 进行正常的匹配。 注意&apos;.&apos;的情况。</span><br><span class="line">     */</span><br><span class="line">    if(*(p+1) != &apos;*&apos;)&#123;</span><br><span class="line">        // 当前字符匹配成功的条件是 *s 存在 且 *s和*p相同</span><br><span class="line">        if(*s &amp;&amp; ((*s == *p) || (*p == &apos;.&apos;)))&#123;</span><br><span class="line">            return isMatch(s+1,p+1);</span><br><span class="line">        &#125;</span><br><span class="line">        // 当前字符匹配不通过，无须匹配后面的字符了。</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    else&#123;</span><br><span class="line">        // 枚举 &apos;*&apos;操作符 表示n次当前字符,直到当前字符失效(失效的意思就是说 &apos;*&apos;影响当前字符的所有情况都我们枚举过了,不能考虑&apos;*&apos;的意义了,做下一步工作吧)</span><br><span class="line">        while(*s &amp;&amp; ((*s==*p) || (*p == &apos;.&apos;)))&#123;</span><br><span class="line">            if(isMatch(s, p+2)) return true;</span><br><span class="line">            s++;</span><br><span class="line">        &#125;</span><br><span class="line">        // 放弃这个 &apos;*&apos;操作符的机会，也就是说&apos;*&apos;表示了前一次字符0次。</span><br><span class="line">        return isMatch(s, p+2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Regular%20Expression%20Matching.png" alt="Regular Expression Matching Accepted"></p>
 
       
     </div>
@@ -424,82 +402,6 @@
 
 
     
-      <article id="post-2015-09-04-iOS 杂技" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/04/2015-09-04-iOS 杂技/">iOS 杂技</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/09/04/2015-09-04-iOS 杂技/" class="article-date">
-  <time datetime="2015-09-04T00:00:00.000Z" itemprop="datePublished">2015-09-04</time>
-</a>
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><a href="http://www.cnblogs.com/xdream86/p/3367401.html" target="_blank" rel="external">iOS代码工具箱</a></li>
-<li><a href="http://semver.org/lang/zh-CN/" target="_blank" rel="external">语义版本控制 for CocoaPods</a></li>
-<li><a href="http://www.cnblogs.com/sdjxcolin/archive/2007/07/02/803376.html" target="_blank" rel="external">软件项目版本号命名规则</a></li>
-</ul>
-<p>主版本号 . 子版本号 [. 修正版本号 [. 编译版本号 ]]<br> Major_Version_Number.Minor_Version_Number[.Revision_Number[.Build_Number]]应根据下面的约定使用这些部分：</p>
-<p>Major ：具有相同名称但不同主版本号的程序集不可互换。例如，这适用于对产品的大量重写，这些重写使得无法实现向后兼容性。</p>
-<p>Minor ：如果两个程序集的名称和主版本号相同，而次版本号不同，这指示显著增强，但照顾到了向后兼容性。例如，这适用于产品的修正版或完全向后兼容的新版本。</p>
-<p>Build ：内部版本号的不同表示对相同源所作的重新编译。这适合于更改处理器、平台或编译器的情况。</p>
-<p>Revision ：名称、主版本号和次版本号都相同但修订号不同的程序集应是完全可互换的。这适用于修复以前发布的程序集中的安全漏洞。</p>
-<p>程序集的只有内部版本号或修订号不同的后续版本被认为是先前版本的修补程序 (Hotfix) 更新。</p>
-<ul>
-<li><a href="http://nshipster.com/__attribute__/" target="_blank" rel="external"> attribute详解</a></li>
-</ul>
-<p>GNU C的一大特色（却不被初学者所知）就是<strong>attribute</strong>机制。<strong>attribute</strong>可以设置函数属性（Function Attribute）、变量属性（Variable Attribute）和类型属性（Type Attribute）。</p>
-<p>编写工业级代码必不可少的装逼技能</p>
-<ul>
-<li><a href="http://www.diffen.com/difference/GET_(HTTP" target="_blank" rel="external">Http Request GET VS POST</a>_vs<em>POST</em>(HTTP))</li>
-</ul>
-<p>对比http请求中 GET Method 和 POST Method两者的区别</p>
-<ul>
-<li><a href="https://github.com/ReactiveCocoa/ReactiveCocoa" target="_blank" rel="external">RAC(Reactive-Cocoa)函数响应式编程</a></li>
-</ul>
-<p>编程思想值得借鉴学习，可以在 Demo项目中试用一下</p>
-<ul>
-<li><a href="http://inessential.com/hownottocrash" target="_blank" rel="external">How Not to Crash</a></li>
-</ul>
-<p>笔者实践经验总结how not to crash</p>
-<ul>
-<li><a href="https://github.com/yoavlt/LiquidFloatingActionButton" target="_blank" rel="external">Animation in liquid state</a></li>
-</ul>
-<p><a href="http://jamie-wong.com/2014/08/19/metaballs-and-marching-squares/" target="_blank" rel="external">metaballs-and-marching-squares</a><br><img src="https://raw.githubusercontent.com/yoavlt/LiquidFloatingActionButton/master/Demo/top.gif" alt="demo"></p>
-<blockquote>
-<p>如有任何知识产权、版权问题或理论错误，还请指正。</p>
-<p>转载请注明原作者及以上信息。</p>
-</blockquote>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
       <article id="post-2015-09-04-ALAssetsLibrary" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -581,6 +483,82 @@
 
 
     
+      <article id="post-2015-09-04-iOS 杂技" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/04/2015-09-04-iOS 杂技/">iOS 杂技</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/09/04/2015-09-04-iOS 杂技/" class="article-date">
+  <time datetime="2015-09-04T00:00:00.000Z" itemprop="datePublished">2015-09-04</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><a href="http://www.cnblogs.com/xdream86/p/3367401.html" target="_blank" rel="external">iOS代码工具箱</a></li>
+<li><a href="http://semver.org/lang/zh-CN/" target="_blank" rel="external">语义版本控制 for CocoaPods</a></li>
+<li><a href="http://www.cnblogs.com/sdjxcolin/archive/2007/07/02/803376.html" target="_blank" rel="external">软件项目版本号命名规则</a></li>
+</ul>
+<p>主版本号 . 子版本号 [. 修正版本号 [. 编译版本号 ]]<br> Major_Version_Number.Minor_Version_Number[.Revision_Number[.Build_Number]]应根据下面的约定使用这些部分：</p>
+<p>Major ：具有相同名称但不同主版本号的程序集不可互换。例如，这适用于对产品的大量重写，这些重写使得无法实现向后兼容性。</p>
+<p>Minor ：如果两个程序集的名称和主版本号相同，而次版本号不同，这指示显著增强，但照顾到了向后兼容性。例如，这适用于产品的修正版或完全向后兼容的新版本。</p>
+<p>Build ：内部版本号的不同表示对相同源所作的重新编译。这适合于更改处理器、平台或编译器的情况。</p>
+<p>Revision ：名称、主版本号和次版本号都相同但修订号不同的程序集应是完全可互换的。这适用于修复以前发布的程序集中的安全漏洞。</p>
+<p>程序集的只有内部版本号或修订号不同的后续版本被认为是先前版本的修补程序 (Hotfix) 更新。</p>
+<ul>
+<li><a href="http://nshipster.com/__attribute__/" target="_blank" rel="external"> attribute详解</a></li>
+</ul>
+<p>GNU C的一大特色（却不被初学者所知）就是<strong>attribute</strong>机制。<strong>attribute</strong>可以设置函数属性（Function Attribute）、变量属性（Variable Attribute）和类型属性（Type Attribute）。</p>
+<p>编写工业级代码必不可少的装逼技能</p>
+<ul>
+<li><a href="http://www.diffen.com/difference/GET_(HTTP" target="_blank" rel="external">Http Request GET VS POST</a>_vs<em>POST</em>(HTTP))</li>
+</ul>
+<p>对比http请求中 GET Method 和 POST Method两者的区别</p>
+<ul>
+<li><a href="https://github.com/ReactiveCocoa/ReactiveCocoa" target="_blank" rel="external">RAC(Reactive-Cocoa)函数响应式编程</a></li>
+</ul>
+<p>编程思想值得借鉴学习，可以在 Demo项目中试用一下</p>
+<ul>
+<li><a href="http://inessential.com/hownottocrash" target="_blank" rel="external">How Not to Crash</a></li>
+</ul>
+<p>笔者实践经验总结how not to crash</p>
+<ul>
+<li><a href="https://github.com/yoavlt/LiquidFloatingActionButton" target="_blank" rel="external">Animation in liquid state</a></li>
+</ul>
+<p><a href="http://jamie-wong.com/2014/08/19/metaballs-and-marching-squares/" target="_blank" rel="external">metaballs-and-marching-squares</a><br><img src="https://raw.githubusercontent.com/yoavlt/LiquidFloatingActionButton/master/Demo/top.gif" alt="demo"></p>
+<blockquote>
+<p>如有任何知识产权、版权问题或理论错误，还请指正。</p>
+<p>转载请注明原作者及以上信息。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2015-08-30-hdu-4527" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -600,6 +578,10 @@
   <time datetime="2015-08-30T00:00:00.000Z" itemprop="datePublished">2015-08-30</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
+  </div>
+
       
     </div>
     <div class="article-entry" itemprop="articleBody">
@@ -655,6 +637,10 @@
   <time datetime="2015-08-29T00:00:00.000Z" itemprop="datePublished">2015-08-29</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
+  </div>
+
       
     </div>
     <div class="article-entry" itemprop="articleBody">
