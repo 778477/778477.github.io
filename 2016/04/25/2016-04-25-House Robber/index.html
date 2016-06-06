@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>House Robber - 778477</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="House Robber
+House Robber
+
+You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of">
+<meta property="og:type" content="article">
+<meta property="og:title" content="House Robber">
+<meta property="og:url" content="http://yoursite.com/2016/04/25/2016-04-25-House Robber/index.html">
+<meta property="og:site_name" content="778477">
+<meta property="og:description" content="House Robber
+House Robber
+
+You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/house_robber.png">
+<meta property="og:updated_time" content="2016-05-28T08:56:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="House Robber">
+<meta name="twitter:description" content="House Robber
+House Robber
+
+You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/house_robber.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">778477</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-2016-04-25-House Robber" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      House Robber
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/04/25/2016-04-25-House Robber/" class="article-date">
+  <time datetime="2016-04-25T00:00:00.000Z" itemprop="datePublished">2016-04-25</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="House-Robber"><a href="#House-Robber" class="headerlink" title="House Robber"></a>House Robber</h1><hr>
+<p><a href="https://leetcode.com/problems/house-robber/" target="_blank" rel="external">House Robber</a></p>
+<blockquote>
+<p>You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.</p>
+<p>Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.</p>
+</blockquote>
+<p>题目大意：你是一个职业强盗，计划去洗劫一条街。这条街上每个店铺都有一定量的现金。但是如果两家相邻的店铺被同时打劫的话会惊动警察。给定一个非负数数组表示各个店铺的现金数，请制定一个合理的打劫顺序使今晚的洗劫行动收获最大。</p>
+<p>思考： </p>
+<ol>
+<li><strong>贪心策略</strong>：只洗劫奇数店铺 或 偶数店铺。 但细想一下，该策略只适合店铺数少于4的情况。比如有4家店铺的话： Plans = {[1,3],[2,4],[1,4]}；贪心策略的一个反例。</li>
+<li><strong>暴力搜索</strong>：深度搜索，枚举每个店铺的两种状态： 抢 或 不抢。抢依赖上一家不抢。类似01背包，背包没有容量限制。<strong>可能会超时</strong></li>
+<li>在想 思路2的时候，其实已经想到这是一个 动态规划的题了：）动规的时间复杂度比搜索要来的线性，稳定。动态方程式是 <code>dp[i] = max{dp[i-2]+nums[i],dp[i-1]} 2&lt;=i&lt;numsSize</code></li>
+</ol>
+<h2 id="动态规划-Accepted"><a href="#动态规划-Accepted" class="headerlink" title="动态规划 Accepted"></a>动态规划 <span style="color:green;">Accepted</span></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">int max(const int a,const int b)&#123;</span><br><span class="line">    return a &gt; b ? a : b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int easyRob(int* nums, int numsSize)&#123;</span><br><span class="line">    int odd = 0, eve = 0;</span><br><span class="line">    </span><br><span class="line">    for(int i=0;i&lt;numsSize;i++)&#123;</span><br><span class="line">        if(i%2) eve += nums[i];</span><br><span class="line">        else odd += nums[i];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return max(odd,eve);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int rob(int* nums, int numsSize) &#123;</span><br><span class="line">    if(numsSize &lt;= 3) return easyRob(nums,numsSize);</span><br><span class="line">    </span><br><span class="line">    int *dp = (int *)malloc(sizeof(int)*(numsSize));</span><br><span class="line">    memset(dp, 0, sizeof(int)*(numsSize));</span><br><span class="line">    dp[0] = nums[0];</span><br><span class="line">    dp[1] = max(nums[1],nums[0]);</span><br><span class="line">    dp[2] = max(dp[0]+nums[2],dp[1]);</span><br><span class="line">    </span><br><span class="line">    for(int i=3;i&lt;numsSize;i++)&#123;</span><br><span class="line">        dp[i] = max(dp[i-2]+nums[i],dp[i-1]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    int ans = dp[numsSize-1];</span><br><span class="line">    free(dp);</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/house_robber.png" alt=""></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/05/28/2016-05-28-Word Search II/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          Word Search II
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/04/08/2016-04-08-Minimum Size Subarray Sum/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Minimum Size Subarray Sum&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 miaoyou.gmy&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

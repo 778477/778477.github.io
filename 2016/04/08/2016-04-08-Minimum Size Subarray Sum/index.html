@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Minimum Size Subarray Sum - 778477</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="QuestionMinimum Size Subarray Sum
+
+Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s. If there isn’t one, return 0 instead.
+For">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Minimum Size Subarray Sum">
+<meta property="og:url" content="http://yoursite.com/2016/04/08/2016-04-08-Minimum Size Subarray Sum/index.html">
+<meta property="og:site_name" content="778477">
+<meta property="og:description" content="QuestionMinimum Size Subarray Sum
+
+Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s. If there isn’t one, return 0 instead.
+For">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Minimum%20Size%20Subarray%20Sum.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Minimum%20Size%20Subarray%20Sum%202.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Minimum%20Size%20Subarray%20Sum%203.png">
+<meta property="og:updated_time" content="2016-04-08T12:54:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Minimum Size Subarray Sum">
+<meta name="twitter:description" content="QuestionMinimum Size Subarray Sum
+
+Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s. If there isn’t one, return 0 instead.
+For">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Minimum%20Size%20Subarray%20Sum.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">778477</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-2016-04-08-Minimum Size Subarray Sum" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Minimum Size Subarray Sum
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/04/08/2016-04-08-Minimum Size Subarray Sum/" class="article-date">
+  <time datetime="2016-04-08T00:00:00.000Z" itemprop="datePublished">2016-04-08</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p><a href="https://leetcode.com/problems/minimum-size-subarray-sum/" target="_blank" rel="external">Minimum Size Subarray Sum</a></p>
+<blockquote>
+<p>Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s. If there isn’t one, return 0 instead.</p>
+<p>For example, given the array [2,3,1,2,4,3] and s = 7,<br>the subarray [4,3] has the minimal length under the problem constraint.</p>
+</blockquote>
+<p>题目大意： 给定一个正数数组 nums和一个正数 s，找出最短长度的连续子数组 使其和 大于等于 s。如果没有的话，返回 0.</p>
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><h2 id="暴力枚举-Accepted"><a href="#暴力枚举-Accepted" class="headerlink" title="暴力枚举 Accepted"></a>暴力枚举 <span style="color:green;">Accepted</span></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int minSubArrayLen(int s, vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        size_t n = nums.size();</span><br><span class="line">        int sum = 0;</span><br><span class="line">        int ans = INT_MAX;</span><br><span class="line">        for(int i=0;i&lt;n;i++)&#123;</span><br><span class="line">            sum = nums[i];</span><br><span class="line">            if(sum &gt;= s) return 1;</span><br><span class="line">            for(int j=i+1;j&lt;n;j++)&#123;</span><br><span class="line">                sum += nums[j];</span><br><span class="line">                if(sum &gt;= s)&#123;</span><br><span class="line">                    ans = min(ans,j-i+1);</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return ans==INT_MAX ? 0 : ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Minimum%20Size%20Subarray%20Sum.png" alt=""></p>
+<h2 id="暴力枚举-flag优化-Accepted"><a href="#暴力枚举-flag优化-Accepted" class="headerlink" title="暴力枚举 + flag优化 Accepted"></a>暴力枚举 + flag优化 <span style="color:green;">Accepted</span></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int minSubArrayLen(int s, vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        size_t n = nums.size();</span><br><span class="line">        int sum = 0;</span><br><span class="line">        int ans = INT_MAX;</span><br><span class="line">        </span><br><span class="line">        bool flag;</span><br><span class="line">        for(int i=0;i&lt;n;i++)&#123;</span><br><span class="line">            sum = nums[i];</span><br><span class="line">            if(sum &gt;= s) return 1;</span><br><span class="line">            flag = false;</span><br><span class="line">            for(int j=i+1;j&lt;n;j++)&#123;</span><br><span class="line">                sum += nums[j];</span><br><span class="line">                if(sum &gt;= s)&#123;</span><br><span class="line">                    ans = min(ans,j-i+1);</span><br><span class="line">                    flag = true;</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            if(!flag) break;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return ans==INT_MAX ? 0 : ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Minimum%20Size%20Subarray%20Sum%202.png" alt=""></p>
+<h2 id="枚举小窗口-Accepted"><a href="#枚举小窗口-Accepted" class="headerlink" title="枚举小窗口 Accepted"></a>枚举小窗口 <span style="color:green;">Accepted</span></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int minSubArrayLen(int s, vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        size_t n = nums.size();</span><br><span class="line">        int sum = 0;</span><br><span class="line">        int ans = INT_MAX;</span><br><span class="line">        int p = 0,q = 0;</span><br><span class="line">        </span><br><span class="line">        while(q &lt; n)&#123;</span><br><span class="line">            sum += nums[q++];</span><br><span class="line">            </span><br><span class="line">            while(sum &gt;= s)&#123;</span><br><span class="line">                ans = min(ans,q-p);</span><br><span class="line">                sum -= nums[p++];</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return ans==INT_MAX ? 0 : ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Minimum%20Size%20Subarray%20Sum%203.png" alt=""></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/25/2016-04-25-House Robber/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          House Robber
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/30/2016-03-30-Cocoa Auto Update/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Cocoa auto update&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 miaoyou.gmy&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

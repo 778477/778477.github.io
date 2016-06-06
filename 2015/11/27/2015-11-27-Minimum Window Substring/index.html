@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Minimum Window Substring - 778477</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Minimum Window Substring
+题目大意：给定一个字符串S 和 另一个字符串T，在S中找到一个最短长度的子串包含T中所有的字母。 时间期望是O(N)如：= &quot;ADOBECODEBANC&quot;```1```T = &amp;quot;ABC&amp;quot;
+最短子串是 12345678提示： * 如果没有找到子串，则返回```&amp;quot;&amp;quot;```空串* 如果有多个满足条件的字串，题目保证">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Minimum Window Substring">
+<meta property="og:url" content="http://yoursite.com/2015/11/27/2015-11-27-Minimum Window Substring/index.html">
+<meta property="og:site_name" content="778477">
+<meta property="og:description" content="Minimum Window Substring
+题目大意：给定一个字符串S 和 另一个字符串T，在S中找到一个最短长度的子串包含T中所有的字母。 时间期望是O(N)如：= &quot;ADOBECODEBANC&quot;```1```T = &amp;quot;ABC&amp;quot;
+最短子串是 12345678提示： * 如果没有找到子串，则返回```&amp;quot;&amp;quot;```空串* 如果有多个满足条件的字串，题目保证">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/73252cd0a2f49ca59bc5caee15fb1261bfae7abb/img/Minimum%20Window%20Substring.png">
+<meta property="og:updated_time" content="2015-11-28T06:08:27.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Minimum Window Substring">
+<meta name="twitter:description" content="Minimum Window Substring
+题目大意：给定一个字符串S 和 另一个字符串T，在S中找到一个最短长度的子串包含T中所有的字母。 时间期望是O(N)如：= &quot;ADOBECODEBANC&quot;```1```T = &amp;quot;ABC&amp;quot;
+最短子串是 12345678提示： * 如果没有找到子串，则返回```&amp;quot;&amp;quot;```空串* 如果有多个满足条件的字串，题目保证">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/778477/778477.github.io/73252cd0a2f49ca59bc5caee15fb1261bfae7abb/img/Minimum%20Window%20Substring.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">778477</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-2015-11-27-Minimum Window Substring" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Minimum Window Substring
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/11/27/2015-11-27-Minimum Window Substring/" class="article-date">
+  <time datetime="2015-11-27T00:00:00.000Z" itemprop="datePublished">2015-11-27</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://leetcode.com/problems/minimum-window-substring/" target="_blank" rel="external">Minimum Window Substring</a></p>
+<p>题目大意：<br>给定一个字符串S 和 另一个字符串T，在S中找到一个最短长度的子串包含T中所有的字母。 时间期望是O(N)<br>如：<br><figure class="highlight plain"><figcaption><span>= "ADOBECODEBANC"```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">```T = &quot;ABC&quot;</span><br></pre></td></tr></table></figure></p>
+<p>最短子串是 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">提示：</span><br><span class="line"> </span><br><span class="line">* 如果没有找到子串，则返回```&quot;&quot;```空串</span><br><span class="line">* 如果有多个满足条件的字串，题目保证最短子串只有唯一的一个</span><br><span class="line"></span><br><span class="line">思路：</span><br><span class="line">维护一个计数数组CountTable统计字符串T所出现的所有字母次数，再开始遍历字符串S，同时开始统计T所出现的字母在S所出现的次数。 如果遍历过程中统计的字母次数和T的长度相同，说明我们遍历的得到的这个子串就是一个 Window Substring，满足条件！记录这个subString，开始缩小这个Window Substring，直到条件不满足 继续遍历寻找下一个 Window Substring。</span><br></pre></td></tr></table></figure></p>
+<p>class Solution {<br>public:<br>    string minWindow(string s, string t) {<br>        string ans = “”;<br>        if(t.length() &gt; s.length()) return ans;</p>
+<pre><code>    vector&lt;int&gt; countTable(256,0);
+
+    for_each(t.begin(), t.end(), [&amp;](const char ch){
+        countTable[ch]++;
+    });
+
+    vector&lt;int&gt; foundTable(256,0);
+    queue&lt;unsigned long&gt; Q;
+    unsigned long maxLen(s.length()),count(0);
+    for(size_t i = 0;i&lt;s.length();i++){
+        if(countTable[s[i]] &gt; 0){
+            foundTable[s[i]] ++;
+            Q.push(i);
+            if(foundTable[s[i]] &lt;= countTable[s[i]]) count++;
+            if(count == t.length()){
+                unsigned long idx;
+                do {
+                    idx = Q.front();
+                    Q.pop();
+                    foundTable[s[idx]]--;
+                } while (foundTable[s[idx]] &gt;= countTable[s[idx]]);
+                if(i-idx &lt; maxLen) ans = s.substr(idx,i-idx+1),maxLen = ans.length();
+                count --;
+            }
+        }
+    }
+    return ans;
+}
+</code></pre><p>};<br>```</p>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/73252cd0a2f49ca59bc5caee15fb1261bfae7abb/img/Minimum%20Window%20Substring.png" alt="Accepted"></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/12/16/2015-12-16-Lighter View Controller/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          Lighter View Controller
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/11/24/2015-11-24-为iOS建立 Travis CI/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">为iOS建立 Travis CI&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 miaoyou.gmy&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Lighter View Controller - 778477</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Lighter-View-Controller 轻量级视图控制器
+视图控制器们(View Controllers)通常是最大的文件在我们的iOS工程中。而且 他们常常有很多不必要的代码。导致视图控制器往往是无法在其他项目中复用的。我们下面讲述的技巧可以让控制器们 更加轻量，有复用性，让不合理的代码出现在合理的位置
+example project on GitHub
+分离出数据协议和其他接口协议
+一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lighter View Controller">
+<meta property="og:url" content="http://yoursite.com/2015/12/16/2015-12-16-Lighter View Controller/index.html">
+<meta property="og:site_name" content="778477">
+<meta property="og:description" content="Lighter-View-Controller 轻量级视图控制器
+视图控制器们(View Controllers)通常是最大的文件在我们的iOS工程中。而且 他们常常有很多不必要的代码。导致视图控制器往往是无法在其他项目中复用的。我们下面讲述的技巧可以让控制器们 更加轻量，有复用性，让不合理的代码出现在合理的位置
+example project on GitHub
+分离出数据协议和其他接口协议
+一">
+<meta property="og:updated_time" content="2015-12-16T13:13:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lighter View Controller">
+<meta name="twitter:description" content="Lighter-View-Controller 轻量级视图控制器
+视图控制器们(View Controllers)通常是最大的文件在我们的iOS工程中。而且 他们常常有很多不必要的代码。导致视图控制器往往是无法在其他项目中复用的。我们下面讲述的技巧可以让控制器们 更加轻量，有复用性，让不合理的代码出现在合理的位置
+example project on GitHub
+分离出数据协议和其他接口协议
+一">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">778477</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-2015-12-16-Lighter View Controller" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Lighter View Controller
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/12/16/2015-12-16-Lighter View Controller/" class="article-date">
+  <time datetime="2015-12-16T00:00:00.000Z" itemprop="datePublished">2015-12-16</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.objc.io/issues/1-view-controllers/lighter-view-controllers/" target="_blank" rel="external">Lighter-View-Controller 轻量级视图控制器</a></p>
+<p>视图控制器们(View Controllers)通常是最大的文件在我们的iOS工程中。而且 他们常常有很多不必要的代码。导致视图控制器往往是无法在其他项目中复用的。我们下面讲述的技巧可以让控制器们 更加轻量，有复用性，让不合理的代码出现在合理的位置</p>
+<p><a href="https://github.com/objcio/issue-1-lighter-view-controllers" target="_blank" rel="external">example project on GitHub</a></p>
+<h3 id="分离出数据协议和其他接口协议"><a href="#分离出数据协议和其他接口协议" class="headerlink" title="分离出数据协议和其他接口协议"></a>分离出数据协议和其他接口协议</h3><ul>
+<li>一个很有用的技巧就是将视图控制器中的 <figure class="highlight plain"><figcaption><span>这部分代码分离出来。独立写一个类来维护，如果你都是这么处理的话，那么你这些类是可以以后在其他项目中复用的。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* 这样做还有一个好处就是，我们可以独立测试这个类。</span><br><span class="line"></span><br><span class="line">举个例子：在示例项目中，```PhotosViewController``` 有这样几个方法</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="pragma-mark-Pragma"><a href="#pragma-mark-Pragma" class="headerlink" title="pragma mark Pragma"></a>pragma mark Pragma</h1><ul>
+<li><p>(Photo<em>)photoAtIndexPath:(NSIndexPath</em>)indexPath {<br>  return photos[(NSUInteger)indexPath.row];<br>}</p>
+</li>
+<li><p>(NSInteger)tableView:(UITableView*)tableView<br>numberOfRowsInSection:(NSInteger)section {<br>  return photos.count;<br>}</p>
+</li>
+<li><p>(UITableViewCell<em>)tableView:(UITableView</em>)tableView </p>
+<pre><code>cellForRowAtIndexPath:(NSIndexPath*)indexPath {
+</code></pre><p>  PhotoCell* cell = [tableView dequeueReusableCellWithIdentifier:PhotoCellIdentifier </p>
+<pre><code>forIndexPath:indexPath];
+</code></pre><p>  Photo* photo = [self photoAtIndexPath:indexPath];<br>  cell.label.text = photo.name;<br>  return cell;<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">让我们试着把这些代码放到 我们自己的类上。我们用闭包来填充数据(或许协议更合适，这个取决于你)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>@implementation ArrayDataSource</p>
+<ul>
+<li><p>(id)itemAtIndexPath:(NSIndexPath*)indexPath {<br>  return items[(NSUInteger)indexPath.row];<br>}</p>
+</li>
+<li><p>(NSInteger)tableView:(UITableView*)tableView<br>numberOfRowsInSection:(NSInteger)section {<br>  return items.count;<br>}</p>
+</li>
+<li><p>(UITableViewCell<em>)tableView:(UITableView</em>)tableView </p>
+<pre><code>cellForRowAtIndexPath:(NSIndexPath*)indexPath {
+</code></pre><p>  id cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier</p>
+<pre><code>forIndexPath:indexPath];
+</code></pre><p>  id item = [self itemAtIndexPath:indexPath];<br>  configureCellBlock(cell,item);<br>  return cell;<br>}</p>
+</li>
+</ul>
+<p>@end<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这三个方法不再存在我们的视图控制器了，我们可以创建实例来承接table view的数据协议委托</span><br></pre></td></tr></table></figure></p>
+<p>void (^configureCell)(PhotoCell<em>, Photo</em>) = ^(PhotoCell<em> cell, Photo</em> photo) {<br>   cell.label.text = photo.name;<br>};<br>photosArrayDataSource = [[ArrayDataSource alloc] initWithItems:photos<br>                                                cellIdentifier:PhotoCellIdentifier<br>                                            configureCellBlock:configureCell];<br>self.tableView.dataSource = photosArrayDataSource;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">而且，这种办法扩展其他接口协议也很方便。比如 另外的一个list数据协议是 ```UICollectionViewDataSource``` 由于一些需求实现，你们决定将 ```UITableView``` 替换为 ```UICollectionView```。实际上你的视图控制器不需要任何改动，你可以让你的类都支持这两个数据协议。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 逻辑处理放在Model</span><br><span class="line"> 这里还是一个例子，这些代码在view controller里，功能是返回一个列表，上面的数据是用户的活跃度</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>(void)loadPriorities {<br>NSDate<em> now = [NSDate date];<br>NSString</em> formatString = @”startDate &lt;= %@ AND endDate &gt;= %@”;<br>NSPredicate<em> predicate = [NSPredicate predicateWithFormat:formatString, now, now];<br>NSSet</em> priorities = [self.user.priorities filteredSetUsingPredicate:predicate];<br>self.priorities = [priorities allObjects];<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">当这些代码被放置到 User类的扩展中时，view controller就看起来比较清爽了。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>(void)loadPriorities {<br>self.priorities = [self.user currentPriorities];<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```User+Extensions.m:</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (NSArray*)currentPriorities &#123;</span><br><span class="line">  NSDate* now = [NSDate date];</span><br><span class="line">  NSString* formatString = @&quot;startDate &lt;= %@ AND endDate &gt;= %@&quot;;</span><br><span class="line">  NSPredicate* predicate = [NSPredicate predicateWithFormat:formatString, now, now];</span><br><span class="line">  return [[self.priorities filteredSetUsingPredicate:predicate] allObjects];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然在实际项目中，有些代码不是那么轻松可以转移到Model当中的。所以我们要创建 “数据仓库”(Store Class)</p>
+<h3 id="创建仓库类"><a href="#创建仓库类" class="headerlink" title="创建仓库类"></a>创建仓库类</h3><p>我们有些代码是从文件中加载数据并处理数据的，这些代码大概是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (void)readArchive &#123;</span><br><span class="line">    NSBundle* bundle = [NSBundle bundleForClass:[self class]];</span><br><span class="line">    NSURL *archiveURL = [bundle URLForResource:@&quot;photodata&quot;</span><br><span class="line">                                 withExtension:@&quot;bin&quot;];</span><br><span class="line">    NSAssert(archiveURL != nil, @&quot;Unable to find archive in bundle.&quot;);</span><br><span class="line">    NSData *data = [NSData dataWithContentsOfURL:archiveURL</span><br><span class="line">                                         options:0</span><br><span class="line">                                           error:NULL];</span><br><span class="line">    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];</span><br><span class="line">    _users = [unarchiver decodeObjectOfClass:[NSArray class] forKey:@&quot;users&quot;];</span><br><span class="line">    _photos = [unarchiver decodeObjectOfClass:[NSArray class] forKey:@&quot;photos&quot;];</span><br><span class="line">    [unarchiver finishDecoding];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实 View Controller 没有必要关心数据是如何处理的，我们创建 数据仓库来处理这些。使这些代码分离出来，这样我们就可以复用这个仓库类了。<br>独立测试并且View Controller的代码量又减少了一些。这些数据仓库负责数据处理，持久化和数据库交互。我们也可以叫这些”仓库”为服务层或资料库</p>
+<h3 id="将网络服务逻辑转移到Model"><a href="#将网络服务逻辑转移到Model" class="headerlink" title="将网络服务逻辑转移到Model"></a>将网络服务逻辑转移到Model</h3><p>这是一个类似的优化逻辑：不要把网络交互放在View Controller。把这些逻辑独立放置在其他类中，可以调用方法并设置回调处理。<br>这样做的好处是你可以格外处理所有你的数据和错误在这个类上。而不会让View Controller变的臃肿</p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>我们看到有很多技巧可以让View Controller更加精简。我们努力让这些技巧在实际开发中更加实用。<br>我们只有一个目的：写出可维护的代码。知道这些模式之后，我们有更加深刻的认识来讨论如何将笨重的View Controller精简优化。</p>
+<h3 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h3><ul>
+<li><a href="https://developer.apple.com/library/mac/documentation/General/Conceptual/DevPedia-CocoaCore/ControllerObject.html" target="_blank" rel="external">Cocoa Core Competencies: Controller Object</a></li>
+<li><a href="http://subjective-objective-c.blogspot.de/2011/08/writing-high-quality-view-controller.html" target="_blank" rel="external">Writing high quality view controllers</a></li>
+<li><a href="https://programmers.stackexchange.com/questions/184396/mvcs-model-view-controller-store" target="_blank" rel="external">Programmers Stack Exchange: Model View Controller Store</a></li>
+<li><a href="https://programmers.stackexchange.com/questions/177668/how-to-avoid-big-and-clumsy-uitableviewcontroller-on-ios" target="_blank" rel="external">Programmers Stack Exchange: How to avoid big and clumsy UITableViewControllers on iOS
+</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/02/02/2016-02-02-Range Sum Query - Mutable/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          Range Sum Query Mutable
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/11/27/2015-11-27-Minimum Window Substring/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Minimum Window Substring&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 miaoyou.gmy&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

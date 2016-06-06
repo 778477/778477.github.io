@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>为iOS建立 Travis CI - 778477</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="为iOS建立 Travis CI
+我给自己的GMYHotSpotView项目 关联了这个 持续集成的工具 .travis.yml文件编写如下
+12language: objective-cscript: xcodebuild -workspace GMYHotSpotView.xcworkspace -scheme GMYHotSpotView
+Building an Objective-C Pr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为iOS建立 Travis CI">
+<meta property="og:url" content="http://yoursite.com/2015/11/24/2015-11-24-为iOS建立 Travis CI/index.html">
+<meta property="og:site_name" content="778477">
+<meta property="og:description" content="为iOS建立 Travis CI
+我给自己的GMYHotSpotView项目 关联了这个 持续集成的工具 .travis.yml文件编写如下
+12language: objective-cscript: xcodebuild -workspace GMYHotSpotView.xcworkspace -scheme GMYHotSpotView
+Building an Objective-C Pr">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/travis-ci1.png">
+<meta property="og:image" content="https://travis-ci.org/778477/GMYHotSpotView.svg?branch=master">
+<meta property="og:updated_time" content="2015-11-27T03:18:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为iOS建立 Travis CI">
+<meta name="twitter:description" content="为iOS建立 Travis CI
+我给自己的GMYHotSpotView项目 关联了这个 持续集成的工具 .travis.yml文件编写如下
+12language: objective-cscript: xcodebuild -workspace GMYHotSpotView.xcworkspace -scheme GMYHotSpotView
+Building an Objective-C Pr">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/travis-ci1.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">778477</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-2015-11-24-为iOS建立 Travis CI" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      为iOS建立 Travis CI
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/11/24/2015-11-24-为iOS建立 Travis CI/" class="article-date">
+  <time datetime="2015-11-24T00:00:00.000Z" itemprop="datePublished">2015-11-24</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://objccn.io/issue-6-5/" target="_blank" rel="external">为iOS建立 Travis CI</a></p>
+<p>我给自己的GMYHotSpotView项目 关联了这个 持续集成的工具 .travis.yml文件编写如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">language: objective-c</span><br><span class="line">script: xcodebuild -workspace GMYHotSpotView.xcworkspace -scheme GMYHotSpotView</span><br></pre></td></tr></table></figure>
+<p><a href="https://docs.travis-ci.com/user/languages/objective-c/" target="_blank" rel="external">Building an Objective-C Project</a></p>
+<p>我后面遇到的一个比较麻烦的问题是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Check dependencies</span><br><span class="line">Code Sign error: No code signing identities found: No valid signing identities.</span><br></pre></td></tr></table></figure>
+<p>最后修改.travis.yml文件，主要是新增了 <strong> CODE_SIGN_IDENTITY=”” CODE_SIGNING_REQUIRED=NO </strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">## http://lint.travis-ci.org/</span><br><span class="line">language: objective-c</span><br><span class="line">xcode_workspace: GMYHotSpotView.xcworkspace</span><br><span class="line">xcode_scheme: GMYHotSpotView</span><br><span class="line">script: xcodebuild -workspace GMYHotSpotView.xcworkspace -scheme GMYHotSpotView CODE_SIGN_IDENTITY=&quot;&quot; CODE_SIGNING_REQUIRED=NO</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/travis-ci1.png" alt="CI"></p>
+<p>指示灯是可以拿来使用的  <a href="https://travis-ci.org/778477/GMYHotSpotView" target="_blank" rel="external"><img src="https://travis-ci.org/778477/GMYHotSpotView.svg?branch=master" alt="Build Status"></a></p>
+<p><del>GitHub上还有一个很完善的YAML配置 <a href="https://github.com/BoltsFramework/Bolts-iOS/blob/master/.travis.yml" target="_blank" rel="external">https://github.com/BoltsFramework/Bolts-iOS/blob/master/.travis.yml</a></del> <strong>这个没啥卵用</strong></p>
+<blockquote>
+<p><a href="http://www.infoq.com/cn/articles/build-ios-continuous-integration-platform-part3" target="_blank" rel="external">构建iOS持续集成平台（三）——CI服务器与自动化部署 @infoQ</a></p>
+<p><a href="http://stackoverflow.com/questions/27671854/travis-ci-fails-to-build-with-a-code-signing-error" target="_blank" rel="external">http://stackoverflow.com/questions/27671854/travis-ci-fails-to-build-with-a-code-signing-error</a></p>
+<p><a href="http://stackoverflow.com/questions/27671854/travis-ci-fails-to-build-with-a-code-signing-error" target="_blank" rel="external">http://stackoverflow.com/questions/27671854/travis-ci-fails-to-build-with-a-code-signing-error</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/11/27/2015-11-27-Minimum Window Substring/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          Minimum Window Substring
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/23/2015-10-23-Valid-Number/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Vaild Number&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 miaoyou.gmy&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

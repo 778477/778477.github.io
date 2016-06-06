@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Reveal - 778477</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="使用Reveal进行视图分析Reveal比Xcode自带的Debug View Hierarchy要给力一些。好吧，这句话我收回-。- Xcode7中的视图调试貌似改进了很多，还支持debug。言归正传，说一下如何使用 Reveal 吧
+官方有三种使用方法：
+
+Static Linking
+
+Linking Reveal’s static library into your iOS applica">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reveal">
+<meta property="og:url" content="http://yoursite.com/2015/10/08/2015-10-20-Reveal/index.html">
+<meta property="og:site_name" content="778477">
+<meta property="og:description" content="使用Reveal进行视图分析Reveal比Xcode自带的Debug View Hierarchy要给力一些。好吧，这句话我收回-。- Xcode7中的视图调试貌似改进了很多，还支持debug。言归正传，说一下如何使用 Reveal 吧
+官方有三种使用方法：
+
+Static Linking
+
+Linking Reveal’s static library into your iOS applica">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/add-symbolic-breakpoint-menu.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/setup-breakpoint-popup.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/move-breakpoint-to-user.jpg">
+<meta property="og:updated_time" content="2015-10-20T11:46:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Reveal">
+<meta name="twitter:description" content="使用Reveal进行视图分析Reveal比Xcode自带的Debug View Hierarchy要给力一些。好吧，这句话我收回-。- Xcode7中的视图调试貌似改进了很多，还支持debug。言归正传，说一下如何使用 Reveal 吧
+官方有三种使用方法：
+
+Static Linking
+
+Linking Reveal’s static library into your iOS applica">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/add-symbolic-breakpoint-menu.jpg">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">778477</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-2015-10-20-Reveal" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Reveal
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/10/08/2015-10-20-Reveal/" class="article-date">
+  <time datetime="2015-10-08T00:00:00.000Z" itemprop="datePublished">2015-10-08</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="使用Reveal进行视图分析"><a href="#使用Reveal进行视图分析" class="headerlink" title="使用Reveal进行视图分析"></a>使用Reveal进行视图分析</h2><p>Reveal比Xcode自带的Debug View Hierarchy要给力一些。好吧，这句话我收回-。- Xcode7中的视图调试貌似改进了很多，还支持debug。言归正传，说一下如何使用 <strong>Reveal</strong> 吧</p>
+<p>官方有三种使用方法：</p>
+<ol>
+<li><p><strong>Static Linking</strong></p>
+<ul>
+<li>Linking Reveal’s static library into your iOS application is the quickest and easiest way to enable Reveal introspection.</li>
+</ul>
+</li>
+<li><p><strong>Dynamic Loading</strong></p>
+<ul>
+<li>Dynamic loading allows third party libraries to be loaded into an iOS application on demand, at runtime. In this scenario the library is not linked in to the executable, but is instead included in the app bundle and can be loaded on demand. This approach allows developers to maintain full control over when the Reveal library is loaded, and when the service is started and stopped within their application.</li>
+</ul>
+</li>
+<li><strong>CocoaPods</strong><ul>
+<li>CocoaPods is a dependency management system for iOS and OSX projects. It automates the configuration of workspaces to manage 3rd party library dependencies in Xcode projects.</li>
+</ul>
+</li>
+</ol>
+<p>我们不希望使用一个三方工具，还要修改代码。所以我们重点关注第二个Dynamic Loading。</p>
+<p>下面是我直译版本：</p>
+<h2 id="在不修改工程项目的情况加载-Reveal"><a href="#在不修改工程项目的情况加载-Reveal" class="headerlink" title="在不修改工程项目的情况加载 Reveal"></a>在不修改工程项目的情况加载 Reveal</h2><p><strong>这个方法只是适用于项目运行在模拟器上</strong></p>
+<p>加载Reveal不需要修改工程项目是一个极好的办法。方便让你分析iOS App，不用去考虑修改工程所带来的隐患了。</p>
+<ol>
+<li>使用Xcode打开你的项目，选择 View(视图)-&gt;Navigators(导航)-&gt;Show Breakpoint Navigator(断点导航栏)</li>
+<li>在底部栏的左边有一个加号，点击添加符号断点(Symbolic Breakpoint) <img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/add-symbolic-breakpoint-menu.jpg" alt="add-symbolic-breakpoint"></li>
+<li>右键编辑断点 输入<code>UIApplicationMain</code> 到Symbol输入框中</li>
+<li>点击<code>add action</code>按钮，确认action设置为<code>Debugger Command</code></li>
+<li>复制下面的语句到输入框中 <code>expr (Class)NSClassFromString(@&quot;IBARevealLoader&quot;) == nil ? (void *)dlopen(&quot;/Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/libReveal.dylib&quot;, 0x2) : ((void*)0)</code><ul>
+<li>需要确认你的Reveal安装路径是否一致</li>
+</ul>
+</li>
+<li>检查<code>Automatically continue after evaluating actions.</code>选项是否勾选<img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/setup-breakpoint-popup.jpg" alt="setup-breakpoint-popup"></li>
+<li>右键点击这个最新创建的断点选择<code>Move Breakpoint To</code>-&gt; <code>User</code><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/move-breakpoint-to-user.jpg" alt="move-breakpoint-to-user"></li>
+<li>在Xcode编译并运行你的应用在iOS模拟器上。如果一切步骤设置ok的话，你在 Reveal 上切换选择你的App就可以愉快的开始</li>
+</ol>
+<blockquote>
+<p><a href="http://support.revealapp.com/" target="_blank" rel="external">http://support.revealapp.com/</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/23/2015-10-23-Valid-Number/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          Vaild Number
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/08/2015-10-08-Different-iOS-SDK-Version-Compile/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Different iOS SDK Version Compile&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 miaoyou.gmy&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>
