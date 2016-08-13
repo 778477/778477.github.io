@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>如何将App装载到模拟器 - 778477</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="笔者这里使用 nice 这款App 演示。
+
+首先使用Mac iTunes下载 对应App的ipa包，再解压，在Payload目录下 我们发现nice这款app的真身： KKShopping.app(难道nice也有一颗电商的心吗？)
+
+使用 xcrun simctl list 查看现有的设备列表。作为iOS开发，就是这么富用：拥有iPhone全系的模！拟！器！
+
+
+创建新的模拟器，笔者这里创建i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何将App装载到模拟器">
+<meta property="og:url" content="http://yoursite.com/2016/08/13/2016-08-13-如何将App 装载到模拟器中/index.html">
+<meta property="og:site_name" content="778477">
+<meta property="og:description" content="笔者这里使用 nice 这款App 演示。
+
+首先使用Mac iTunes下载 对应App的ipa包，再解压，在Payload目录下 我们发现nice这款app的真身： KKShopping.app(难道nice也有一颗电商的心吗？)
+
+使用 xcrun simctl list 查看现有的设备列表。作为iOS开发，就是这么富用：拥有iPhone全系的模！拟！器！
+
+
+创建新的模拟器，笔者这里创建i">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/xcrun-simctl-list.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/simctl-create.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/xcrun-simctl-list1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/install-nice-app.png">
+<meta property="og:updated_time" content="2016-08-13T08:17:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何将App装载到模拟器">
+<meta name="twitter:description" content="笔者这里使用 nice 这款App 演示。
+
+首先使用Mac iTunes下载 对应App的ipa包，再解压，在Payload目录下 我们发现nice这款app的真身： KKShopping.app(难道nice也有一颗电商的心吗？)
+
+使用 xcrun simctl list 查看现有的设备列表。作为iOS开发，就是这么富用：拥有iPhone全系的模！拟！器！
+
+
+创建新的模拟器，笔者这里创建i">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/xcrun-simctl-list.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">778477</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-2016-08-13-如何将App 装载到模拟器中" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      如何将App装载到模拟器
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/08/13/2016-08-13-如何将App 装载到模拟器中/" class="article-date">
+  <time datetime="2016-08-13T00:00:00.000Z" itemprop="datePublished">2016-08-13</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>笔者这里使用 <a href="https://itunes.apple.com/cn/app/nice-hao-zan-fa-zhao-pian/id641895599?mt=8" target="_blank" rel="external">nice</a> 这款App 演示。</p>
+<ol>
+<li>首先使用Mac iTunes下载 对应App的ipa包，再解压，在Payload目录下 我们发现nice这款app的真身： KKShopping.app(难道nice也有一颗电商的心吗？)</li>
+</ol>
+<p>使用 <code>xcrun simctl list</code> 查看现有的设备列表。作为iOS开发，就是这么富用：拥有iPhone全系的模！拟！器！</p>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/xcrun-simctl-list.png" alt="xcrun-simctl-list"></p>
+<ol>
+<li>创建新的模拟器，笔者这里创建iPhone 6搭载iOS9.3系统. 命名为MyiPhone6</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun simctl create &quot;MyiPhone6&quot; &quot;iPhone 6&quot; &quot;com.apple.CoreSimulator.SimRuntime.iOS-9-3&quot;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/simctl-create.png" alt="simctl-create"></p>
+<ol>
+<li>唤起MyiPhone6， 使用Xcode Simulator.app 唤起，参数CurrentDeviceUDID选择我们在<code>xcrun simctl list</code> Devices下看到的MyiPhone6的udid。 <strong>注意</strong> 一定要唤起，模拟器在shutdown state下是装载不了App的。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open -n /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID &apos;2C630172-AF2B-4798-B854-3FEE5F221411&apos;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/xcrun-simctl-list1.png" alt="xcrun-simctl-list1"></p>
+<ol>
+<li>装载 KKShopping.app</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun simctl install MyiPhone6 ~/Music/iTunes/iTunes\ Media/Mobile\ Applications/nice\ 4.0.0/Payload/KKShopping.app</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/install-nice-app.png" alt="install-nice-app"></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS-Simulator/">iOS Simulator</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/05/28/2016-05-28-Word Search II/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Word Search II&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 miaoyou.gmy&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

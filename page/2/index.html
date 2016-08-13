@@ -54,6 +54,70 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2015-10-23-Valid-Number" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/23/2015-10-23-Valid-Number/">Vaild Number</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/10/23/2015-10-23-Valid-Number/" class="article-date">
+  <time datetime="2015-10-23T00:00:00.000Z" itemprop="datePublished">2015-10-23</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://leetcode.com/submissions/detail/43806015/" target="_blank" rel="external">Vaild Number</a></p>
+<p>判断给定的一个字符串是否是数字。</p>
+<p>Note: 题目对于数字的合法定义没有给出具体限定，你应该根据判断返回结果来调整自己的程序。 (这个超坑的，我差不多错误提交了8次。有些后台TestCase的合理性是有待讨论的<a href="https://leetcode.com/discuss/3303/the-worst-problem-i-have-ever-met-in-this-oj" target="_blank" rel="external">吐槽传送门</a>)</p>
+<p>言归正传。这类题目，我们一般称为 模拟题。是因为该题目没有对应具体算法和数据结构，我们只能按照题目描述的分支情况，模拟实现。其实，这个题目我在杭电OJ上做过了。。。</p>
+<p><a href="http://acm.hdu.edu.cn/showproblem.php?pid=1409" target="_blank" rel="external">Is It a Number</a></p>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/hud-1409-accepted.png" alt="accetped"></p>
+<p>当时我就是当模拟题做的，现在看来这种解法不太优雅。 看了一下 Discuss，发现大多数人使用 DFA(有限状态自动机)。城！会！玩！</p>
+<p>按照这个思路，我们来动手实践一下。 首先是状态的划分，因为 鉴别是否是数字，字符集{‘0’-‘9’,’+’,’-‘,’.’,’E’}。根据数字的定义，状态是有限的。 所以我们大体划分出这么集中状态：</p>
+<pre><code>1. UnkownState 起始状态，没有任何字符输入。能接受的下一步字符为 数字|正负号|小数点
+2. NumberState 输入数字状态，能接受的下一步字符为 数字|小数点|科学计数法(E,e)
+3. OnlyNumberState 数字接着输入小数点状态，能接受下一步字符为 数字|科学计数法(E,e)
+4. OperatorState 输入运算法状态，能接受下一步字符为 数字|小数点
+5. DecimalPointState 输入小数点状态，能接受下一步字符为 数字
+6. ScientificState 输入科学计数法状态，能接受下一步字符为 数字|正负号
+7. NoscientificState 科学计数法接着输入正负号状态，能接受下一步字符为 数字
+8. IllegalState 非法输入状态 
+9. EndState 终态 能接受下一步字符 为数字
+</code></pre><p>这里的状态命名比较随意。 状态之间的转移是关键。最后，我们认为 2，3，9状态为合法状态。停留在其他状态的输入情况，不能认为是数字。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> State&#123;</span><br><span class="line">    UnkownState  = <span class="number">0</span>,       </span><br><span class="line">    NumberState = <span class="number">1</span>,         </span><br><span class="line">    OnlyNumberState = <span class="number">2</span>,	 </span><br><span class="line">    OperatorState = <span class="number">3</span>,      </span><br><span class="line">    DecimalPointState = <span class="number">4</span>,  </span><br><span class="line">    ScientificState = <span class="number">5</span>,    </span><br><span class="line">    NoscientificState = <span class="number">6</span>, </span><br><span class="line">    IllegalState = <span class="number">7</span>,</span><br><span class="line">    EndState,</span><br><span class="line">&#125;State;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">isNumber</span><span class="params">(<span class="keyword">char</span>* s)</span> </span>&#123;</span><br><span class="line">    State state = UnkownState;</span><br><span class="line">    <span class="keyword">while</span> (*s == <span class="string">' '</span>)  s++;</span><br><span class="line">    <span class="keyword">char</span> *p = (s+<span class="built_in">strlen</span>(s)<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">while</span> (*p == <span class="string">' '</span>)  --p;</span><br><span class="line">    *(p+<span class="number">1</span>) = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (*s) &#123;</span><br><span class="line">        <span class="keyword">switch</span> (state) &#123;</span><br><span class="line">            <span class="keyword">case</span> UnkownState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s == <span class="string">'+'</span> || *s == <span class="string">'-'</span>) state = OperatorState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;= <span class="string">'9'</span>) state = NumberState;</span><br><span class="line">                <span class="keyword">if</span>(*s == <span class="string">'.'</span>) state = DecimalPointState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> NumberState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;= <span class="string">'9'</span>) state = NumberState;</span><br><span class="line">                <span class="keyword">if</span>(*s == <span class="string">'.'</span>) state = OnlyNumberState;</span><br><span class="line">                <span class="keyword">if</span>(*s == <span class="string">'e'</span> || *s == <span class="string">'E'</span>) state = ScientificState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> OnlyNumberState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;= <span class="string">'9'</span>) state = OnlyNumberState;</span><br><span class="line">                <span class="keyword">if</span>(*s == <span class="string">'e'</span> || *s == <span class="string">'E'</span>) state = ScientificState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> OperatorState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;= <span class="string">'9'</span>) state = NumberState;</span><br><span class="line">                <span class="keyword">if</span>(*s == <span class="string">'.'</span> ) state = DecimalPointState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> DecimalPointState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;= <span class="string">'9'</span>) state = OnlyNumberState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> ScientificState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s == <span class="string">'+'</span> || *s == <span class="string">'-'</span>) state = NoscientificState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;= <span class="string">'9'</span>) state = EndState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> NoscientificState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;=<span class="string">'9'</span>) state = EndState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> EndState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;=<span class="string">'9'</span>) state = EndState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> IllegalState:&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        s++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (state == NumberState || state == OnlyNumberState || state == EndState);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> str[<span class="number">1024</span>];</span><br><span class="line">    <span class="keyword">while</span>(gets(str))&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s %s\n"</span>,str,isNumber(str) ? <span class="string">"is a Number"</span>:<span class="string">"isn't a Number"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/vaild-number-accepted.png" alt="accepeted"></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2015-10-20-Reveal" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -195,74 +259,6 @@
 
 
     
-      <article id="post-2015-10-01-Regular-Expression-Matching" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/01/2015-10-01-Regular-Expression-Matching/">Regular Expression Matching</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/10/01/2015-10-01-Regular-Expression-Matching/" class="article-date">
-  <time datetime="2015-10-01T00:00:00.000Z" itemprop="datePublished">2015-10-01</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://leetcode.com/problems/regular-expression-matching/" target="_blank" rel="external">https://leetcode.com/problems/regular-expression-matching/</a></p>
-<p>这个题目比较有意思，大意是实现正则表达式中的’*’和’.’这种两种操作符。</p>
-<p>我们来看看 这两种操作符是做什么的</p>
-<blockquote>
-<p>‘.’ Matches any single character.</p>
-<p>‘*’ Matches zero or more of the preceding element.</p>
-</blockquote>
-<p>意思是说，’.’这个操作符能匹配任意单个字符，’*‘ 这个操作符能匹配 <strong>任意次</strong> 在它前面的符号。恩，看起来’*‘是压缩连续字符串的。</p>
-<p>我们再看看题目中的几个case，分析一下最后三个吧：</p>
-<blockquote>
-<p>case 1 isMatch(“aa”, “.*”) → true </p>
-<p>case 2 isMatch(“ab”, “.*”) → true </p>
-<p>case 3 isMatch(“aab”, “c<em>a</em>b”) → true </p>
-</blockquote>
-<p>case 1比较好理解，’.’匹配第一个’a’，’*‘匹配了第二个’a’. 因为 ‘*‘前面一个字符是’a’</p>
-<p>case 2 这个case，我一开始一直理解不了，一度以为是题目搞错了。重新读题的时候，才发现题意说的很明白，是我误解了题意。</p>
-<p><strong>‘*‘ Matches zero or more of the preceding element.</strong></p>
-<p>反复理解这句话，意思是指’*‘能表示任意个在它前面的字符。也就是说，它前面如果是’.’这种操作符的话，”.*“可以是”.”,”..”,”…”。</p>
-<p>那么，之前case 1的理解也是错的，’*‘操作符的优先级比较高，匹配时要优先考虑’*‘的存在。</p>
-<p>case 1应该是这么理解 先是’*‘表示了一个在它前面的’.’，使得模式串变成了”..”，最后再去匹配。</p>
-<p>case 2也能这么解释。 </p>
-<p>case 3，第一个’*‘的存在把前面的’c’表示了0次，第二个’*‘的存在把前面的’a’表示了两次，把模式串变成了”aab”</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">bool isMatch(char* s, char* p) &#123;</span><br><span class="line">    if(*p == 0) return *s == 0;</span><br><span class="line">    /**</span><br><span class="line">     *  因为 &apos;*&apos;优先级较高,且影响前一个字符。所以优先考虑&apos;*&apos;存在的情况</span><br><span class="line">     *  如果 当前字符的下一个字符不是 &apos;*&apos;的话, 进行正常的匹配。 注意&apos;.&apos;的情况。</span><br><span class="line">     */</span><br><span class="line">    if(*(p+1) != &apos;*&apos;)&#123;</span><br><span class="line">        // 当前字符匹配成功的条件是 *s 存在 且 *s和*p相同</span><br><span class="line">        if(*s &amp;&amp; ((*s == *p) || (*p == &apos;.&apos;)))&#123;</span><br><span class="line">            return isMatch(s+1,p+1);</span><br><span class="line">        &#125;</span><br><span class="line">        // 当前字符匹配不通过，无须匹配后面的字符了。</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    else&#123;</span><br><span class="line">        // 枚举 &apos;*&apos;操作符 表示n次当前字符,直到当前字符失效(失效的意思就是说 &apos;*&apos;影响当前字符的所有情况都我们枚举过了,不能考虑&apos;*&apos;的意义了,做下一步工作吧)</span><br><span class="line">        while(*s &amp;&amp; ((*s==*p) || (*p == &apos;.&apos;)))&#123;</span><br><span class="line">            if(isMatch(s, p+2)) return true;</span><br><span class="line">            s++;</span><br><span class="line">        &#125;</span><br><span class="line">        // 放弃这个 &apos;*&apos;操作符的机会，也就是说&apos;*&apos;表示了前一次字符0次。</span><br><span class="line">        return isMatch(s, p+2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Regular%20Expression%20Matching.png" alt="Regular Expression Matching Accepted"></p>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
       <article id="post-2015-10-01-Make-Your-App-Searchable" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -338,6 +334,74 @@
 
 
     
+      <article id="post-2015-10-01-Regular-Expression-Matching" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/01/2015-10-01-Regular-Expression-Matching/">Regular Expression Matching</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/10/01/2015-10-01-Regular-Expression-Matching/" class="article-date">
+  <time datetime="2015-10-01T00:00:00.000Z" itemprop="datePublished">2015-10-01</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://leetcode.com/problems/regular-expression-matching/" target="_blank" rel="external">https://leetcode.com/problems/regular-expression-matching/</a></p>
+<p>这个题目比较有意思，大意是实现正则表达式中的’*’和’.’这种两种操作符。</p>
+<p>我们来看看 这两种操作符是做什么的</p>
+<blockquote>
+<p>‘.’ Matches any single character.</p>
+<p>‘*’ Matches zero or more of the preceding element.</p>
+</blockquote>
+<p>意思是说，’.’这个操作符能匹配任意单个字符，’*‘ 这个操作符能匹配 <strong>任意次</strong> 在它前面的符号。恩，看起来’*‘是压缩连续字符串的。</p>
+<p>我们再看看题目中的几个case，分析一下最后三个吧：</p>
+<blockquote>
+<p>case 1 isMatch(“aa”, “.*”) → true </p>
+<p>case 2 isMatch(“ab”, “.*”) → true </p>
+<p>case 3 isMatch(“aab”, “c<em>a</em>b”) → true </p>
+</blockquote>
+<p>case 1比较好理解，’.’匹配第一个’a’，’*‘匹配了第二个’a’. 因为 ‘*‘前面一个字符是’a’</p>
+<p>case 2 这个case，我一开始一直理解不了，一度以为是题目搞错了。重新读题的时候，才发现题意说的很明白，是我误解了题意。</p>
+<p><strong>‘*‘ Matches zero or more of the preceding element.</strong></p>
+<p>反复理解这句话，意思是指’*‘能表示任意个在它前面的字符。也就是说，它前面如果是’.’这种操作符的话，”.*“可以是”.”,”..”,”…”。</p>
+<p>那么，之前case 1的理解也是错的，’*‘操作符的优先级比较高，匹配时要优先考虑’*‘的存在。</p>
+<p>case 1应该是这么理解 先是’*‘表示了一个在它前面的’.’，使得模式串变成了”..”，最后再去匹配。</p>
+<p>case 2也能这么解释。 </p>
+<p>case 3，第一个’*‘的存在把前面的’c’表示了0次，第二个’*‘的存在把前面的’a’表示了两次，把模式串变成了”aab”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">bool isMatch(char* s, char* p) &#123;</span><br><span class="line">    if(*p == 0) return *s == 0;</span><br><span class="line">    /**</span><br><span class="line">     *  因为 &apos;*&apos;优先级较高,且影响前一个字符。所以优先考虑&apos;*&apos;存在的情况</span><br><span class="line">     *  如果 当前字符的下一个字符不是 &apos;*&apos;的话, 进行正常的匹配。 注意&apos;.&apos;的情况。</span><br><span class="line">     */</span><br><span class="line">    if(*(p+1) != &apos;*&apos;)&#123;</span><br><span class="line">        // 当前字符匹配成功的条件是 *s 存在 且 *s和*p相同</span><br><span class="line">        if(*s &amp;&amp; ((*s == *p) || (*p == &apos;.&apos;)))&#123;</span><br><span class="line">            return isMatch(s+1,p+1);</span><br><span class="line">        &#125;</span><br><span class="line">        // 当前字符匹配不通过，无须匹配后面的字符了。</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    else&#123;</span><br><span class="line">        // 枚举 &apos;*&apos;操作符 表示n次当前字符,直到当前字符失效(失效的意思就是说 &apos;*&apos;影响当前字符的所有情况都我们枚举过了,不能考虑&apos;*&apos;的意义了,做下一步工作吧)</span><br><span class="line">        while(*s &amp;&amp; ((*s==*p) || (*p == &apos;.&apos;)))&#123;</span><br><span class="line">            if(isMatch(s, p+2)) return true;</span><br><span class="line">            s++;</span><br><span class="line">        &#125;</span><br><span class="line">        // 放弃这个 &apos;*&apos;操作符的机会，也就是说&apos;*&apos;表示了前一次字符0次。</span><br><span class="line">        return isMatch(s, p+2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Regular%20Expression%20Matching.png" alt="Regular Expression Matching Accepted"></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2015-09-06-Permutation- Sequence" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -393,6 +457,82 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
+      <article id="post-2015-09-04-iOS 杂技" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/04/2015-09-04-iOS 杂技/">iOS 杂技</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/09/04/2015-09-04-iOS 杂技/" class="article-date">
+  <time datetime="2015-09-04T00:00:00.000Z" itemprop="datePublished">2015-09-04</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><a href="http://www.cnblogs.com/xdream86/p/3367401.html" target="_blank" rel="external">iOS代码工具箱</a></li>
+<li><a href="http://semver.org/lang/zh-CN/" target="_blank" rel="external">语义版本控制 for CocoaPods</a></li>
+<li><a href="http://www.cnblogs.com/sdjxcolin/archive/2007/07/02/803376.html" target="_blank" rel="external">软件项目版本号命名规则</a></li>
+</ul>
+<p>主版本号 . 子版本号 [. 修正版本号 [. 编译版本号 ]]<br> Major_Version_Number.Minor_Version_Number[.Revision_Number[.Build_Number]]应根据下面的约定使用这些部分：</p>
+<p>Major ：具有相同名称但不同主版本号的程序集不可互换。例如，这适用于对产品的大量重写，这些重写使得无法实现向后兼容性。</p>
+<p>Minor ：如果两个程序集的名称和主版本号相同，而次版本号不同，这指示显著增强，但照顾到了向后兼容性。例如，这适用于产品的修正版或完全向后兼容的新版本。</p>
+<p>Build ：内部版本号的不同表示对相同源所作的重新编译。这适合于更改处理器、平台或编译器的情况。</p>
+<p>Revision ：名称、主版本号和次版本号都相同但修订号不同的程序集应是完全可互换的。这适用于修复以前发布的程序集中的安全漏洞。</p>
+<p>程序集的只有内部版本号或修订号不同的后续版本被认为是先前版本的修补程序 (Hotfix) 更新。</p>
+<ul>
+<li><a href="http://nshipster.com/__attribute__/" target="_blank" rel="external"> attribute详解</a></li>
+</ul>
+<p>GNU C的一大特色（却不被初学者所知）就是<strong>attribute</strong>机制。<strong>attribute</strong>可以设置函数属性（Function Attribute）、变量属性（Variable Attribute）和类型属性（Type Attribute）。</p>
+<p>编写工业级代码必不可少的装逼技能</p>
+<ul>
+<li><a href="http://www.diffen.com/difference/GET_(HTTP" target="_blank" rel="external">Http Request GET VS POST</a>_vs<em>POST</em>(HTTP))</li>
+</ul>
+<p>对比http请求中 GET Method 和 POST Method两者的区别</p>
+<ul>
+<li><a href="https://github.com/ReactiveCocoa/ReactiveCocoa" target="_blank" rel="external">RAC(Reactive-Cocoa)函数响应式编程</a></li>
+</ul>
+<p>编程思想值得借鉴学习，可以在 Demo项目中试用一下</p>
+<ul>
+<li><a href="http://inessential.com/hownottocrash" target="_blank" rel="external">How Not to Crash</a></li>
+</ul>
+<p>笔者实践经验总结how not to crash</p>
+<ul>
+<li><a href="https://github.com/yoavlt/LiquidFloatingActionButton" target="_blank" rel="external">Animation in liquid state</a></li>
+</ul>
+<p><a href="http://jamie-wong.com/2014/08/19/metaballs-and-marching-squares/" target="_blank" rel="external">metaballs-and-marching-squares</a><br><img src="https://raw.githubusercontent.com/yoavlt/LiquidFloatingActionButton/master/Demo/top.gif" alt="demo"></p>
+<blockquote>
+<p>如有任何知识产权、版权问题或理论错误，还请指正。</p>
+<p>转载请注明原作者及以上信息。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
 
       </footer>
     
@@ -462,82 +602,6 @@
 <li>同为异步方法</li>
 </ul>
 <h2 id="Constants"><a href="#Constants" class="headerlink" title="Constants"></a>Constants</h2><p>具体的资源类型、回调定义，权限类型，通知信息，错误信息。请参见 ALAssetsLibrary Class Reference(iOS 8.3 Documentation)</p>
-<blockquote>
-<p>如有任何知识产权、版权问题或理论错误，还请指正。</p>
-<p>转载请注明原作者及以上信息。</p>
-</blockquote>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2015-09-04-iOS 杂技" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/04/2015-09-04-iOS 杂技/">iOS 杂技</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/09/04/2015-09-04-iOS 杂技/" class="article-date">
-  <time datetime="2015-09-04T00:00:00.000Z" itemprop="datePublished">2015-09-04</time>
-</a>
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><a href="http://www.cnblogs.com/xdream86/p/3367401.html" target="_blank" rel="external">iOS代码工具箱</a></li>
-<li><a href="http://semver.org/lang/zh-CN/" target="_blank" rel="external">语义版本控制 for CocoaPods</a></li>
-<li><a href="http://www.cnblogs.com/sdjxcolin/archive/2007/07/02/803376.html" target="_blank" rel="external">软件项目版本号命名规则</a></li>
-</ul>
-<p>主版本号 . 子版本号 [. 修正版本号 [. 编译版本号 ]]<br> Major_Version_Number.Minor_Version_Number[.Revision_Number[.Build_Number]]应根据下面的约定使用这些部分：</p>
-<p>Major ：具有相同名称但不同主版本号的程序集不可互换。例如，这适用于对产品的大量重写，这些重写使得无法实现向后兼容性。</p>
-<p>Minor ：如果两个程序集的名称和主版本号相同，而次版本号不同，这指示显著增强，但照顾到了向后兼容性。例如，这适用于产品的修正版或完全向后兼容的新版本。</p>
-<p>Build ：内部版本号的不同表示对相同源所作的重新编译。这适合于更改处理器、平台或编译器的情况。</p>
-<p>Revision ：名称、主版本号和次版本号都相同但修订号不同的程序集应是完全可互换的。这适用于修复以前发布的程序集中的安全漏洞。</p>
-<p>程序集的只有内部版本号或修订号不同的后续版本被认为是先前版本的修补程序 (Hotfix) 更新。</p>
-<ul>
-<li><a href="http://nshipster.com/__attribute__/" target="_blank" rel="external"> attribute详解</a></li>
-</ul>
-<p>GNU C的一大特色（却不被初学者所知）就是<strong>attribute</strong>机制。<strong>attribute</strong>可以设置函数属性（Function Attribute）、变量属性（Variable Attribute）和类型属性（Type Attribute）。</p>
-<p>编写工业级代码必不可少的装逼技能</p>
-<ul>
-<li><a href="http://www.diffen.com/difference/GET_(HTTP" target="_blank" rel="external">Http Request GET VS POST</a>_vs<em>POST</em>(HTTP))</li>
-</ul>
-<p>对比http请求中 GET Method 和 POST Method两者的区别</p>
-<ul>
-<li><a href="https://github.com/ReactiveCocoa/ReactiveCocoa" target="_blank" rel="external">RAC(Reactive-Cocoa)函数响应式编程</a></li>
-</ul>
-<p>编程思想值得借鉴学习，可以在 Demo项目中试用一下</p>
-<ul>
-<li><a href="http://inessential.com/hownottocrash" target="_blank" rel="external">How Not to Crash</a></li>
-</ul>
-<p>笔者实践经验总结how not to crash</p>
-<ul>
-<li><a href="https://github.com/yoavlt/LiquidFloatingActionButton" target="_blank" rel="external">Animation in liquid state</a></li>
-</ul>
-<p><a href="http://jamie-wong.com/2014/08/19/metaballs-and-marching-squares/" target="_blank" rel="external">metaballs-and-marching-squares</a><br><img src="https://raw.githubusercontent.com/yoavlt/LiquidFloatingActionButton/master/Demo/top.gif" alt="demo"></p>
 <blockquote>
 <p>如有任何知识产权、版权问题或理论错误，还请指正。</p>
 <p>转载请注明原作者及以上信息。</p>

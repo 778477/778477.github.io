@@ -54,6 +54,71 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2016-08-13-如何将App 装载到模拟器中" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/13/2016-08-13-如何将App 装载到模拟器中/">如何将App装载到模拟器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/08/13/2016-08-13-如何将App 装载到模拟器中/" class="article-date">
+  <time datetime="2016-08-13T00:00:00.000Z" itemprop="datePublished">2016-08-13</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>笔者这里使用 <a href="https://itunes.apple.com/cn/app/nice-hao-zan-fa-zhao-pian/id641895599?mt=8" target="_blank" rel="external">nice</a> 这款App 演示。</p>
+<ol>
+<li>首先使用Mac iTunes下载 对应App的ipa包，再解压，在Payload目录下 我们发现nice这款app的真身： KKShopping.app(难道nice也有一颗电商的心吗？)</li>
+</ol>
+<p>使用 <code>xcrun simctl list</code> 查看现有的设备列表。作为iOS开发，就是这么富用：拥有iPhone全系的模！拟！器！</p>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/xcrun-simctl-list.png" alt="xcrun-simctl-list"></p>
+<ol>
+<li>创建新的模拟器，笔者这里创建iPhone 6搭载iOS9.3系统. 命名为MyiPhone6</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun simctl create &quot;MyiPhone6&quot; &quot;iPhone 6&quot; &quot;com.apple.CoreSimulator.SimRuntime.iOS-9-3&quot;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/simctl-create.png" alt="simctl-create"></p>
+<ol>
+<li>唤起MyiPhone6， 使用Xcode Simulator.app 唤起，参数CurrentDeviceUDID选择我们在<code>xcrun simctl list</code> Devices下看到的MyiPhone6的udid。 <strong>注意</strong> 一定要唤起，模拟器在shutdown state下是装载不了App的。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open -n /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID &apos;2C630172-AF2B-4798-B854-3FEE5F221411&apos;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/xcrun-simctl-list1.png" alt="xcrun-simctl-list1"></p>
+<ol>
+<li>装载 KKShopping.app</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun simctl install MyiPhone6 ~/Music/iTunes/iTunes\ Media/Mobile\ Applications/nice\ 4.0.0/Payload/KKShopping.app</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/install-nice-app.png" alt="install-nice-app"></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS-Simulator/">iOS Simulator</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2016-05-28-Word Search II" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -602,70 +667,6 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2015-10-23-Valid-Number" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/23/2015-10-23-Valid-Number/">Vaild Number</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/10/23/2015-10-23-Valid-Number/" class="article-date">
-  <time datetime="2015-10-23T00:00:00.000Z" itemprop="datePublished">2015-10-23</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://leetcode.com/submissions/detail/43806015/" target="_blank" rel="external">Vaild Number</a></p>
-<p>判断给定的一个字符串是否是数字。</p>
-<p>Note: 题目对于数字的合法定义没有给出具体限定，你应该根据判断返回结果来调整自己的程序。 (这个超坑的，我差不多错误提交了8次。有些后台TestCase的合理性是有待讨论的<a href="https://leetcode.com/discuss/3303/the-worst-problem-i-have-ever-met-in-this-oj" target="_blank" rel="external">吐槽传送门</a>)</p>
-<p>言归正传。这类题目，我们一般称为 模拟题。是因为该题目没有对应具体算法和数据结构，我们只能按照题目描述的分支情况，模拟实现。其实，这个题目我在杭电OJ上做过了。。。</p>
-<p><a href="http://acm.hdu.edu.cn/showproblem.php?pid=1409" target="_blank" rel="external">Is It a Number</a></p>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/hud-1409-accepted.png" alt="accetped"></p>
-<p>当时我就是当模拟题做的，现在看来这种解法不太优雅。 看了一下 Discuss，发现大多数人使用 DFA(有限状态自动机)。城！会！玩！</p>
-<p>按照这个思路，我们来动手实践一下。 首先是状态的划分，因为 鉴别是否是数字，字符集{‘0’-‘9’,’+’,’-‘,’.’,’E’}。根据数字的定义，状态是有限的。 所以我们大体划分出这么集中状态：</p>
-<pre><code>1. UnkownState 起始状态，没有任何字符输入。能接受的下一步字符为 数字|正负号|小数点
-2. NumberState 输入数字状态，能接受的下一步字符为 数字|小数点|科学计数法(E,e)
-3. OnlyNumberState 数字接着输入小数点状态，能接受下一步字符为 数字|科学计数法(E,e)
-4. OperatorState 输入运算法状态，能接受下一步字符为 数字|小数点
-5. DecimalPointState 输入小数点状态，能接受下一步字符为 数字
-6. ScientificState 输入科学计数法状态，能接受下一步字符为 数字|正负号
-7. NoscientificState 科学计数法接着输入正负号状态，能接受下一步字符为 数字
-8. IllegalState 非法输入状态 
-9. EndState 终态 能接受下一步字符 为数字
-</code></pre><p>这里的状态命名比较随意。 状态之间的转移是关键。最后，我们认为 2，3，9状态为合法状态。停留在其他状态的输入情况，不能认为是数字。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> State&#123;</span><br><span class="line">    UnkownState  = <span class="number">0</span>,       </span><br><span class="line">    NumberState = <span class="number">1</span>,         </span><br><span class="line">    OnlyNumberState = <span class="number">2</span>,	 </span><br><span class="line">    OperatorState = <span class="number">3</span>,      </span><br><span class="line">    DecimalPointState = <span class="number">4</span>,  </span><br><span class="line">    ScientificState = <span class="number">5</span>,    </span><br><span class="line">    NoscientificState = <span class="number">6</span>, </span><br><span class="line">    IllegalState = <span class="number">7</span>,</span><br><span class="line">    EndState,</span><br><span class="line">&#125;State;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">isNumber</span><span class="params">(<span class="keyword">char</span>* s)</span> </span>&#123;</span><br><span class="line">    State state = UnkownState;</span><br><span class="line">    <span class="keyword">while</span> (*s == <span class="string">' '</span>)  s++;</span><br><span class="line">    <span class="keyword">char</span> *p = (s+<span class="built_in">strlen</span>(s)<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">while</span> (*p == <span class="string">' '</span>)  --p;</span><br><span class="line">    *(p+<span class="number">1</span>) = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (*s) &#123;</span><br><span class="line">        <span class="keyword">switch</span> (state) &#123;</span><br><span class="line">            <span class="keyword">case</span> UnkownState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s == <span class="string">'+'</span> || *s == <span class="string">'-'</span>) state = OperatorState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;= <span class="string">'9'</span>) state = NumberState;</span><br><span class="line">                <span class="keyword">if</span>(*s == <span class="string">'.'</span>) state = DecimalPointState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> NumberState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;= <span class="string">'9'</span>) state = NumberState;</span><br><span class="line">                <span class="keyword">if</span>(*s == <span class="string">'.'</span>) state = OnlyNumberState;</span><br><span class="line">                <span class="keyword">if</span>(*s == <span class="string">'e'</span> || *s == <span class="string">'E'</span>) state = ScientificState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> OnlyNumberState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;= <span class="string">'9'</span>) state = OnlyNumberState;</span><br><span class="line">                <span class="keyword">if</span>(*s == <span class="string">'e'</span> || *s == <span class="string">'E'</span>) state = ScientificState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> OperatorState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;= <span class="string">'9'</span>) state = NumberState;</span><br><span class="line">                <span class="keyword">if</span>(*s == <span class="string">'.'</span> ) state = DecimalPointState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> DecimalPointState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;= <span class="string">'9'</span>) state = OnlyNumberState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> ScientificState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s == <span class="string">'+'</span> || *s == <span class="string">'-'</span>) state = NoscientificState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;= <span class="string">'9'</span>) state = EndState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> NoscientificState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;=<span class="string">'9'</span>) state = EndState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> EndState:&#123;</span><br><span class="line">                state = IllegalState;</span><br><span class="line">                <span class="keyword">if</span>(*s &gt;= <span class="string">'0'</span> &amp;&amp; *s &lt;=<span class="string">'9'</span>) state = EndState;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> IllegalState:&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        s++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (state == NumberState || state == OnlyNumberState || state == EndState);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> str[<span class="number">1024</span>];</span><br><span class="line">    <span class="keyword">while</span>(gets(str))&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s %s\n"</span>,str,isNumber(str) ? <span class="string">"is a Number"</span>:<span class="string">"isn't a Number"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/vaild-number-accepted.png" alt="accepeted"></p>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
 
       </footer>
     
