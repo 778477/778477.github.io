@@ -54,6 +54,65 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2015-08-30-hdu-4527" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/30/2015-08-30-hdu-4527/">hdu 4527</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/08/30/2015-08-30-hdu-4527/" class="article-date">
+  <time datetime="2015-08-30T00:00:00.000Z" itemprop="datePublished">2015-08-30</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://acm.hdu.edu.cn/showproblem.php?pid=4527" target="_blank" rel="external">小明系列故事——玩转十滴水</a></p>
+<p>题目大意：游戏是在一个6*6的方格内进行的，每个格子上有一滴水或者没有水滴。水滴分为四个等级1~4。初始时你有十滴水，通过把水加入格子内的水滴，会让水滴升1级。你也可以把水放到空格子内，这样会在这个格子里面产生一个1级的水滴。当水滴等级大于4时则会爆裂为四个小水滴，并向四个方向飞溅。每个飞溅的小水滴碰到其他水滴后会融入其中，使其升一级或者爆裂，以此类推。飞溅的小水滴互不干扰，运动速度相等(1秒可以移动一个格子的距离)。水滴爆裂后就消失掉了。</p>
+<p><img src="http://acm.hdu.edu.cn/data/images/4527-1.jpg" alt="4527-1"></p>
+<p>输入：<br>题目包含多组测试用例；<br>对于每组数据，首先是6行，每行有6个整数数字，每个数字的范围为0~4；当数字为0时，表示空格子，当数字为1~4时，表示1~4级的水滴；<br>然后第七行是一个整数m，表示有m个操作；接下来是m行，每行有两个整数x, y ，表示在(x,y)放入一滴水。<br>特别说明：每次都是在全部的水滴静止后才进行下一次操作，也就是说只有在方格内没有任何飞溅的小水滴时才能放入一滴水。</p>
+<p>[Technical Specification]</p>
+<p>1 &lt;= m &lt;= 10</p>
+<p>1 &lt;= x, y &lt;= 6</p>
+<p>输出：<br>对于每组测试数据，请输出m个操作之后6*6方格内水滴的样子，每组数据的输出后面跟着一个空行。</p>
+<p>思考：水滴的爆裂 和 水滴的飞溅一定同时进行，以保证每一个运动时刻游戏状态都是正确的！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line">//</span><br><span class="line">//  main.cpp</span><br><span class="line">//  hdu 4527</span><br><span class="line">//</span><br><span class="line">//  Created by miaoyou.gmy on 15/8/30.</span><br><span class="line">//  Copyright (c) 2015年 miaoyou.gmy. All rights reserved.</span><br><span class="line">//</span><br><span class="line"></span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line">#include &lt;queue&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">struct node&#123;</span><br><span class="line">    int x,y,d;</span><br><span class="line">    node(int _x = 0,int _y = 0,int _d = 0):x(_x),y(_y),d(_d)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const int N(6);</span><br><span class="line">int maze[N][N];</span><br><span class="line">queue&lt;node&gt; Q;</span><br><span class="line">const int dir[4][2] = &#123; &#123;0,1&#125;,&#123;1,0&#125;,&#123;-1,0&#125;,&#123;0,-1&#125; &#125;;</span><br><span class="line"></span><br><span class="line">bool judge(const int x,const int y)&#123;</span><br><span class="line">    return (x&gt;-1&amp;&amp;x&lt;N&amp;&amp;y&gt;-1&amp;&amp;y&lt;N);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void output()&#123;</span><br><span class="line">    for(int i=0;i&lt;N;i++)&#123;</span><br><span class="line">        for(int j=0;j&lt;N;j++)&#123;</span><br><span class="line">            if(j == 0) printf(&quot;%d&quot;,maze[i][j]);</span><br><span class="line">            else printf(&quot; %d&quot;,maze[i][j]);</span><br><span class="line">        &#125;</span><br><span class="line">        printf(&quot;\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    printf(&quot;\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void deal(const int x,const int y)&#123;</span><br><span class="line">    maze[x][y] = 0;</span><br><span class="line">    for(int i=0;i&lt;4;i++)&#123;</span><br><span class="line">        int xx = x+dir[i][0];</span><br><span class="line">        int yy = y+dir[i][1];</span><br><span class="line">        if(judge(xx, yy))&#123;</span><br><span class="line">            Q.push(node(xx,yy,i));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void found()&#123;</span><br><span class="line">    for(int i=0;i&lt;N;i++)&#123;</span><br><span class="line">        for(int j=0;j&lt;N;j++)&#123;</span><br><span class="line">            if(maze[i][j] &gt; 4) deal(i, j);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void bfs()&#123;</span><br><span class="line">    while (!Q.empty()) &#123;</span><br><span class="line">        size_t size = Q.size();</span><br><span class="line">        while(size--)&#123;</span><br><span class="line">            node now = Q.front();</span><br><span class="line">            Q.pop();</span><br><span class="line">            </span><br><span class="line">            if(maze[now.x][now.y] &gt; 0) maze[now.x][now.y]+=1;</span><br><span class="line">            else&#123;</span><br><span class="line">                int afterx = now.x+dir[now.d][0];</span><br><span class="line">                int aftery = now.y+dir[now.d][1];</span><br><span class="line">                if(judge(afterx, aftery))&#123;</span><br><span class="line">                    Q.push(node(afterx,aftery,now.d));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        found();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">//    freopen(&quot;in.txt&quot;, &quot;r&quot;, stdin);</span><br><span class="line">    int a,m,x,y;</span><br><span class="line">    while(~scanf(&quot;%d&quot;,&amp;a))&#123;</span><br><span class="line">        maze[0][0] = a;</span><br><span class="line">        for(int i=1;i&lt;N;i++)&#123;</span><br><span class="line">            scanf(&quot;%d&quot;,&amp;maze[0][i]);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        for(int i=1;i&lt;N;i++)&#123;</span><br><span class="line">            for(int j=0;j&lt;N;j++)&#123;</span><br><span class="line">                scanf(&quot;%d&quot;,&amp;maze[i][j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        scanf(&quot;%d&quot;,&amp;m);</span><br><span class="line">        while(m--)&#123;</span><br><span class="line">            scanf(&quot;%d%d&quot;,&amp;x,&amp;y);</span><br><span class="line">            --x,--y;</span><br><span class="line">            if(maze[x][y] &lt; 4) maze[x][y]+=1;</span><br><span class="line">            else&#123;</span><br><span class="line">                deal(x,y);</span><br><span class="line">                bfs();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        output();</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/hdu-4527-accepted.png" alt="hdu-4527-accepted"></p>
+<blockquote>
+<p>如有任何知识产权、版权问题或理论错误，还请指正。</p>
+<p>转载请注明原作者及以上信息。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ACM/">ACM</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2015-08-29-hdu-3839" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     

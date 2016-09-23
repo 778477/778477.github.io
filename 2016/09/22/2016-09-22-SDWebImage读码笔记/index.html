@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>SDWebImage 读码笔记 - 778477</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Watch
+Star
+Fork
+Open Issues
+Closed Issue
+
+
+
+
+823
+15711
+4432
+133
+1021
+
+
+
+从 Star 和 Issue 维度来看SDWebImage可谓是万众瞩目和久经考验。 
+SDWebImage-README
+How is SDWebImage better than X?
+下面，我们来细致的阅读一下 SDWebImage(简称 SD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SDWebImage 读码笔记">
+<meta property="og:url" content="http://yoursite.com/2016/09/22/2016-09-22-SDWebImage读码笔记/index.html">
+<meta property="og:site_name" content="778477">
+<meta property="og:description" content="Watch
+Star
+Fork
+Open Issues
+Closed Issue
+
+
+
+
+823
+15711
+4432
+133
+1021
+
+
+
+从 Star 和 Issue 维度来看SDWebImage可谓是万众瞩目和久经考验。 
+SDWebImage-README
+How is SDWebImage better than X?
+下面，我们来细致的阅读一下 SDWebImage(简称 SD">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/SDWebImage.png">
+<meta property="og:updated_time" content="2016-09-22T13:03:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SDWebImage 读码笔记">
+<meta name="twitter:description" content="Watch
+Star
+Fork
+Open Issues
+Closed Issue
+
+
+
+
+823
+15711
+4432
+133
+1021
+
+
+
+从 Star 和 Issue 维度来看SDWebImage可谓是万众瞩目和久经考验。 
+SDWebImage-README
+How is SDWebImage better than X?
+下面，我们来细致的阅读一下 SDWebImage(简称 SD">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/SDWebImage.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">778477</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-2016-09-22-SDWebImage读码笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SDWebImage 读码笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/09/22/2016-09-22-SDWebImage读码笔记/" class="article-date">
+  <time datetime="2016-09-22T00:00:00.000Z" itemprop="datePublished">2016-09-22</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <table>
+<thead>
+<tr>
+<th>Watch</th>
+<th style="text-align:left">Star</th>
+<th style="text-align:left">Fork</th>
+<th style="text-align:left">Open Issues</th>
+<th style="text-align:left">Closed Issue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>823</td>
+<td style="text-align:left">15711</td>
+<td style="text-align:left">4432</td>
+<td style="text-align:left">133</td>
+<td style="text-align:left">1021</td>
+</tr>
+</tbody>
+</table>
+<p>从 Star 和 Issue 维度来看SDWebImage可谓是万众瞩目和久经考验。 </p>
+<p><a href="https://github.com/rs/SDWebImage/blob/master/README.md" target="_blank" rel="external">SDWebImage-README</a></p>
+<p><a href="https://github.com/rs/SDWebImage/wiki/How-is-SDWebImage-better-than-X%3F" target="_blank" rel="external">How is SDWebImage better than X?</a></p>
+<p>下面，我们来细致的阅读一下 SDWebImage(简称 SD)的源码。 </p>
+<h1 id="一些良好的编码习惯"><a href="#一些良好的编码习惯" class="headerlink" title="一些良好的编码习惯"></a>一些良好的编码习惯</h1><ul>
+<li><p>SD的扩展命名风格不错。 带有sd_ 下划线前缀以此来区分是否为 三方库扩展。避免 扩展方法重名 覆盖问题。</p>
+<ol>
+<li>同样的命名风格适用于 类名。前缀可以避免OC语言没有命名空间的尴尬。 </li>
+<li>不过需要注意的是，Cocoa应用程序Apple宣称拥有”两字母前缀”的权利。 所以有可能在不远的将来，SD要面临 命名冲突的问题。</li>
+</ol>
+</li>
+<li><p>对于SD废弃的方法。 SD的做法是 将方法移至 对应的<code>Deprecated</code>中。 并在方法申明的时候给出提示。这种做法，笔者也比较认同。 SDK对外的接口变更是不可避免的。在版本更新中直接删除的话，会让依赖方有改造成本。对废弃方法进行警告声明，实现上调用新方法是比较优雅和无害的。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@interface UIImageView (WebCacheDeprecated)</span><br><span class="line">- (NSURL *)imageURL __deprecated_msg(&quot;Use `sd_imageURL`&quot;);</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>使用类型常量。 Effective Objective-C 2.0 中的第四条实践。</p>
+<p><code>SDWebImageCompat.h</code> </p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extern NSString *const SDWebImageErrorDomain;</span><br></pre></td></tr></table></figure>
+<p><code>SDWebImageCompat.m</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSString *const SDWebImageErrorDomain = @&quot;SDWebImageErrorDomain&quot;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>使用inline 内联函数关键词。 inline这个关键词会<strong>建议</strong>编译器内联展开处理。inline这个关键词在C++上出场频率比较高。 关于<a href="http://www.sunistudio.com/cppfaq/inline-functions.html" target="_blank" rel="external">inline关键词的QA</a> 具体的性能影响可以看[9.3]。 <strong>笔者认为 inline仅适用于调用频繁的短函数</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> inline UIImage *SDScaledImageForKey(NSString *key, UIImage *image) &#123;</span><br><span class="line"> ...</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) &#123;</span><br><span class="line">    return image.size.height * image.size.width * image.scale * image.scale;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p> <a href="http://www.cnblogs.com/cnmaizi/archive/2011/01/19/1939686.html" target="_blank" rel="external">关于inline的扩展阅读</a> </p>
+<ul>
+<li>使用 <code>dispatch_barrier_sync</code> 来保证一些多线程操作的原子性。 笔者也做过一些 <a href="https://github.com/778477/iOS-Lock-BenchMarking" target="_blank" rel="external">iOS 锁的branchMarking</a></li>
+</ul>
+<h1 id="关于SDWebImage图片下载实现的细节"><a href="#关于SDWebImage图片下载实现的细节" class="headerlink" title="关于SDWebImage图片下载实现的细节"></a>关于SDWebImage图片下载实现的细节</h1><ul>
+<li>如何识别 图片格式？ 是jpg，png还是gif呢？ SD的 NSData扩展方法可以告诉你。根据图片的具体数据内容，可以看出对应的格式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">@implementation NSData (ImageContentType)</span><br><span class="line"></span><br><span class="line">+ (NSString *)sd_contentTypeForImageData:(NSData *)data &#123;</span><br><span class="line">    uint8_t c;</span><br><span class="line">    [data getBytes:&amp;c length:1];</span><br><span class="line">    switch (c) &#123;</span><br><span class="line">        case 0xFF:</span><br><span class="line">            return @&quot;image/jpeg&quot;;</span><br><span class="line">        case 0x89:</span><br><span class="line">            return @&quot;image/png&quot;;</span><br><span class="line">        case 0x47:</span><br><span class="line">            return @&quot;image/gif&quot;;</span><br><span class="line">        case 0x49:</span><br><span class="line">        case 0x4D:</span><br><span class="line">            return @&quot;image/tiff&quot;;</span><br><span class="line">        case 0x52:</span><br><span class="line">            // R as RIFF for WEBP</span><br><span class="line">            if ([data length] &lt; 12) &#123;</span><br><span class="line">                return nil;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            NSString *testString = [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(0, 12)] encoding:NSASCIIStringEncoding];</span><br><span class="line">            if ([testString hasPrefix:@&quot;RIFF&quot;] &amp;&amp; [testString hasSuffix:@&quot;WEBP&quot;]) &#123;</span><br><span class="line">                return @&quot;image/webp&quot;;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<ul>
+<li>SD 缓存中的图片是 原始的，未解压的。</li>
+</ul>
+<blockquote>
+<p>On the other side, SDWebImage caches the UIImage representation in memory and store the original compressed (but decoded) image file on disk. UIImage are stored as-is in memory using NSCache, so no copy is involved, and memory is freed as soon as your app or the system needs it.</p>
+<p>Additionally, image decompression that normally happens in the main thread the first time you use UIImage in an UIImageView is forced in a background thread by SDWebImageDecoder.</p>
+</blockquote>
+<p>关于 图片的解压，可以查看<code>SDWebImageDecoder</code>的实现。 SD有对应<code>shouldDecompressImages</code>功能开关。默认是开启的。</p>
+<p><a href="https://github.com/rs/SDWebImage/issues/1173" target="_blank" rel="external">What does SDWebImageDecoder do? #1173</a></p>
+<h1 id="流程分析"><a href="#流程分析" class="headerlink" title="流程分析"></a>流程分析</h1><p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/SDWebImage.png" alt=""></p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>查看SD源码时，一些查阅的链接。 有些启发，在这里记录一下。</p>
+<p><a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/ImageIOGuide/imageio_intro/ikpg_intro.html#//apple_ref/doc/uid/TP40005462-CH201-TPXREF101" target="_blank" rel="external">Image I/O Programming Guide</a></p>
+<p><a href="http://www.fantageek.com/2015/06/18/understanding-sdwebimage-decompression/" target="_blank" rel="external">Understanding SDWebImage - Decompression</a></p>
+<p><a href="http://pulkitgoyal.in/resizing-high-resolution-images-on-ios-without-memory-issues/" target="_blank" rel="external">Resizing High Resolution Images on iOS Without Memory Issues</a></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/09/01/2016-09-01-iOS 包瘦身研究/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">iOS 包瘦身浅析&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 miaoyou.gmy&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>
