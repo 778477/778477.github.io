@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Gas Station - 778477</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="LeetCode - 134.Gas Station
+题目大意：有n个加油站分布在 环形路线上。其中每个加油站的储油量为 gas[i]。 你有一辆巨大油箱(可以无限加油)的汽车,从 站点i到下一站i+1，油耗为 cost[i]。一开始的时候，汽车油箱是空的。
+如果你能一次开完全程的话，请返回一个起始站点。否则返回-1表示无法完成。
+
+提示： 测试用例保证答案是唯一的。
+
+疑问：题目未明显指出 是顺">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gas Station">
+<meta property="og:url" content="http://yoursite.com/2016/10/03/2016-10-03-Gas Station/index.html">
+<meta property="og:site_name" content="778477">
+<meta property="og:description" content="LeetCode - 134.Gas Station
+题目大意：有n个加油站分布在 环形路线上。其中每个加油站的储油量为 gas[i]。 你有一辆巨大油箱(可以无限加油)的汽车,从 站点i到下一站i+1，油耗为 cost[i]。一开始的时候，汽车油箱是空的。
+如果你能一次开完全程的话，请返回一个起始站点。否则返回-1表示无法完成。
+
+提示： 测试用例保证答案是唯一的。
+
+疑问：题目未明显指出 是顺">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/baa6788ce066521a1d0c315c37894e4791c99f55/img/gas-station.png">
+<meta property="og:updated_time" content="2016-10-03T07:46:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gas Station">
+<meta name="twitter:description" content="LeetCode - 134.Gas Station
+题目大意：有n个加油站分布在 环形路线上。其中每个加油站的储油量为 gas[i]。 你有一辆巨大油箱(可以无限加油)的汽车,从 站点i到下一站i+1，油耗为 cost[i]。一开始的时候，汽车油箱是空的。
+如果你能一次开完全程的话，请返回一个起始站点。否则返回-1表示无法完成。
+
+提示： 测试用例保证答案是唯一的。
+
+疑问：题目未明显指出 是顺">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/778477/778477.github.io/baa6788ce066521a1d0c315c37894e4791c99f55/img/gas-station.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">778477</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-2016-10-03-Gas Station" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Gas Station
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/10/03/2016-10-03-Gas Station/" class="article-date">
+  <time datetime="2016-10-03T00:00:00.000Z" itemprop="datePublished">2016-10-03</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://leetcode.com/problems/gas-station/" target="_blank" rel="external">LeetCode - 134.Gas Station</a></p>
+<h2 id="题目大意："><a href="#题目大意：" class="headerlink" title="题目大意："></a>题目大意：</h2><p>有<code>n</code>个加油站分布在 环形路线上。其中每个加油站的储油量为 <code>gas[i]</code>。 你有一辆巨大油箱(可以无限加油)的汽车,从 站点<code>i</code>到下一站<code>i+1</code>，油耗为 <code>cost[i]</code>。一开始的时候，汽车油箱是空的。</p>
+<p>如果你能一次开完全程的话，请返回一个起始站点。否则返回-1表示无法完成。</p>
+<ul>
+<li><p>提示： 测试用例保证答案是唯一的。</p>
+</li>
+<li><p>疑问：题目未明显指出 是顺时针开或逆时针开。但从测试数据理解 站点i 到 站点i+1，应该是顺时针开的。</p>
+</li>
+</ul>
+<h2 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h2><p>首先可以明确的是，如果 总油耗<code>sum{cost[0...n]}</code> 大于 总储量<code>sum{gas[0...n]}</code>的话，是无法完成任务的。直接返回-1。</p>
+<p>接着，思考一下当 总油耗 小等于 总储量时，是否必然存在可行解。</p>
+<p> C(i) + C(i+1) + C(i+2) + C(i+3) … + C(i+n) = C</p>
+<p> G(i) + G(i+1) + G(i+2) + G(i+3) … + G(i+n) = G</p>
+<p> G &gt;= C</p>
+<p> 如果 平均分布的话， 则 G(i)&gt;=C(i) 。 必然是ok的。</p>
+<p> 考虑极限情况，C(i) 油耗巨大。贪心策略保证每站必停(油不加白不加)，我们从i站点<code>逆时针</code>选点。基于贪心考虑，逆时针选站点要保证对经过C(i)最大油耗是有利：每一次后退选点对总油耗是正向的。</p>
+<h2 id="枚举-Time-Limit-Exceeded"><a href="#枚举-Time-Limit-Exceeded" class="headerlink" title="枚举 (Time Limit Exceeded)"></a>枚举 (Time Limit Exceeded)</h2><p>时间复杂度 大致为 O(n^2)。 测试用例数据极为暴力。。</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">int</span> <span class="title">goRound</span><span class="params">(<span class="keyword">int</span> starInx,<span class="keyword">int</span> *gas,<span class="keyword">int</span> gasSize,<span class="keyword">int</span> *cost,<span class="keyword">int</span> costSize)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> nowGas = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> nowIdx = starInx;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;gasSize;i++)&#123;</span><br><span class="line">        nowGas += gas[nowIdx];</span><br><span class="line">        <span class="keyword">if</span>(nowGas &lt; cost[nowIdx]) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        </span><br><span class="line">        nowGas -= cost[nowIdx];</span><br><span class="line">        nowIdx = (nowIdx+<span class="number">1</span>)%gasSize;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> nowGas &gt;= <span class="number">0</span> ? starInx : <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">canCompleteCircuit</span><span class="params">(<span class="keyword">int</span>* gas, <span class="keyword">int</span> gasSize, <span class="keyword">int</span>* cost, <span class="keyword">int</span> costSize)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> totalGas = <span class="number">0</span>, totalCosts = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;costSize;i++)&#123;</span><br><span class="line">        totalCosts += cost[i];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;gasSize;i++)&#123;</span><br><span class="line">        totalGas += gas[i];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(totalGas &lt; totalCosts) <span class="keyword">return</span> ans;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;gasSize;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>((ans = goRound(i,gas,gasSize,cost,costSize)) != <span class="number">-1</span>)&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="贪心-Accepted"><a href="#贪心-Accepted" class="headerlink" title="贪心 (Accepted)"></a>贪心 (Accepted)</h2> <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">int</span> <span class="title">canCompleteCircuit</span><span class="params">(<span class="keyword">int</span>* gas, <span class="keyword">int</span> gasSize, <span class="keyword">int</span>* cost, <span class="keyword">int</span> costSize)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> totalGas = <span class="number">0</span>, totalCosts = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> maxCostIdx = <span class="number">-1</span>, maxCost = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;costSize;i++)&#123;</span><br><span class="line">        totalCosts += cost[i];</span><br><span class="line">        <span class="keyword">if</span>(cost[i] &gt; maxCost)&#123;</span><br><span class="line">            maxCostIdx = i;</span><br><span class="line">            maxCost = cost[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;gasSize;i++)&#123;</span><br><span class="line">        totalGas += gas[i];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(totalGas &lt; totalCosts) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> tmp = maxCostIdx;</span><br><span class="line">    <span class="keyword">int</span> tmpMaxgas = gas[tmp];</span><br><span class="line">    <span class="keyword">int</span> tmpMaxCost = cost[tmp];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (tmpMaxgas &lt; tmpMaxCost || gas[tmp] &gt;= cost[tmp]) &#123; <span class="comment">// 贪心策略</span></span><br><span class="line">        tmp--;</span><br><span class="line">        <span class="keyword">if</span>(tmp == <span class="number">-1</span>) tmp = gasSize - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(tmp == maxCostIdx) <span class="keyword">break</span>;</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        tmpMaxgas += gas[tmp];</span><br><span class="line">        tmpMaxCost += cost[tmp];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> (tmp+<span class="number">1</span>)%gasSize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> <img src="https://raw.githubusercontent.com/778477/778477.github.io/baa6788ce066521a1d0c315c37894e4791c99f55/img/gas-station.png" alt="Accepted"></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/09/22/2016-09-22-SDWebImage读码笔记/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">SDWebImage 读码笔记&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 miaoyou.gmy&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>
