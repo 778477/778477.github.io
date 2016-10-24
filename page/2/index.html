@@ -54,6 +54,90 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2016-02-02-Range Sum Query - Mutable" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/02/2016-02-02-Range Sum Query - Mutable/">Range Sum Query Mutable</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/02/02/2016-02-02-Range Sum Query - Mutable/" class="article-date">
+  <time datetime="2016-02-02T00:00:00.000Z" itemprop="datePublished">2016-02-02</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://leetcode.com/problems/range-sum-query-mutable/" target="_blank" rel="external">Range Sum Query - Mutable</a></p>
+<p>给定一个整形数组。会有两个操作</p>
+<p>操作1：查询区间(i,j)的总和</p>
+<p>操作2：更新元素(i,val) 下标为i的元素 值更新为val</p>
+<p>提示：</p>
+<ul>
+<li>数组元素的修改只有通过 update 方法</li>
+<li>update 和 sumRange 方法调用是不确定次数和顺序的（distributed evenly 分布式）</li>
+</ul>
+<p>这个是一个经典的问题。类似 RMQ(Range Minimum/Maximum Query)，区间最值查询。不过我们注意到有操作2，就表示说数据是可变的，离线算法就不考虑了。</p>
+<p>这类题目有一个现成的数据结构可以解决：<a href="https://en.wikipedia.org/wiki/Segment_tree" target="_blank" rel="external">SegmentTree 线段树</a></p>
+<p>由于线段树是平衡二叉树，所以深度是logn。就是算查询的区间和的时间复杂度是 O(logn)的。</p>
+<p><img src="http://d1gjlxt8vb0knt.cloudfront.net//wp-content/uploads/segment-tree1.png" alt="segment-tree1"></p>
+<p>由上图可知，叶子节点均为数组元素。我们在做ACM题的常常会提到一个线段树常数，其实是指线段树的空间复杂度。按照数组n来推算线段树的空间复杂度。</p>
+<p>时间复杂度大体分为： </p>
+<ul>
+<li>初始化 建树O(n) </li>
+<li>区间查询和 O(logn) </li>
+<li>更新单值O(logn) </li>
+</ul>
+<p>时间复杂度理想是线性的，不因为n的变化产生剧烈抖动。空间复杂度是O(nlogn)</p>
+<blockquote>
+<p>A segment tree T on a set I of n intervals uses O(nlogn) storage.</p>
+<p>Proof:<br>Lemma: Any interval [x, x′] of I is stored in the canonical set for at most two nodes at the    same depth.</p>
+<p>Proof: Let v1, v2, v3 be the three nodes at the same depth, numbered from left to right; and let p(v) be the parent node of any given node v. Suppose [x, x′] is stored at v1 and v3. This means that [x, x′] spans the whole interval from the left endpoint of Int(v1) to the right endpoint of Int(v3). Note that all segments at a particular level are non-overlapping and ordered from left to right: this is true by construction for the level containing the leaves, and the property is not lost when moving from any level to the one above it by combining pairs of adjacent segments. Now either p(v2) = p(v1), or the former is to the right of the latter (edges in the tree do not cross). In the first case, Int(p(v2))’s leftmost point is the same as Int(v1)’s leftmost point; in the second case, Int(p(v2))’s leftmost point is to the right of Int(p(v1))’s rightmost point, and therefore also to the right of Int(v1)’s rightmost point. In both cases, Int(p(v2)) begins at or to the right of Int(v1)’s leftmost point. Similar reasoning shows that Int(p(v2)) ends at or to the left of Int(v3)’s rightmost point. Int(p(v2)) must therefore be contained in [x, x′]; hence, [x, x′] will not be stored at v2.<br>The set I has at most 4n + 1 elementary intervals. Because T is a binary balanced tree with at most 4n + 1 leaves, its height is O(logn). Since any interval is stored at most twice at a given depth of the tree, that the total amount of storage is O(nlogn).</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">typedef unsigned long lusigned;</span><br><span class="line"></span><br><span class="line">struct SegmenTreeNode&#123;</span><br><span class="line">    int val;</span><br><span class="line">    lusigned star,end;</span><br><span class="line">    SegmenTreeNode *left,*right;</span><br><span class="line">    SegmenTreeNode(lusigned _star,lusigned _end,int _val)&#123;</span><br><span class="line">        val = _val;</span><br><span class="line">        star = _star, end = _end;</span><br><span class="line">        left = right = NULL;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class NumArray &#123;</span><br><span class="line">public:</span><br><span class="line">    NumArray(vector&lt;int&gt; &amp;nums) &#123;</span><br><span class="line">        numbers = nums;</span><br><span class="line">        if(nums.size() &gt;= 1)&#123;</span><br><span class="line">            rootNode = buildSegmentTree(0, 0, nums.size()-1, nums);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    void update(int i, int val)&#123;</span><br><span class="line">        updateNodeVal(rootNode, i, val);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    int sumRange(int i, int j) &#123;</span><br><span class="line">        if(j &lt; i) return 0;</span><br><span class="line">        return querySumValInSegmentTree(rootNode, 0, numbers.size()-1, i, j);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">private:</span><br><span class="line">    vector&lt;int&gt; numbers;</span><br><span class="line">    SegmenTreeNode *rootNode;</span><br><span class="line">    SegmenTreeNode *buildSegmentTree(int root,lusigned star,lusigned end,const vector&lt;int&gt; nums)&#123;</span><br><span class="line">        </span><br><span class="line">        SegmenTreeNode *rootNode = new SegmenTreeNode(star, end, 0);</span><br><span class="line">        </span><br><span class="line">        if(star == end)&#123;</span><br><span class="line">            rootNode-&gt;val = nums[star];</span><br><span class="line">        &#125;</span><br><span class="line">        else&#123;</span><br><span class="line">            lusigned mid = (star + end)/2;</span><br><span class="line">            rootNode-&gt;left = buildSegmentTree(root*2+1, star, mid, nums);</span><br><span class="line">            rootNode-&gt;right =  buildSegmentTree(root*2+2, mid+1, end, nums);</span><br><span class="line">            </span><br><span class="line">            rootNode-&gt;val = rootNode-&gt;left-&gt;val + rootNode-&gt;right-&gt;val;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return rootNode;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    int updateNodeVal(SegmenTreeNode *root, int idx,int value)&#123;</span><br><span class="line">        if(root-&gt;star == root-&gt;end &amp;&amp; root-&gt;star == idx)  return (root-&gt;val = value);</span><br><span class="line">        else if(root-&gt;star == root-&gt;end) return root-&gt;val;</span><br><span class="line">        </span><br><span class="line">        lusigned mid = (root-&gt;star + root-&gt;end)&gt;&gt;1;</span><br><span class="line">        if(idx &lt;= mid)&#123;</span><br><span class="line">            root-&gt;left-&gt;val = updateNodeVal(root-&gt;left, idx, value);</span><br><span class="line">        &#125;</span><br><span class="line">        else&#123;</span><br><span class="line">            root-&gt;right-&gt;val = updateNodeVal(root-&gt;right, idx, value);</span><br><span class="line">        &#125;</span><br><span class="line">        return (root-&gt;val = root-&gt;left-&gt;val + root-&gt;right-&gt;val);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    int querySumValInSegmentTree(SegmenTreeNode *root, lusigned star,lusigned end,lusigned qSidx,lusigned qEidx)&#123;</span><br><span class="line">        </span><br><span class="line">        if(qSidx &lt;= star &amp;&amp; qEidx &gt;= end) return root-&gt;val;</span><br><span class="line">        </span><br><span class="line">        if(qEidx &lt; star || qSidx &gt; end) return 0;</span><br><span class="line">        </span><br><span class="line">        lusigned mid = (star + end) / 2;</span><br><span class="line">        </span><br><span class="line">        int leftSumVal = querySumValInSegmentTree(root-&gt;left, star, mid, qSidx, qEidx);</span><br><span class="line">        int rightSumVal = querySumValInSegmentTree(root-&gt;right, mid+1, end, qSidx, qEidx);</span><br><span class="line">        </span><br><span class="line">        return leftSumVal + rightSumVal;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Range%20Sum%20Query%20Accepted.png" alt="accepted"></p>
+<p>不太明白为什么 leetCode Judge 中 C/C++ 的效率最低，Java最高。这个明显是不合理的。。</p>
+<p>最后 关于 线段树的更新是有优化空间的。看一看这组操作</p>
+<ol>
+<li>操作1</li>
+<li>操作2 </li>
+<li>操作2</li>
+<li>操作2</li>
+<li>操作2</li>
+<li>操作2</li>
+<li>操作2</li>
+</ol>
+<p>其实 后面的操作2 如果没有接着操作1的话，其实我们没有必要实时更新单点值。这里就有一个延迟更新的优化点，也是线段树的精髓。 我之后有空补充:)</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2015-12-16-Lighter View Controller" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -640,87 +724,6 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2015-09-04-ALAssetsLibrary" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/04/2015-09-04-ALAssetsLibrary/">ALAssetsLibrary</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/09/04/2015-09-04-ALAssetsLibrary/" class="article-date">
-  <time datetime="2015-09-04T00:00:00.000Z" itemprop="datePublished">2015-09-04</time>
-</a>
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="ALAssetsLibrary"><a href="#ALAssetsLibrary" class="headerlink" title="ALAssetsLibrary"></a>ALAssetsLibrary</h1><p>一个资料库实例在与用户没有交互的情况下，能获取到相片和摄影资源</p>
-<ul>
-<li>在 iOS8及其以后，使用 Photos framework代替 Assets Libray framework。 Photos framework提供了更多的新功能和强大的性能。</li>
-</ul>
-<p>这个资料库包含了 来着iTunes或拍摄 的已保存相册。你可以使用资料库来检索所有资料分组 和 保存相片和影像到已经存在的相册中。</p>
-<h2 id="Accessing-Assets"><a href="#Accessing-Assets" class="headerlink" title="Accessing Assets"></a>Accessing Assets</h2><p>authorizationStatus 返回照片数据授权权限</p>
-<ul>
-<li>ALAuthorizationStatusNotDetermined  未授权</li>
-<li>ALAuthorizationStatusRestricted     访问受限</li>
-<li>ALAuthorizationStatusDenied  拒绝访问</li>
-<li>ALAuthorizationStatusAuthorized 授权访问</li>
-</ul>
-<h2 id="Managing-Notifications"><a href="#Managing-Notifications" class="headerlink" title="Managing Notifications"></a>Managing Notifications</h2><p>disableSharedPhotoStreamSupport 关闭分享照片流，无视分享照片流的更新通知消息</p>
-<h2 id="Finding-Assets"><a href="#Finding-Assets" class="headerlink" title="Finding Assets"></a>Finding Assets</h2><p>assetForURL:resultBlock:failureBlock: 使用一个文件的详细url(理解为访问路径)表示文件标示符来访问该文件</p>
-<ul>
-<li>注意该方法是异步的，当文件被访问时，会询问用户是否授权应用访问相册。 如果允许，resultBlock回调将执行。如果用户拒绝failureBlock回调将执行</li>
-</ul>
-<h2 id="Enumerating-Assets"><a href="#Enumerating-Assets" class="headerlink" title="Enumerating Assets"></a>Enumerating Assets</h2><p>enumerateGroupsWithTypes:usingBlock:failureBlock: 遍历资源分组下的所有资源</p>
-<ul>
-<li>注意该方法是异步的，关于遍历资源需要用户授权访问。特殊注意事项，如果访问失败原因为 <strong>ALAssetsLibraryAccessGloballyDeniedError</strong>是因为用户没有启用地理信息服务</li>
-</ul>
-<h2 id="Saving-Assets"><a href="#Saving-Assets" class="headerlink" title="Saving Assets"></a>Saving Assets</h2><ul>
-<li>[ ] writeVideoAtPathToSavedPhotosAlbum:completionBlock:</li>
-<li>[ ] videoAtPathIsCompatibleWithSavedPhotosAlbum:</li>
-<li>[ ] writeImageToSavedPhotosAlbum:orientation:completionBlock:</li>
-<li>[ ] writeImageDataToSavedPhotosAlbum:metadata:completionBlock:</li>
-<li>[ ] writeImageToSavedPhotosAlbum:metadata:completionBlock:</li>
-</ul>
-<h2 id="Managing-Asset-Groups"><a href="#Managing-Asset-Groups" class="headerlink" title="Managing Asset Groups"></a>Managing Asset Groups</h2><p> addAssetsGroupAlbumWithName:resultBlock:failureBlock: 新建资源分组到资源库中</p>
-<ul>
-<li>name为新建资源组名字，<strong>不可重名</strong>。类型为ALAssetsGroupAlbum，可读写。同为异步方法，需要用户授权</li>
-</ul>
-<p>groupForURL:resultBlock:failureBlock:使用资源分组url来访问该资源组</p>
-<ul>
-<li>同为异步方法</li>
-</ul>
-<h2 id="Constants"><a href="#Constants" class="headerlink" title="Constants"></a>Constants</h2><p>具体的资源类型、回调定义，权限类型，通知信息，错误信息。请参见 ALAssetsLibrary Class Reference(iOS 8.3 Documentation)</p>
-<blockquote>
-<p>如有任何知识产权、版权问题或理论错误，还请指正。</p>
-<p>转载请注明原作者及以上信息。</p>
-</blockquote>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
 
       </footer>
     
