@@ -385,6 +385,69 @@
 
 
     
+      <article id="post-2015-10-08-Different-iOS-SDK-Version-Compile" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/08/2015-10-08-Different-iOS-SDK-Version-Compile/">Different iOS SDK Version Compile</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/10/08/2015-10-08-Different-iOS-SDK-Version-Compile/" class="article-date">
+  <time datetime="2015-10-08T00:00:00.000Z" itemprop="datePublished">2015-10-08</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>前言</strong></p>
+<hr>
+<p>我们在开发feature的时候依赖 iOS9 SDK中的新framework，注意这个framework只有iOS9才有。但是我们有两套打包环境</p>
+<ul>
+<li>Xcode6 - iOS8</li>
+<li>Xcode7 - iOS9</li>
+</ul>
+<p>如果不做任何处理的话，在第一套打包环境下会出现 ‘XX.h’ file not found.</p>
+<p>我们希望编写的代码能够兼容这两套打包环境. </p>
+<p>Google 区分iOS系统版本 得到以下结果：</p>
+<p><a href="http://www.yifeiyang.net/iphone-development-techniques-of-environmental-chapter-7-distinguish-between-different-versions-of-the-iphone/" target="_blank" rel="external">iPhone开发技巧之环境篇（7）— 区分不同版本的iPhone</a></p>
+<p><a href="http://justsee.iteye.com/blog/1621533" target="_blank" rel="external">区分ios设备，os版本，sdk版本</a></p>
+<p>我们只关心文章最后的段落:iPhone OS SDK版本，我们希望在 iOS9下 编译我们的feature代码，在iOS9之前的系统版本不编译，不执行。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; __IPHONE_2_2</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; __IPHONE_3_1</span></span><br><span class="line">        <span class="comment">// iPhone OS SDK 4.0 以后版本的处理</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">        <span class="comment">// iPhone OS SDK 3.0 ~ 4.0 版本的处理</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="comment">// iPhone OS SDK 3.0 之前版本的处理</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p>但是，这还是有一个坑。 我们来看一下 具体的宏定义在 <code>AvailabilityInternal.h</code> 中。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED</span><br><span class="line">   /* make sure a default max version is set */</span><br><span class="line">   #ifndef __IPHONE_OS_VERSION_MAX_ALLOWED</span><br><span class="line">       #define __IPHONE_OS_VERSION_MAX_ALLOWED     __IPHONE_9_0</span><br><span class="line">   #endif</span><br><span class="line">   /* make sure a valid min is set */</span><br><span class="line">   #if __IPHONE_OS_VERSION_MIN_REQUIRED &lt; __IPHONE_2_0</span><br><span class="line">       #undef __IPHONE_OS_VERSION_MIN_REQUIRED</span><br><span class="line">       #define __IPHONE_OS_VERSION_MIN_REQUIRED    __IPHONE_2_0 </span><br><span class="line">   #endif</span><br></pre></td></tr></table></figure>
+<p>我查看的是iOS 9.0的定义，里面定义 <code>__IPHONE_OS_VERSION_MAX_ALLOWED</code> 为 <code>__IPHONE_9_0</code>(90000)</p>
+<p>相信每个iOS SDK发布，都会增加 一个宏来表示版本号</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_2_0     20000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_2_1     20100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_2_2     20200</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_3_0     30000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_3_1     30100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_3_2     30200</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_4_0     40000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_4_1     40100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_4_2     40200</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_4_3     40300</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_5_0     50000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_5_1     50100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_6_0     60000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_6_1     60100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_7_0     70000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_7_1     70100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_8_0     80000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_8_1     80100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_8_2     80200</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_8_3     80300</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_8_4     80400</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_9_0     90000</span></span><br><span class="line"><span class="comment">/* __IPHONE_NA is not defined to a value but is uses as a token by macros to indicate that the API is unavailable */</span></span><br></pre></td></tr></table></figure>
+<p>问题来了：如果兼容代码中使用的 宏定义为 <code>__IPHONE_8_4</code> ，而我编译的iOS SDK使用的是 iOS8.3的话， <code>__IPHONE_8_4</code> 其实是没定义的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; __IPHONE_8_4</span></span><br></pre></td></tr></table></figure>
+<p>这个比较语句其实取 <code>__IPHONE_OS_VERSION_MAX_ALLOWED</code> = <code>__IPHONE_8_3</code> = 80300 和 <code>__IPHONE_8_4</code> 所表示的数字做比较，是没有作用的。正确做法 <strong>是直接使用数字</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; 80400</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2015-10-20-Reveal" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -446,69 +509,6 @@
 <blockquote>
 <p><a href="http://support.revealapp.com/" target="_blank" rel="external">http://support.revealapp.com/</a></p>
 </blockquote>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2015-10-08-Different-iOS-SDK-Version-Compile" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/08/2015-10-08-Different-iOS-SDK-Version-Compile/">Different iOS SDK Version Compile</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/10/08/2015-10-08-Different-iOS-SDK-Version-Compile/" class="article-date">
-  <time datetime="2015-10-08T00:00:00.000Z" itemprop="datePublished">2015-10-08</time>
-</a>
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>前言</strong></p>
-<hr>
-<p>我们在开发feature的时候依赖 iOS9 SDK中的新framework，注意这个framework只有iOS9才有。但是我们有两套打包环境</p>
-<ul>
-<li>Xcode6 - iOS8</li>
-<li>Xcode7 - iOS9</li>
-</ul>
-<p>如果不做任何处理的话，在第一套打包环境下会出现 ‘XX.h’ file not found.</p>
-<p>我们希望编写的代码能够兼容这两套打包环境. </p>
-<p>Google 区分iOS系统版本 得到以下结果：</p>
-<p><a href="http://www.yifeiyang.net/iphone-development-techniques-of-environmental-chapter-7-distinguish-between-different-versions-of-the-iphone/" target="_blank" rel="external">iPhone开发技巧之环境篇（7）— 区分不同版本的iPhone</a></p>
-<p><a href="http://justsee.iteye.com/blog/1621533" target="_blank" rel="external">区分ios设备，os版本，sdk版本</a></p>
-<p>我们只关心文章最后的段落:iPhone OS SDK版本，我们希望在 iOS9下 编译我们的feature代码，在iOS9之前的系统版本不编译，不执行。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; __IPHONE_2_2</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; __IPHONE_3_1</span></span><br><span class="line">        <span class="comment">// iPhone OS SDK 4.0 以后版本的处理</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">        <span class="comment">// iPhone OS SDK 3.0 ~ 4.0 版本的处理</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="comment">// iPhone OS SDK 3.0 之前版本的处理</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-<p>但是，这还是有一个坑。 我们来看一下 具体的宏定义在 <code>AvailabilityInternal.h</code> 中。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED</span><br><span class="line">   /* make sure a default max version is set */</span><br><span class="line">   #ifndef __IPHONE_OS_VERSION_MAX_ALLOWED</span><br><span class="line">       #define __IPHONE_OS_VERSION_MAX_ALLOWED     __IPHONE_9_0</span><br><span class="line">   #endif</span><br><span class="line">   /* make sure a valid min is set */</span><br><span class="line">   #if __IPHONE_OS_VERSION_MIN_REQUIRED &lt; __IPHONE_2_0</span><br><span class="line">       #undef __IPHONE_OS_VERSION_MIN_REQUIRED</span><br><span class="line">       #define __IPHONE_OS_VERSION_MIN_REQUIRED    __IPHONE_2_0 </span><br><span class="line">   #endif</span><br></pre></td></tr></table></figure>
-<p>我查看的是iOS 9.0的定义，里面定义 <code>__IPHONE_OS_VERSION_MAX_ALLOWED</code> 为 <code>__IPHONE_9_0</code>(90000)</p>
-<p>相信每个iOS SDK发布，都会增加 一个宏来表示版本号</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_2_0     20000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_2_1     20100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_2_2     20200</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_3_0     30000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_3_1     30100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_3_2     30200</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_4_0     40000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_4_1     40100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_4_2     40200</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_4_3     40300</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_5_0     50000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_5_1     50100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_6_0     60000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_6_1     60100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_7_0     70000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_7_1     70100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_8_0     80000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_8_1     80100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_8_2     80200</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_8_3     80300</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_8_4     80400</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __IPHONE_9_0     90000</span></span><br><span class="line"><span class="comment">/* __IPHONE_NA is not defined to a value but is uses as a token by macros to indicate that the API is unavailable */</span></span><br></pre></td></tr></table></figure>
-<p>问题来了：如果兼容代码中使用的 宏定义为 <code>__IPHONE_8_4</code> ，而我编译的iOS SDK使用的是 iOS8.3的话， <code>__IPHONE_8_4</code> 其实是没定义的。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; __IPHONE_8_4</span></span><br></pre></td></tr></table></figure>
-<p>这个比较语句其实取 <code>__IPHONE_OS_VERSION_MAX_ALLOWED</code> = <code>__IPHONE_8_3</code> = 80300 和 <code>__IPHONE_8_4</code> 所表示的数字做比较，是没有作用的。正确做法 <strong>是直接使用数字</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; 80400</span></span><br></pre></td></tr></table></figure>
 
       
     </div>

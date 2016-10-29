@@ -574,6 +574,12 @@
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun simctl install MyiPhone6 ~/Music/iTunes/iTunes\ Media/Mobile\ Applications/nice\ 4.0.0/Payload/KKShopping.app</span><br></pre></td></tr></table></figure>
 <p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/install-nice-app.png" alt="install-nice-app"></p>
+<p>如果，你按照步骤做完之后。 点击模拟器中的nice图标，发现它闪退了。</p>
+<p>这里有一个原因是 我们通过iTunes下载下来的包要求运行环境是手机。 而手机和电脑模拟器的CPU架构是不一致的，所以运行不了很正常。</p>
+<p>如果，你有源码编译出的<code>Release-iphonesimulator</code>目录下的app文件。 可以试一下下面的命令，在模拟器中唤起你的app</p>
+<ol>
+<li>唤起模拟器中的App<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun simctl launch booted your.app.bundle_Identifier</span><br></pre></td></tr></table></figure></li>
+</ol>
 
       
     </div>
