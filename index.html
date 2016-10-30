@@ -54,6 +54,53 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2016-10-30-LeetCode" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/30/2016-10-30-LeetCode/">LeetCode</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/10/30/2016-10-30-LeetCode/" class="article-date">
+  <time datetime="2016-10-30T00:00:00.000Z" itemprop="datePublished">2016-10-30</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/LeetCode/">LeetCode</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近整理了自己在LeetCode上所有<code>Accepted</code>的提交并开源在<a href="https://github.com/778477/LeetCode" target="_blank" rel="external">LeetCode-Solver</a></p>
+<p>之前遇到有意思的题目，会专门写篇博客讲讲。现在感觉这要刷完leetcode不得上百篇了，没这必要。。所以后面计划把思路注释和代码写在一起。一并提交到leetcode上。</p>
+<p>遇到可以用<code>Swift</code>的题目，也会使用<code>Swift</code>来练练手。解题代码还是多数使用<code>C/C++</code></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2016-10-24-QCon2016上海站见闻" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -832,70 +879,6 @@
 <li><a href="https://github.com/Automattic/auto-update" target="_blank" rel="external">https://github.com/Automattic/auto-update</a></li>
 <li><a href="https://github.com/Automattic/auto-update-server" target="_blank" rel="external">https://github.com/Automattic/auto-update-server</a></li>
 </ul>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cocoa/">Cocoa</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2016-02-29-Cocoa Launch at Login" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/29/2016-02-29-Cocoa Launch at Login/">Cocoa Launch at Login</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/02/29/2016-02-29-Cocoa Launch at Login/" class="article-date">
-  <time datetime="2016-02-29T00:00:00.000Z" itemprop="datePublished">2016-02-29</time>
-</a>
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Cocoa-Launch-at-Login"><a href="#Cocoa-Launch-at-Login" class="headerlink" title="Cocoa Launch at Login"></a>Cocoa Launch at Login</h1><p>从<a href="https://developer.apple.com/library/mac/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLoginItems.html" target="_blank" rel="external">Mac Developer Library</a>中查看文档：</p>
-<p>有两种方式可以添加登录启动项：使用Service Management framework 或 使用 shared file list</p>
-<p>这两种方式有差别：</p>
-<ul>
-<li><p>使用Service Management framework 在系统的登录项中是不可见的。只有卸载App才能移除登录项</p>
-</li>
-<li><p>使用 shared file list 在系统的登录项中是可见的。用户可以直接在面板上控制他们。（If you use this API, your login item can be disabled by the user, so any other application that communicates with it it should have reasonable fallback behavior in case the login item is disabled.） 原文还有一句大意是指这个API有隐患，所以在OS X 10.10系统上 API被大量Deprecated</p>
-</li>
-</ul>
-<p>下面具体介绍一下 这两种的实现</p>
-<h2 id="Adding-Login-Item-Using-the-Service-Management-Framework"><a href="#Adding-Login-Item-Using-the-Service-Management-Framework" class="headerlink" title="Adding Login Item Using the Service Management Framework"></a>Adding Login Item Using the Service Management Framework</h2><p>应用要包含一个 Helper Target，类型也是应用。设置路径为Contents/Library/LoginItems。设置这个Helper Target info.plist LSBackgroundOnly 为 YES。</p>
-<p>使用 <code>SMLoginItemSetEnabled</code>方法授权Helper，需要传入两个参数：<code>CFStringRef</code>指的是Helper Target的bundle identifier. <code>Boolean</code> 表示期望状态。 传入 <code>true</code> Helper 会每次在用户登录的时候启动。 传入<code>false</code> 来注销这个登录项，不会在用户登录的时候启动。 这个方法会返回一个bool值，如果是ture的话，说明期望状态设置成功。如果是false的话，可能存在多个helper</p>
-<p>比如 一个公司发布过很多App，但其中的helper bundle identifier都是相同的。 这样会导致在同一个电脑上只有一个App(greatest bundle version number)能成功注册登录项。</p>
-<p>这个方式，我未实践过。贴几个相关的博文吧：</p>
-<p><a href="http://blog.timschroeder.net/2012/07/03/the-launch-at-login-sandbox-project/" target="_blank" rel="external">The Launch At Login Sandbox Project</a></p>
-<p><a href="http://rhult.github.io/articles/sandboxed-launch-on-login/" target="_blank" rel="external">Adding a preference to launch sandboxed app on login</a></p>
-<p><a href="http://www.tanhao.me/pieces/590.html/" target="_blank" rel="external">在SandBox沙盒下实现程序的开机启动</a></p>
-<h2 id="Adding-Login-Items-Using-a-Shared-File-List"><a href="#Adding-Login-Items-Using-a-Shared-File-List" class="headerlink" title="Adding Login Items Using a Shared File List"></a>Adding Login Items Using a Shared File List</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)isLaunchAtStartup &#123;</span><br><span class="line">    // See if the app is currently in LoginItems.</span><br><span class="line">    LSSharedFileListItemRef itemRef = [self itemRefInLoginItems];</span><br><span class="line">    // Store away that boolean.</span><br><span class="line">    BOOL isInList = itemRef != nil;</span><br><span class="line">    // Release the reference if it exists.</span><br><span class="line">    if (itemRef != nil) CFRelease(itemRef);</span><br><span class="line">    </span><br><span class="line">    return isInList;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (IBAction)toggleLaunchAtStartup:(id)sender &#123;</span><br><span class="line">    // Toggle the state.</span><br><span class="line">    BOOL shouldBeToggled = ![self isLaunchAtStartup];</span><br><span class="line">    // Get the LoginItems list.</span><br><span class="line">    LSSharedFileListRef loginItemsRef = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);</span><br><span class="line">    if (loginItemsRef == nil) return;</span><br><span class="line">    if (shouldBeToggled) &#123;</span><br><span class="line">        // Add the app to the LoginItems list.</span><br><span class="line">        CFURLRef appUrl = (__bridge CFURLRef)[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];</span><br><span class="line">        LSSharedFileListItemRef itemRef = LSSharedFileListInsertItemURL(loginItemsRef, kLSSharedFileListItemLast, NULL, NULL, appUrl, NULL, NULL);</span><br><span class="line">        if (itemRef) CFRelease(itemRef);</span><br><span class="line">        [[self.statusMenu itemAtIndex:0] setTitle:@&quot;取消开机自启动&quot;];</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">        // Remove the app from the LoginItems list.</span><br><span class="line">        LSSharedFileListItemRef itemRef = [self itemRefInLoginItems];</span><br><span class="line">        LSSharedFileListItemRemove(loginItemsRef,itemRef);</span><br><span class="line">        if (itemRef != nil) CFRelease(itemRef);</span><br><span class="line">        [[self.statusMenu itemAtIndex:0] setTitle:@&quot;设置开机自启动&quot;];</span><br><span class="line">    &#125;</span><br><span class="line">    CFRelease(loginItemsRef);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (LSSharedFileListItemRef)itemRefInLoginItems &#123;</span><br><span class="line">    LSSharedFileListItemRef res = nil;</span><br><span class="line">    </span><br><span class="line">    // Get the app&apos;s URL.</span><br><span class="line">    NSURL *bundleURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];</span><br><span class="line">    // Get the LoginItems list.</span><br><span class="line">    LSSharedFileListRef loginItemsRef = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);</span><br><span class="line">    if (loginItemsRef == nil) return nil;</span><br><span class="line">    // Iterate over the LoginItems.</span><br><span class="line">    NSArray *loginItems = (__bridge NSArray *)LSSharedFileListCopySnapshot(loginItemsRef, nil);</span><br><span class="line">    for (id item in loginItems) &#123;</span><br><span class="line">        LSSharedFileListItemRef itemRef = (__bridge LSSharedFileListItemRef)(item);</span><br><span class="line">        CFURLRef itemURLRef;</span><br><span class="line">        if (LSSharedFileListItemResolve(itemRef, 0, &amp;itemURLRef, NULL) == noErr) &#123;</span><br><span class="line">            // Again, use toll-free bridging.</span><br><span class="line">            NSURL *itemURL = (__bridge NSURL *)itemURLRef;</span><br><span class="line">            if ([itemURL isEqual:bundleURL]) &#123;</span><br><span class="line">                res = itemRef;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    // Retain the LoginItem reference.</span><br><span class="line">    if (res != nil) CFRetain(res);</span><br><span class="line">    CFRelease(loginItemsRef);</span><br><span class="line">    CFRelease((__bridge CFTypeRef)(loginItems));</span><br><span class="line">    </span><br><span class="line">    return res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><a href="http://bdunagan.com/2010/09/25/cocoa-tip-enabling-launch-on-startup/" target="_blank" rel="external">launch on startup</a></p>
-<p><strong> 主要特别注意的是以上方法大都是 Deprecated in OS X V10.10 所以如果你要开发Deployment Target 10.10 以上的App的话不推荐使用这个方法。显然这些API在之后的OS X更新版本中，将会无法调用。导致你的App出现编译问题。 </strong></p>
-<p>当然介于这个方式比较简单，你仍然想使用的话。你可以设置Deployment Target为 10.9 来使用这些在 10.10被废弃的API。是没有问题的。我就是这么干的，😊</p>
-<h2 id="Deprecated-APIs"><a href="#Deprecated-APIs" class="headerlink" title="Deprecated APIs"></a>Deprecated APIs</h2><p>In previous versions of OS X, it is possible to add login items by sending an Apple event, by using the CFPreferences API, and by manually editing a property list file. These approaches are deprecated.</p>
-<p>If you need to maintain compatibility with versions of OS X prior to v10.5, the preferred approach is to use Apple events; for details, see LoginItemsAE. Using the CFPreferences API is an acceptable alternative. You should not directly edit the property list file on any version of OS X.</p>
-<p>早些 OS X版本的API 和实现方式，现在也许行不通了。我就不翻译了。 </p>
 
       
     </div>
