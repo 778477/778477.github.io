@@ -54,6 +54,81 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2015-10-01-Make-Your-App-Searchable" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/01/2015-10-01-Make-Your-App-Searchable/">Make Your App Searchable</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/10/01/2015-10-01-Make-Your-App-Searchable/" class="article-date">
+  <time datetime="2015-10-01T00:00:00.000Z" itemprop="datePublished">2015-10-01</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://48ce6c28e7bf5f42a1b7-2712e00ea34e3076747650c92426bbb5.ssl.cf1.rackcdn.com/2015-06-17-013455.jpeg" alt="1"></p>
+<p><img src="http://searchengineland.com/figz/wp-content/seloads/2015/06/iOS-9-Apple-Search-Indexing-Methods-800x553-800x553.png" alt="2"></p>
+<ul>
+<li><a href="https://developer.apple.com/library/prerelease/ios/technotes/tn2416/_index.html#//apple_ref/doc/uid/DTS40016269-CH1-SEARCH_API_FAQ-WHICH_IS_THE_RIGHT_API_FOR_ME_TO_USE_" target="_blank" rel="external">官方FAQ</a></li>
+</ul>
+<p><strong>How Does Apple Rank Apps In Apple Search?</strong></p>
+<p><strong>Positive Ranking Factors</strong></p>
+<ul>
+<li><strong>App Installation Status.</strong> Is the app is installed on the device? (installed apps seem to get preference)</li>
+<li><strong>Personalized App Engagement.</strong> Does the individual engage with the screen in the app? This is based on time spent with result that Apple determines from session analytics.</li>
+<li><strong>App Result Click-Through Rate.</strong> Do users frequently click through the search result vs. picking another result or searching again?</li>
+<li><strong>Keywords/ Title.</strong> Do keywords from the “keywords” and “title” designations in the app markup match up with the user’s query?</li>
+<li><strong>Aggregated Engagement.</strong> How many users engage with the app screen?</li>
+<li><strong>Structured Data on Web.</strong> Is structured data correctly implemented?</li>
+<li><strong>Canonical App IDs.</strong> Is the same screen associated with one unique ID or URL across multiple indexing methods (NSUserActivity, CoreSpotlight, and Web Markup)?</li>
+<li><strong>Strength/Popularity of Web URL.</strong> How popular is the website associated with the app deep links? (Presumably, this is based on Applebot’s crawl.)</li>
+</ul>
+<p><strong>Negative Ranking Factors</strong></p>
+<ul>
+<li><strong>Low Engagement.</strong> Do very few users engage with the app screen? (engagement determined by session analytics)</li>
+<li><strong>Over-Indexing.</strong> Does the app have many screens in the index with low or no engagement?</li>
+<li><strong>Returns.</strong> Do users return to search results right after looking at the app?</li>
+<li><strong>Keywords Spamming.</strong> Are developers stuffing too many irrelevant keywords into the keyword field?</li>
+<li><strong>Interstitials.</strong> Is something covering the content in the app or preventing users from accessing it?</li>
+<li><strong>Javascript (web only).</strong> Is Javascript preventing Applebot from crawling your site to find new app deep links?</li>
+<li><strong>Low Star Ratings, Low Review Volume, Poor Reviews.</strong> Apple has not explicitly called these negative ranking factors for Apple Search, but they are negative ranking factors for the App Store, so we expect Apple to treat them similarly here.</li>
+</ul>
+<p>Apple recommends pursuing multiple indexing methods to optimize app visibility, but the overlapping methods will inevitably create duplication across the various indexes. For example, private content could have both a NSUserActivity and CSSearchableItem indexed, and public content could have both a NSUserActivity and a Web Markup deep link indexed.</p>
+<p>This is obviously not ideal for controlling Applebot’s efficiency, so Apple strongly recommends associating each NSUserActivity, CSSearchableItem, and Web Markup deep link with the same uniqueIdentifier and/or URL. This is Applebot’s version of a canonical, and it’s so important to Apple that they’ve even made it a ranking factor in the Apple Search algorithm.</p>
+<p><a href="https://developer.apple.com/library/prerelease/ios/documentation/CoreSpotlight/Reference/CoreSpotlight_Framework/" target="_blank" rel="external">CoreSpotlight Framework</a></p>
+<p><a href="http://applidium.com/en/news/ios9_search_api/" target="_blank" rel="external">How to use the new search API</a></p>
+<blockquote>
+<p>如有任何知识产权、版权问题或理论错误，还请指正</p>
+<p>转载请注明原作者及以上信息</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2015-09-06-Permutation- Sequence" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     

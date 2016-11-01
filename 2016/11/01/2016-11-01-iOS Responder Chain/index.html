@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>iOS Responder Chain - 778477</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Hit-Testing Returns the View Where a Touch OccurrediOS 使用 hit-testing 找到具体的视图来响应点击。 Hit-testing实现检查了点击手势是落在了哪个视图区域。如果找到了视图，会递归遍历检查该视图下的所有子视图。最终会找到 位于视图层次最靠前(最靠近屏幕)的视图。iOS将其确定为hit-test view，将由它来消费这次tou">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS Responder Chain">
+<meta property="og:url" content="http://yoursite.com/2016/11/01/2016-11-01-iOS Responder Chain/index.html">
+<meta property="og:site_name" content="778477">
+<meta property="og:description" content="Hit-Testing Returns the View Where a Touch OccurrediOS 使用 hit-testing 找到具体的视图来响应点击。 Hit-testing实现检查了点击手势是落在了哪个视图区域。如果找到了视图，会递归遍历检查该视图下的所有子视图。最终会找到 位于视图层次最靠前(最靠近屏幕)的视图。iOS将其确定为hit-test view，将由它来消费这次tou">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/hit_testing_2x.png">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/iOS_responder_chain_2x.png">
+<meta property="og:updated_time" content="2016-11-01T12:30:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS Responder Chain">
+<meta name="twitter:description" content="Hit-Testing Returns the View Where a Touch OccurrediOS 使用 hit-testing 找到具体的视图来响应点击。 Hit-testing实现检查了点击手势是落在了哪个视图区域。如果找到了视图，会递归遍历检查该视图下的所有子视图。最终会找到 位于视图层次最靠前(最靠近屏幕)的视图。iOS将其确定为hit-test view，将由它来消费这次tou">
+<meta name="twitter:image" content="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/hit_testing_2x.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">778477</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-2016-11-01-iOS Responder Chain" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS Responder Chain
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/11/01/2016-11-01-iOS Responder Chain/" class="article-date">
+  <time datetime="2016-11-01T00:00:00.000Z" itemprop="datePublished">2016-11-01</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Hit-Testing-Returns-the-View-Where-a-Touch-Occurred"><a href="#Hit-Testing-Returns-the-View-Where-a-Touch-Occurred" class="headerlink" title="Hit-Testing Returns the View Where a Touch Occurred"></a>Hit-Testing Returns the View Where a Touch Occurred</h2><p>iOS 使用 <code>hit-testing</code> 找到具体的视图来响应点击。 <code>Hit-testing</code>实现检查了点击手势是落在了哪个视图区域。如果找到了视图，会递归遍历检查该视图下的所有子视图。最终会找到 位于视图层次最靠前(最靠近屏幕)的视图。iOS将其确定为<code>hit-test view</code>，将由它来消费这次<code>touch</code>事件。</p>
+<p><img src="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/hit_testing_2x.png" alt="Figure 2-1  Hit-testing returns the subview that was touched"></p>
+<p>更形象点的例子。我们结合<code>Figure 2-1</code>图片来看</p>
+<pre><code>1. 当点击手势位于view A。 我们要检查子视图view B 和view C
+2. 点击手势没有位于view B，所以我们开始检查view C的子视图view D 和view E
+3. 点击手势没有位于view D，所以点击手势被view E响应
+</code></pre><p><code>hitTest:withEvent:</code> 跟<code>CGPoint</code>和<code>UIEvent</code>参数找到对应的<code>hit test view</code>。</p>
+<p>The <code>hitTest:withEvent:</code> method returns the hit test view for a given CGPoint and UIEvent. The <code>hitTest:withEvent:</code> method begins by calling the <code>pointInside:withEvent:</code> method on itself. If the point passed into <code>hitTest:withEvent:</code> is inside the bounds of the view, <code>pointInside:withEvent:</code> returns YES. Then, the method recursively calls <code>hitTest:withEvent:</code> on every subview that returns YES.</p>
+<p>If the point passed into <code>hitTest:withEvent:</code> is not inside the bounds of the view, the first call to the <code>pointInside:withEvent:</code> method returns NO, the point is ignored, and <code>hitTest:withEvent:</code> returns nil. If a subview returns NO, that whole branch of the view hierarchy is ignored, because if the touch did not occur in that subview, it also did not occur in any of that subview’s subviews. This means that any point in a subview that is outside of its superview can’t receive touch events because the touch point has to be within the bounds of the superview and the subview. This can occur if the subview’s clipsToBounds property is set to NO.</p>
+<p>Note: A touch object is associated with its hit-test view for its lifetime, even if the touch later moves outside the view.<br>The hit-test view is given the first opportunity to handle a touch event. If the hit-test view cannot handle an event, the event travels up that view’s chain of responders as described in The Responder Chain Is Made Up of Responder Objects until the system finds an object that can handle it.</p>
+<h2 id="The-Responder-Chain-Is-Made-Up-of-Responder-Objects"><a href="#The-Responder-Chain-Is-Made-Up-of-Responder-Objects" class="headerlink" title="The Responder Chain Is Made Up of Responder Objects"></a>The Responder Chain Is Made Up of Responder Objects</h2><p>我们再聊聊如果事件没有被消费掉怎么办？ </p>
+<p>答案是: 事件会跟随响应链一级一级向上传递。最终给到 Application(继承自UIResponer)。</p>
+<p>一个响应者对象(UIApplication/UIViewController/UIView)是能够响应和处理事件的。</p>
+<p>第一响应者被设计为能第一个接受事件。要成为第一响应者，需要做以下两件事。</p>
+<pre><code>1. 重写 canBecomeFirstResponder 返回YES
+2. 处理 becomeFirstResponder 调用。 必要情况可以主动调用这个方法
+</code></pre><p><strong>提示：</strong> becomeFirstResponder调用时机最好 在视图都准备到位之后。比如不要在<code>viewWillAppear</code>阶段。应该在<code>viewDidAppear</code>阶段在调用</p>
+<p>响应者能处理的事件有：</p>
+<pre><code>* 触摸事件(Touch Events): 如果`hit test view`没有消费这个事件。事件按照响应链被向上传递
+* 运动事件(Motion Events): UIKit处理这个事件，第一响应者必须要实现` motionBegan:withEvent:` 或 `motionEnded:withEvent:`方法
+* 遥控事件(Remote control events): 第一响应者必须实现` remoteControlReceivedWithEvent:`方法
+* Action messages: 比如按钮啊、开关啊。如果接受者的action为nil，也会按照响应链向上传递事件
+* Editing-menu messages.  
+* Text editing. 用户点击输入框或文本视图，UIKit默认自动将其置为第一响应者。接着，模拟键盘被唤起，光标聚焦。
+</code></pre><p>只有<code>Text Field</code>或<code>Text View</code>在用户点击之后，UIKit会自动将其置为第一响应者。其他的需要主动的调用<code>becomeFirstResponder</code>方法</p>
+<p>响应链向上传递事件是有一些规则的。 看看以下图片的两种情况：</p>
+<p><img src="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/iOS_responder_chain_2x.png" alt="iOS_responder_chain"></p>
+<p>左图：</p>
+<pre><code>1. initial view不处理事件/消息，传递给父级view
+2. 父级view接受到事件，不处理的话接着传递给父级view(viewController&apos;s view)
+3. 父级view(viewController&apos;s view)接受到事件，不处理的话传递给viewController
+4. viewController接收到事件，不处理传递给windows
+5. windows接受到事件，不处理传递给 Application
+6. 如果Application最后再不处理的话，事件就被忽略了。。
+</code></pre><p>其中传递链路上任一响应者处理了事件，就中断传递了</p>
+<p>右图：</p>
+<pre><code>1. initial view不处理事件/消息，传递给父级view(viewController&apos;s view)
+2. 父级view接受到事件，传递给viewController
+3. viewController接受到事件，传递给父级view
+    步骤1-3 重复直到找到rootViewController
+4. rootViewController 传递给 windows
+5. windows 传递给 Application
+</code></pre><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html" target="_blank" rel="external">Event Delivery: The Responder Chain</a></li>
+<li><a href="http://smnh.me/hit-testing-in-ios/" target="_blank" rel="external">Hit-Testing in iOS</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Responder-Chain/">Responder Chain</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/10/30/2016-10-30-LeetCode/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">LeetCode&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 miaoyou.gmy&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>
