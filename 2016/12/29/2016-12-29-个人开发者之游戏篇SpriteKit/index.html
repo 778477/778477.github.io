@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Jumping into SpriteKit - 778477</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="如果你对个人开发者还有一些念想的话，游戏领域可能是个人开发者值得投入精力尝试的。比起应用来说，游戏没有涉及到那么多的资源如服务端，产品经理，交互。 如果是简单的样式可能美工方面自己现学就可以搞定了我这里指的是一些简单的游戏，如单场景的消除类:
+
+消除方块
+多彩方块消除
+星之消除!pop star-免费中文消除小游戏
+
+大体都是一些较为经典的个人开发者作品。盈利模式可以是：App收费，App接入市场">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jumping into SpriteKit">
+<meta property="og:url" content="http://yoursite.com/2016/12/29/2016-12-29-个人开发者之游戏篇SpriteKit/index.html">
+<meta property="og:site_name" content="778477">
+<meta property="og:description" content="如果你对个人开发者还有一些念想的话，游戏领域可能是个人开发者值得投入精力尝试的。比起应用来说，游戏没有涉及到那么多的资源如服务端，产品经理，交互。 如果是简单的样式可能美工方面自己现学就可以搞定了我这里指的是一些简单的游戏，如单场景的消除类:
+
+消除方块
+多彩方块消除
+星之消除!pop star-免费中文消除小游戏
+
+大体都是一些较为经典的个人开发者作品。盈利模式可以是：App收费，App接入市场">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/GraphicsAnimation/Conceptual/SpriteKit_PG/Art/update_loop_2x.png">
+<meta property="og:updated_time" content="2016-12-29T14:15:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jumping into SpriteKit">
+<meta name="twitter:description" content="如果你对个人开发者还有一些念想的话，游戏领域可能是个人开发者值得投入精力尝试的。比起应用来说，游戏没有涉及到那么多的资源如服务端，产品经理，交互。 如果是简单的样式可能美工方面自己现学就可以搞定了我这里指的是一些简单的游戏，如单场景的消除类:
+
+消除方块
+多彩方块消除
+星之消除!pop star-免费中文消除小游戏
+
+大体都是一些较为经典的个人开发者作品。盈利模式可以是：App收费，App接入市场">
+<meta name="twitter:image" content="https://developer.apple.com/library/content/documentation/GraphicsAnimation/Conceptual/SpriteKit_PG/Art/update_loop_2x.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">778477</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-2016-12-29-个人开发者之游戏篇SpriteKit" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Jumping into SpriteKit
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/12/29/2016-12-29-个人开发者之游戏篇SpriteKit/" class="article-date">
+  <time datetime="2016-12-29T00:00:00.000Z" itemprop="datePublished">2016-12-29</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/SpriteKit/">SpriteKit</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如果你对个人开发者还有一些念想的话，游戏领域可能是个人开发者值得投入精力尝试的。<br>比起应用来说，游戏没有涉及到那么多的资源如服务端，产品经理，交互。 如果是简单的样式可能美工方面自己现学就可以搞定了<br>我这里指的是一些简单的游戏，如单场景的消除类:</p>
+<ul>
+<li><a href="https://itunes.apple.com/cn/app/xiao-chu-fang-kuai-2016mian/id1111099870?mt=8" target="_blank" rel="external">消除方块</a></li>
+<li><a href="https://itunes.apple.com/cn/app/duo-cai-fang-kuai-xiao-chu/id943380262?mt=8" target="_blank" rel="external">多彩方块消除</a></li>
+<li><a href="https://itunes.apple.com/cn/app/xing-zhi-xiao-chu!pop-star/id790766978?mt=8" target="_blank" rel="external">星之消除!pop star-免费中文消除小游戏</a></li>
+</ul>
+<p>大体都是一些较为经典的个人开发者作品。盈利模式可以是：App收费，App接入市场广告，App道具收费</p>
+<p>好了，下面进入正题。早些年做游戏的话，如果注重跨平台 你的选择可能就是 Cocos2d-X 了。 但其实Apple自身是有套游戏框架: SpriteKit</p>
+<p><a href="https://developer.apple.com/library/content/documentation/GraphicsAnimation/Conceptual/SpriteKit_PG/Introduction/Introduction.html#//apple_ref/doc/uid/TP40013043-CH1-SW1" target="_blank" rel="external">About SpriteKit</a></p>
+<p>可以按照 Jumping into SpriteKit 这个章节熟悉一下 SpriteKit 。</p>
+<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><p><strong>这里要注意的是 第一步里面一定要将storyboard里面的ViewController 的view object class 设置为 SKView。</strong></p>
+<blockquote>
+<p>Open the storyboard for the project. It has a single view controller (SpriteViewController). Select the view controller’s view object and change its class to SKView.</p>
+</blockquote>
+<p><code>SpriteKit</code>内容都是绘制在<code>SKView</code>里面的，而<code>SKView</code>渲染出来的东西叫做 <em>场景(scene)</em> 是<code>SKScene</code>类型。 场景的交互是响应传递链的。</p>
+<h2 id="Using-Actions-to-Animate-Scenes"><a href="#Using-Actions-to-Animate-Scenes" class="headerlink" title="Using Actions to Animate Scenes"></a>Using Actions to Animate Scenes</h2><p>每个<code>SKNode</code>都有<code>name</code>属性作为他的描述，给节点起个名字方便你后面查找和指定节点执行动作。 类似<code>UIKit</code>里面的<code>view.tag</code></p>
+<p><code>SKAction</code> 需要重点了解一下。</p>
+<h2 id="Transitioning-Between-Scenes"><a href="#Transitioning-Between-Scenes" class="headerlink" title="Transitioning Between Scenes"></a>Transitioning Between Scenes</h2><p>这个是区别于<code>UIKit</code>的，没有页面跳转的概念。这里指的 Scene A切换为Scene B。<br>使用<code>SKTransition</code>可以添加切换动画。查看<code>SKTransition.h</code>，SpriteKit还是自带了蛮多场景切换动画。</p>
+<h2 id="Creating-Nodes-That-Interact-with-Each-Other"><a href="#Creating-Nodes-That-Interact-with-Each-Other" class="headerlink" title="Creating Nodes That Interact with Each Other"></a>Creating Nodes That Interact with Each Other</h2><p>这个是最有意思的地方： 可以添加<code>SKNode physicsBody</code>属性，让其有物理特性。<br>这里还提到了 <code>didSimulatePhysics</code>,实际上 SpriteKit中 <code>Scene</code> 是在实时重复绘制的。他的每一帧绘制包括了以下时机回调</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> Override this to perform per-frame game logic. Called exactly once per frame before any actions are evaluated and any physics are simulated.</span><br><span class="line"> </span><br><span class="line"> @param currentTime the current time in the app. This must be monotonically increasing.</span><br><span class="line"> */</span><br><span class="line">- (void)update:(NSTimeInterval)currentTime;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> Override this to perform game logic. Called exactly once per frame after any actions have been evaluated but before any physics are simulated. Any additional actions applied is not evaluated until the next update.</span><br><span class="line"> */</span><br><span class="line">- (void)didEvaluateActions;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> Override this to perform game logic. Called exactly once per frame after any actions have been evaluated and any physics have been simulated. Any additional actions applied is not evaluated until the next update. Any changes to physics bodies is not simulated until the next update.</span><br><span class="line"> */</span><br><span class="line">- (void)didSimulatePhysics;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> Override this to perform game logic. Called exactly once per frame after any enabled constraints have been applied. Any additional actions applied is not evaluated until the next update. Any changes to physics bodies is not simulated until the next update. Any changes to constarints will not be applied until the next update.</span><br><span class="line"> */</span><br><span class="line">- (void)didApplyConstraints NS_AVAILABLE(10_10, 8_0);</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> Override this to perform game logic. Called after all update logic has been completed. Any additional actions applied are not evaluated until the next update. Any changes to physics bodies are not simulated until the next update. Any changes to constarints will not be applied until the next update.</span><br><span class="line"> </span><br><span class="line"> No futher update logic will be applied to the scene after this call. Any values set on nodes here will be used when the scene is rendered for the current frame.</span><br><span class="line"> */</span><br><span class="line">- (void)didFinishUpdate NS_AVAILABLE(10_10, 8_0);</span><br></pre></td></tr></table></figure>
+<p><img src="https://developer.apple.com/library/content/documentation/GraphicsAnimation/Conceptual/SpriteKit_PG/Art/update_loop_2x.png" alt="update_loop"></p>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>来自 raywenderlich 的学习资料 </p>
+<ul>
+<li><a href="https://www.raywenderlich.com/category/swift" target="_blank" rel="external">swift</a></li>
+<li><p><a href="https://www.raywenderlich.com/category/apple-game-frameworks" target="_blank" rel="external">apple-game-frameworks</a></p>
+<p>来自 apple 官方的一些资料文档</p>
+</li>
+<li><p><a href="https://developer.apple.com/library/content/samplecode/SpriteKit_Physics_Collisions/Introduction/Intro.html#//apple_ref/doc/uid/DTS40013390" target="_blank" rel="external">SpriteKit Physics Collisions</a></p>
+</li>
+<li><a href="https://developer.apple.com/library/content/samplecode/Sprite_Tour/Introduction/Intro.html#//apple_ref/doc/uid/DTS40013389" target="_blank" rel="external">Sprite Tour</a></li>
+<li><a href="https://developer.apple.com/library/content/qa/qa1889/_index.html#//apple_ref/doc/uid/DTS40016267" target="_blank" rel="external">Tab-based SpriteKit Apps and Scene Caching</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SpriteKit/">SpriteKit</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/12/29/2016-12-29-iOS 动态方案探讨/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">动态化方案&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 miaoyou.gmy&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>
