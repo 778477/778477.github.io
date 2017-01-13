@@ -54,6 +54,72 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2017-01-13-Reveal调试越狱设备" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/13/2017-01-13-Reveal调试越狱设备/">Reveal 调试越狱设备</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/01/13/2017-01-13-Reveal调试越狱设备/" class="article-date">
+  <time datetime="2017-01-13T00:00:00.000Z" itemprop="datePublished">2017-01-13</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/工具/">工具</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="使用Reveal调试越狱设备"><a href="#使用Reveal调试越狱设备" class="headerlink" title="使用Reveal调试越狱设备"></a>使用Reveal调试越狱设备</h2><p>网上有很多实践文章。我自己按照网上的教程实验了一把，在这里记录一下。</p>
+<ul>
+<li>一台越狱设备(iOS 7.1)</li>
+<li>Reveal (1.0.3)</li>
+</ul>
+<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><ol>
+<li><p>确认越狱设备 安装 <code>OpenSSH</code> 和 <code>Cydia Substrate</code>。若无法安装，可以尝试刷新源，然后重新搜索下载</p>
+</li>
+<li><p><code>scp /Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/libReveal.dylib root@your.ip.address.xx:/Library/MobileSubstrate/DynamicLibraries</code></p>
+</li>
+<li><p><code>scp libReveal.plist root@192.168.XXX.XXX:/Library/MobileSubstrate/DynamicLibraries</code></p>
+</li>
+<li><p>重启设备，就在电脑查看<code>libReveal.plist</code>中的App UI了。</p>
+</li>
+</ol>
+<p><code>libReveal.plist</code>文件格式可以为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    Filter = &#123;</span><br><span class="line">        Bundles = (&quot;com.sina.weibo&quot;);</span><br><span class="line">        Bundles = (&quot;com.burbn.instagram&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Bundles里面填写你对应想看的App SoftwareBundleIdentifier。这个Plist文件一开始，我很纠结因为网上的文件格式不同于 Apple的标准Plist XML格式。然而拷贝进越狱设备之后，能起效我也就不在意了。</p>
+<h2 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h2><ol>
+<li>我一开始使用的是Reveal 1.6.3版本，拷贝进越狱设备里的也是对应的dylib。没起作用，换了同事的1.0.3安装包就work了。</li>
+<li>连接内网之后，电脑和手机一定要确认在同一个局域网(我猜想 Reveal动态库是在局域网广播UI层级信息的)</li>
+</ol>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Reveal/">Reveal</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2017-01-09-ASR&amp;Translator" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -209,6 +275,61 @@
 
 
     
+      <article id="post-2016-12-29-iOS 动态方案探讨" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/29/2016-12-29-iOS 动态方案探讨/">动态化方案</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/12/29/2016-12-29-iOS 动态方案探讨/" class="article-date">
+  <time datetime="2016-12-29T00:00:00.000Z" itemprop="datePublished">2016-12-29</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/动态化方案/">动态化方案</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="已知的一些动态化方案"><a href="#已知的一些动态化方案" class="headerlink" title="已知的一些动态化方案"></a>已知的一些动态化方案</h2><ul>
+<li><a href="https://github.com/spotify/HubFramework" target="_blank" rel="external">HubFramework</a></li>
+<li><a href="https://github.com/alibaba/weex" target="_blank" rel="external">weex</a></li>
+<li><a href="https://github.com/facebook/react-native" target="_blank" rel="external">react-native</a></li>
+<li><a href="http://mp.weixin.qq.com/s/DhGR6J5fx04BPi-kMsMBJg" target="_blank" rel="external">OCS</a></li>
+<li><a href="https://github.com/DynamicCocoa/DynamicCocoa/issues" target="_blank" rel="external">DynamicCocoa</a></li>
+</ul>
+<h2 id="List-解耦方案"><a href="#List-解耦方案" class="headerlink" title="List 解耦方案"></a>List 解耦方案</h2><ul>
+<li><a href="https://github.com/Instagram/IGListKit" target="_blank" rel="external">IGListKit</a></li>
+</ul>
+<p>动态化方案的价值，这里就不讨论了。</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态化方案/">动态化方案</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2016-12-29-个人开发者之游戏篇SpriteKit" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -276,61 +397,6 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SpriteKit/">SpriteKit</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2016-12-29-iOS 动态方案探讨" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/29/2016-12-29-iOS 动态方案探讨/">动态化方案</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/12/29/2016-12-29-iOS 动态方案探讨/" class="article-date">
-  <time datetime="2016-12-29T00:00:00.000Z" itemprop="datePublished">2016-12-29</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/动态化方案/">动态化方案</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="已知的一些动态化方案"><a href="#已知的一些动态化方案" class="headerlink" title="已知的一些动态化方案"></a>已知的一些动态化方案</h2><ul>
-<li><a href="https://github.com/spotify/HubFramework" target="_blank" rel="external">HubFramework</a></li>
-<li><a href="https://github.com/alibaba/weex" target="_blank" rel="external">weex</a></li>
-<li><a href="https://github.com/facebook/react-native" target="_blank" rel="external">react-native</a></li>
-<li><a href="http://mp.weixin.qq.com/s/DhGR6J5fx04BPi-kMsMBJg" target="_blank" rel="external">OCS</a></li>
-<li><a href="https://github.com/DynamicCocoa/DynamicCocoa/issues" target="_blank" rel="external">DynamicCocoa</a></li>
-</ul>
-<h2 id="List-解耦方案"><a href="#List-解耦方案" class="headerlink" title="List 解耦方案"></a>List 解耦方案</h2><ul>
-<li><a href="https://github.com/Instagram/IGListKit" target="_blank" rel="external">IGListKit</a></li>
-</ul>
-<p>动态化方案的价值，这里就不讨论了。</p>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态化方案/">动态化方案</a></li></ul>
 
       </footer>
     
@@ -966,78 +1032,6 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2016-08-13-如何将App 装载到模拟器中" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/13/2016-08-13-如何将App 装载到模拟器中/">如何将App装载到模拟器</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/08/13/2016-08-13-如何将App 装载到模拟器中/" class="article-date">
-  <time datetime="2016-08-13T00:00:00.000Z" itemprop="datePublished">2016-08-13</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/iOS-Simulator/">iOS Simulator</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>笔者这里使用 <a href="https://itunes.apple.com/cn/app/nice-hao-zan-fa-zhao-pian/id641895599?mt=8" target="_blank" rel="external">nice</a> 这款App 演示。</p>
-<ol>
-<li>首先使用Mac iTunes下载 对应App的ipa包，再解压，在Payload目录下 我们发现nice这款app的真身： KKShopping.app(难道nice也有一颗电商的心吗？)</li>
-</ol>
-<p>使用 <code>xcrun simctl list</code> 查看现有的设备列表。作为iOS开发，就是这么富用：拥有iPhone全系的模！拟！器！</p>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/xcrun-simctl-list.png" alt="xcrun-simctl-list"></p>
-<ol>
-<li>创建新的模拟器，笔者这里创建iPhone 6搭载iOS9.3系统. 命名为MyiPhone6</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun simctl create &quot;MyiPhone6&quot; &quot;iPhone 6&quot; &quot;com.apple.CoreSimulator.SimRuntime.iOS-9-3&quot;</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/simctl-create.png" alt="simctl-create"></p>
-<ol>
-<li>唤起MyiPhone6， 使用Xcode Simulator.app 唤起，参数CurrentDeviceUDID选择我们在<code>xcrun simctl list</code> Devices下看到的MyiPhone6的udid。 <strong>注意</strong> 一定要唤起，模拟器在shutdown state下是装载不了App的。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open -n /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID &apos;2C630172-AF2B-4798-B854-3FEE5F221411&apos;</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/xcrun-simctl-list1.png" alt="xcrun-simctl-list1"></p>
-<ol>
-<li>装载 KKShopping.app</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun simctl install MyiPhone6 ~/Music/iTunes/iTunes\ Media/Mobile\ Applications/nice\ 4.0.0/Payload/KKShopping.app</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/install-nice-app.png" alt="install-nice-app"></p>
-<p>如果，你按照步骤做完之后。 点击模拟器中的nice图标，发现它闪退了。</p>
-<p>这里有一个原因是 我们通过iTunes下载下来的包要求运行环境是手机。 而手机和电脑模拟器的CPU架构是不一致的，所以运行不了很正常。</p>
-<p>如果，你有源码编译出的<code>Release-iphonesimulator</code>目录下的app文件。 可以试一下下面的命令，在模拟器中唤起你的app</p>
-<ol>
-<li>唤起模拟器中的App<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun simctl launch booted your.app.bundle_Identifier</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS-Simulator/">iOS Simulator</a></li></ul>
 
       </footer>
     
