@@ -6,18 +6,21 @@
   <title>iOS runtime浅析Property和Ivar - 778477</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Propertyproperty 是Objective-C的一个语法糖，能帮助你声明成员变量(ivar)(自动声明的变量名前面会加下划线)+自动生成对应属性特性(atomic/nonatomic/copy/strong/weak/assign...)的setter和getter
-通常我们在编写iOS程序的时候声明类的成员变量，习惯使用property关键词。比如在GMYTestObject.h中，">
+通常我们在编写iOS程序的时候声明类的成员变量，习惯使用property。比如在GMYTestObject.h中
+123">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS runtime浅析Property和Ivar">
 <meta property="og:url" content="http://yoursite.com/2017/02/21/2017-02-21-iOS runtime浅析Property和Ivar/index.html">
 <meta property="og:site_name" content="778477">
 <meta property="og:description" content="Propertyproperty 是Objective-C的一个语法糖，能帮助你声明成员变量(ivar)(自动声明的变量名前面会加下划线)+自动生成对应属性特性(atomic/nonatomic/copy/strong/weak/assign...)的setter和getter
-通常我们在编写iOS程序的时候声明类的成员变量，习惯使用property关键词。比如在GMYTestObject.h中，">
-<meta property="og:updated_time" content="2017-02-23T15:08:50.000Z">
+通常我们在编写iOS程序的时候声明类的成员变量，习惯使用property。比如在GMYTestObject.h中
+123">
+<meta property="og:updated_time" content="2017-02-24T02:27:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS runtime浅析Property和Ivar">
 <meta name="twitter:description" content="Propertyproperty 是Objective-C的一个语法糖，能帮助你声明成员变量(ivar)(自动声明的变量名前面会加下划线)+自动生成对应属性特性(atomic/nonatomic/copy/strong/weak/assign...)的setter和getter
-通常我们在编写iOS程序的时候声明类的成员变量，习惯使用property关键词。比如在GMYTestObject.h中，">
+通常我们在编写iOS程序的时候声明类的成员变量，习惯使用property。比如在GMYTestObject.h中
+123">
   
   
     <link rel="icon" href="/favicon.png">
@@ -85,10 +88,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="Property"><a href="#Property" class="headerlink" title="Property"></a>Property</h2><p><code>property</code> 是<code>Objective-C</code>的一个语法糖，能帮助你声明成员变量<code>(ivar)</code>(自动声明的变量名前面会加下划线)+自动生成对应属性特性<code>(atomic/nonatomic/copy/strong/weak/assign...)</code>的<code>setter</code>和<code>getter</code></p>
-<p>通常我们在编写iOS程序的时候声明类的成员变量，习惯使用<code>property</code>关键词。<br>比如在<code>GMYTestObject.h</code>中，以下成员变量访问权限都是<code>public</code>的</p>
+<p>通常我们在编写iOS程序的时候声明类的成员变量，习惯使用<code>property</code>。<br>比如在<code>GMYTestObject.h</code>中</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@interface GMYTestObject : NSObject</span><br><span class="line">@property (nonatomic, assign) NSUInteger index;</span><br><span class="line">@property (nonatomic, copy) NSString *str;</span><br><span class="line">@property (nonatomic, copy) NSArray *array;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
 <p>对应自动声明的<code>_index</code>，<code>_str</code>，<code>_array</code></p>
-<p>若想声明<code>private</code>的成员变量要借助<code>Class Extensions</code>在原有的实现文件中添加变量。<br>比如在<code>GMYTestObject.m</code>中，以下成员变量的访问权限是<code>private</code>的</p>
+<p>若想声明<code>private</code>的成员变量要借助<code>Class Extensions</code>在原有的实现文件中添加变量。<br>比如在<code>GMYTestObject.m</code>中</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@interface GMYTestObject ()</span><br><span class="line">@property (nonatomic, copy) NSString *testStr;</span><br><span class="line">@property (nonatomic, assign) CGFloat margin;</span><br><span class="line">@property (nonatomic, copy) NSDictionary *dict;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation GMYTestObject</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
 <p>这个技巧可以参阅<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/CustomizingExistingClasses/CustomizingExistingClasses.html" target="_blank" rel="external">Class Extensions Extend the Internal Implementation</a></p>
 <h3 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h3><p><code>property</code>在早些年是不支持声明类变量的。直到2016年Xcode8发布和更新了LLVM，才支持。<br><a href="https://developer.apple.com/videos/play/wwdc2016/405/" target="_blank" rel="external">WWDC 2016 Session 405 What’s New in LLVM</a></p>
