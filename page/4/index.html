@@ -54,6 +54,91 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2015-09-04-ALAssetsLibrary" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/04/2015-09-04-ALAssetsLibrary/">ALAssetsLibrary</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/09/04/2015-09-04-ALAssetsLibrary/" class="article-date">
+  <time datetime="2015-09-04T00:00:00.000Z" itemprop="datePublished">2015-09-04</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="ALAssetsLibrary"><a href="#ALAssetsLibrary" class="headerlink" title="ALAssetsLibrary"></a>ALAssetsLibrary</h1><p>一个资料库实例在与用户没有交互的情况下，能获取到相片和摄影资源</p>
+<ul>
+<li>在 iOS8及其以后，使用 Photos framework代替 Assets Libray framework。 Photos framework提供了更多的新功能和强大的性能。</li>
+</ul>
+<p>这个资料库包含了 来着iTunes或拍摄 的已保存相册。你可以使用资料库来检索所有资料分组 和 保存相片和影像到已经存在的相册中。</p>
+<h2 id="Accessing-Assets"><a href="#Accessing-Assets" class="headerlink" title="Accessing Assets"></a>Accessing Assets</h2><p>authorizationStatus 返回照片数据授权权限</p>
+<ul>
+<li>ALAuthorizationStatusNotDetermined  未授权</li>
+<li>ALAuthorizationStatusRestricted     访问受限</li>
+<li>ALAuthorizationStatusDenied  拒绝访问</li>
+<li>ALAuthorizationStatusAuthorized 授权访问</li>
+</ul>
+<h2 id="Managing-Notifications"><a href="#Managing-Notifications" class="headerlink" title="Managing Notifications"></a>Managing Notifications</h2><p>disableSharedPhotoStreamSupport 关闭分享照片流，无视分享照片流的更新通知消息</p>
+<h2 id="Finding-Assets"><a href="#Finding-Assets" class="headerlink" title="Finding Assets"></a>Finding Assets</h2><p>assetForURL:resultBlock:failureBlock: 使用一个文件的详细url(理解为访问路径)表示文件标示符来访问该文件</p>
+<ul>
+<li>注意该方法是异步的，当文件被访问时，会询问用户是否授权应用访问相册。 如果允许，resultBlock回调将执行。如果用户拒绝failureBlock回调将执行</li>
+</ul>
+<h2 id="Enumerating-Assets"><a href="#Enumerating-Assets" class="headerlink" title="Enumerating Assets"></a>Enumerating Assets</h2><p>enumerateGroupsWithTypes:usingBlock:failureBlock: 遍历资源分组下的所有资源</p>
+<ul>
+<li>注意该方法是异步的，关于遍历资源需要用户授权访问。特殊注意事项，如果访问失败原因为 <strong>ALAssetsLibraryAccessGloballyDeniedError</strong>是因为用户没有启用地理信息服务</li>
+</ul>
+<h2 id="Saving-Assets"><a href="#Saving-Assets" class="headerlink" title="Saving Assets"></a>Saving Assets</h2><ul>
+<li>[ ] writeVideoAtPathToSavedPhotosAlbum:completionBlock:</li>
+<li>[ ] videoAtPathIsCompatibleWithSavedPhotosAlbum:</li>
+<li>[ ] writeImageToSavedPhotosAlbum:orientation:completionBlock:</li>
+<li>[ ] writeImageDataToSavedPhotosAlbum:metadata:completionBlock:</li>
+<li>[ ] writeImageToSavedPhotosAlbum:metadata:completionBlock:</li>
+</ul>
+<h2 id="Managing-Asset-Groups"><a href="#Managing-Asset-Groups" class="headerlink" title="Managing Asset Groups"></a>Managing Asset Groups</h2><p> addAssetsGroupAlbumWithName:resultBlock:failureBlock: 新建资源分组到资源库中</p>
+<ul>
+<li>name为新建资源组名字，<strong>不可重名</strong>。类型为ALAssetsGroupAlbum，可读写。同为异步方法，需要用户授权</li>
+</ul>
+<p>groupForURL:resultBlock:failureBlock:使用资源分组url来访问该资源组</p>
+<ul>
+<li>同为异步方法</li>
+</ul>
+<h2 id="Constants"><a href="#Constants" class="headerlink" title="Constants"></a>Constants</h2><p>具体的资源类型、回调定义，权限类型，通知信息，错误信息。请参见 ALAssetsLibrary Class Reference(iOS 8.3 Documentation)</p>
+<blockquote>
+<p>如有任何知识产权、版权问题或理论错误，还请指正。</p>
+<p>转载请注明原作者及以上信息。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2015-08-30-hdu-4527" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     

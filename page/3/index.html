@@ -54,6 +54,83 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2015-12-16-Lighter View Controller" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/16/2015-12-16-Lighter View Controller/">Lighter View Controller</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/12/16/2015-12-16-Lighter View Controller/" class="article-date">
+  <time datetime="2015-12-16T00:00:00.000Z" itemprop="datePublished">2015-12-16</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.objc.io/issues/1-view-controllers/lighter-view-controllers/" target="_blank" rel="external">Lighter-View-Controller 轻量级视图控制器</a></p>
+<p>视图控制器们(View Controllers)通常是最大的文件在我们的iOS工程中。而且 他们常常有很多不必要的代码。导致视图控制器往往是无法在其他项目中复用的。我们下面讲述的技巧可以让控制器们 更加轻量，有复用性，让不合理的代码出现在合理的位置</p>
+<p><a href="https://github.com/objcio/issue-1-lighter-view-controllers" target="_blank" rel="external">example project on GitHub</a></p>
+<h3 id="分离出数据协议和其他接口协议"><a href="#分离出数据协议和其他接口协议" class="headerlink" title="分离出数据协议和其他接口协议"></a>分离出数据协议和其他接口协议</h3><ul>
+<li>一个很有用的技巧就是将视图控制器中的 <code>UITableViewDataSource</code> 这部分代码分离出来。独立写一个类来维护，如果你都是这么处理的话，那么你这些类是可以以后在其他项目中复用的。</li>
+<li>这样做还有一个好处就是，我们可以独立测试这个类。</li>
+</ul>
+<p>举个例子：在示例项目中，<code>PhotosViewController</code> 有这样几个方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># pragma mark Pragma </span><br><span class="line"></span><br><span class="line">- (Photo*)photoAtIndexPath:(NSIndexPath*)indexPath &#123;</span><br><span class="line">    return photos[(NSUInteger)indexPath.row];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSInteger)tableView:(UITableView*)tableView </span><br><span class="line"> numberOfRowsInSection:(NSInteger)section &#123;</span><br><span class="line">    return photos.count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (UITableViewCell*)tableView:(UITableView*)tableView </span><br><span class="line">        cellForRowAtIndexPath:(NSIndexPath*)indexPath &#123;</span><br><span class="line">    PhotoCell* cell = [tableView dequeueReusableCellWithIdentifier:PhotoCellIdentifier </span><br><span class="line">                                                      forIndexPath:indexPath];</span><br><span class="line">    Photo* photo = [self photoAtIndexPath:indexPath];</span><br><span class="line">    cell.label.text = photo.name;</span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>让我们试着把这些代码放到 我们自己的类上。我们用闭包来填充数据(或许协议更合适，这个取决于你)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@implementation ArrayDataSource</span><br><span class="line"></span><br><span class="line">- (id)itemAtIndexPath:(NSIndexPath*)indexPath &#123;</span><br><span class="line">    return items[(NSUInteger)indexPath.row];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSInteger)tableView:(UITableView*)tableView </span><br><span class="line"> numberOfRowsInSection:(NSInteger)section &#123;</span><br><span class="line">    return items.count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (UITableViewCell*)tableView:(UITableView*)tableView </span><br><span class="line">        cellForRowAtIndexPath:(NSIndexPath*)indexPath &#123;</span><br><span class="line">    id cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier</span><br><span class="line">                                              forIndexPath:indexPath];</span><br><span class="line">    id item = [self itemAtIndexPath:indexPath];</span><br><span class="line">    configureCellBlock(cell,item);</span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>这三个方法不再存在我们的视图控制器了，我们可以创建实例来承接table view的数据协议委托</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">void (^configureCell)(PhotoCell*, Photo*) = ^(PhotoCell* cell, Photo* photo) &#123;</span><br><span class="line">   cell.label.text = photo.name;</span><br><span class="line">&#125;;</span><br><span class="line">photosArrayDataSource = [[ArrayDataSource alloc] initWithItems:photos</span><br><span class="line">                                                cellIdentifier:PhotoCellIdentifier</span><br><span class="line">                                            configureCellBlock:configureCell];</span><br><span class="line">self.tableView.dataSource = photosArrayDataSource;</span><br></pre></td></tr></table></figure>
+<p>而且，这种办法扩展其他接口协议也很方便。比如 另外的一个list数据协议是 <code>UICollectionViewDataSource</code> 由于一些需求实现，你们决定将 <code>UITableView</code> 替换为 <code>UICollectionView</code>。实际上你的视图控制器不需要任何改动，你可以让你的类都支持这两个数据协议。</p>
+<h3 id="逻辑处理放在Model"><a href="#逻辑处理放在Model" class="headerlink" title="逻辑处理放在Model"></a>逻辑处理放在Model</h3><p> 这里还是一个例子，这些代码在view controller里，功能是返回一个列表，上面的数据是用户的活跃度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (void)loadPriorities &#123;</span><br><span class="line">  NSDate* now = [NSDate date];</span><br><span class="line">  NSString* formatString = @&quot;startDate &lt;= %@ AND endDate &gt;= %@&quot;;</span><br><span class="line">  NSPredicate* predicate = [NSPredicate predicateWithFormat:formatString, now, now];</span><br><span class="line">  NSSet* priorities = [self.user.priorities filteredSetUsingPredicate:predicate];</span><br><span class="line">  self.priorities = [priorities allObjects];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当这些代码被放置到 User类的扩展中时，view controller就看起来比较清爽了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)loadPriorities &#123;</span><br><span class="line">  self.priorities = [self.user currentPriorities];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>User+Extensions.m:</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (NSArray*)currentPriorities &#123;</span><br><span class="line">  NSDate* now = [NSDate date];</span><br><span class="line">  NSString* formatString = @&quot;startDate &lt;= %@ AND endDate &gt;= %@&quot;;</span><br><span class="line">  NSPredicate* predicate = [NSPredicate predicateWithFormat:formatString, now, now];</span><br><span class="line">  return [[self.priorities filteredSetUsingPredicate:predicate] allObjects];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然在实际项目中，有些代码不是那么轻松可以转移到Model当中的。所以我们要创建 “数据仓库”(Store Class)</p>
+<h3 id="创建仓库类"><a href="#创建仓库类" class="headerlink" title="创建仓库类"></a>创建仓库类</h3><p>我们有些代码是从文件中加载数据并处理数据的，这些代码大概是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (void)readArchive &#123;</span><br><span class="line">    NSBundle* bundle = [NSBundle bundleForClass:[self class]];</span><br><span class="line">    NSURL *archiveURL = [bundle URLForResource:@&quot;photodata&quot;</span><br><span class="line">                                 withExtension:@&quot;bin&quot;];</span><br><span class="line">    NSAssert(archiveURL != nil, @&quot;Unable to find archive in bundle.&quot;);</span><br><span class="line">    NSData *data = [NSData dataWithContentsOfURL:archiveURL</span><br><span class="line">                                         options:0</span><br><span class="line">                                           error:NULL];</span><br><span class="line">    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];</span><br><span class="line">    _users = [unarchiver decodeObjectOfClass:[NSArray class] forKey:@&quot;users&quot;];</span><br><span class="line">    _photos = [unarchiver decodeObjectOfClass:[NSArray class] forKey:@&quot;photos&quot;];</span><br><span class="line">    [unarchiver finishDecoding];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实 View Controller 没有必要关心数据是如何处理的，我们创建 数据仓库来处理这些。使这些代码分离出来，这样我们就可以复用这个仓库类了。<br>独立测试并且View Controller的代码量又减少了一些。这些数据仓库负责数据处理，持久化和数据库交互。我们也可以叫这些”仓库”为服务层或资料库</p>
+<h3 id="将网络服务逻辑转移到Model"><a href="#将网络服务逻辑转移到Model" class="headerlink" title="将网络服务逻辑转移到Model"></a>将网络服务逻辑转移到Model</h3><p>这是一个类似的优化逻辑：不要把网络交互放在View Controller。把这些逻辑独立放置在其他类中，可以调用方法并设置回调处理。<br>这样做的好处是你可以格外处理所有你的数据和错误在这个类上。而不会让View Controller变的臃肿</p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>我们看到有很多技巧可以让View Controller更加精简。我们努力让这些技巧在实际开发中更加实用。<br>我们只有一个目的：写出可维护的代码。知道这些模式之后，我们有更加深刻的认识来讨论如何将笨重的View Controller精简优化。</p>
+<h3 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h3><ul>
+<li><a href="https://developer.apple.com/library/mac/documentation/General/Conceptual/DevPedia-CocoaCore/ControllerObject.html" target="_blank" rel="external">Cocoa Core Competencies: Controller Object</a></li>
+<li><a href="http://subjective-objective-c.blogspot.de/2011/08/writing-high-quality-view-controller.html" target="_blank" rel="external">Writing high quality view controllers</a></li>
+<li><a href="https://programmers.stackexchange.com/questions/184396/mvcs-model-view-controller-store" target="_blank" rel="external">Programmers Stack Exchange: Model View Controller Store</a></li>
+<li><a href="https://programmers.stackexchange.com/questions/177668/how-to-avoid-big-and-clumsy-uitableviewcontroller-on-ios" target="_blank" rel="external">Programmers Stack Exchange: How to avoid big and clumsy UITableViewControllers on iOS
+</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2015-11-27-Minimum Window Substring" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -655,91 +732,6 @@
 <li><a href="https://github.com/yoavlt/LiquidFloatingActionButton" target="_blank" rel="external">Animation in liquid state</a></li>
 </ul>
 <p><a href="http://jamie-wong.com/2014/08/19/metaballs-and-marching-squares/" target="_blank" rel="external">metaballs-and-marching-squares</a><br><img src="https://raw.githubusercontent.com/yoavlt/LiquidFloatingActionButton/master/Demo/top.gif" alt="demo"></p>
-<blockquote>
-<p>如有任何知识产权、版权问题或理论错误，还请指正。</p>
-<p>转载请注明原作者及以上信息。</p>
-</blockquote>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2015-09-04-ALAssetsLibrary" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/04/2015-09-04-ALAssetsLibrary/">ALAssetsLibrary</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/09/04/2015-09-04-ALAssetsLibrary/" class="article-date">
-  <time datetime="2015-09-04T00:00:00.000Z" itemprop="datePublished">2015-09-04</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS/">iOS</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="ALAssetsLibrary"><a href="#ALAssetsLibrary" class="headerlink" title="ALAssetsLibrary"></a>ALAssetsLibrary</h1><p>一个资料库实例在与用户没有交互的情况下，能获取到相片和摄影资源</p>
-<ul>
-<li>在 iOS8及其以后，使用 Photos framework代替 Assets Libray framework。 Photos framework提供了更多的新功能和强大的性能。</li>
-</ul>
-<p>这个资料库包含了 来着iTunes或拍摄 的已保存相册。你可以使用资料库来检索所有资料分组 和 保存相片和影像到已经存在的相册中。</p>
-<h2 id="Accessing-Assets"><a href="#Accessing-Assets" class="headerlink" title="Accessing Assets"></a>Accessing Assets</h2><p>authorizationStatus 返回照片数据授权权限</p>
-<ul>
-<li>ALAuthorizationStatusNotDetermined  未授权</li>
-<li>ALAuthorizationStatusRestricted     访问受限</li>
-<li>ALAuthorizationStatusDenied  拒绝访问</li>
-<li>ALAuthorizationStatusAuthorized 授权访问</li>
-</ul>
-<h2 id="Managing-Notifications"><a href="#Managing-Notifications" class="headerlink" title="Managing Notifications"></a>Managing Notifications</h2><p>disableSharedPhotoStreamSupport 关闭分享照片流，无视分享照片流的更新通知消息</p>
-<h2 id="Finding-Assets"><a href="#Finding-Assets" class="headerlink" title="Finding Assets"></a>Finding Assets</h2><p>assetForURL:resultBlock:failureBlock: 使用一个文件的详细url(理解为访问路径)表示文件标示符来访问该文件</p>
-<ul>
-<li>注意该方法是异步的，当文件被访问时，会询问用户是否授权应用访问相册。 如果允许，resultBlock回调将执行。如果用户拒绝failureBlock回调将执行</li>
-</ul>
-<h2 id="Enumerating-Assets"><a href="#Enumerating-Assets" class="headerlink" title="Enumerating Assets"></a>Enumerating Assets</h2><p>enumerateGroupsWithTypes:usingBlock:failureBlock: 遍历资源分组下的所有资源</p>
-<ul>
-<li>注意该方法是异步的，关于遍历资源需要用户授权访问。特殊注意事项，如果访问失败原因为 <strong>ALAssetsLibraryAccessGloballyDeniedError</strong>是因为用户没有启用地理信息服务</li>
-</ul>
-<h2 id="Saving-Assets"><a href="#Saving-Assets" class="headerlink" title="Saving Assets"></a>Saving Assets</h2><ul>
-<li>[ ] writeVideoAtPathToSavedPhotosAlbum:completionBlock:</li>
-<li>[ ] videoAtPathIsCompatibleWithSavedPhotosAlbum:</li>
-<li>[ ] writeImageToSavedPhotosAlbum:orientation:completionBlock:</li>
-<li>[ ] writeImageDataToSavedPhotosAlbum:metadata:completionBlock:</li>
-<li>[ ] writeImageToSavedPhotosAlbum:metadata:completionBlock:</li>
-</ul>
-<h2 id="Managing-Asset-Groups"><a href="#Managing-Asset-Groups" class="headerlink" title="Managing Asset Groups"></a>Managing Asset Groups</h2><p> addAssetsGroupAlbumWithName:resultBlock:failureBlock: 新建资源分组到资源库中</p>
-<ul>
-<li>name为新建资源组名字，<strong>不可重名</strong>。类型为ALAssetsGroupAlbum，可读写。同为异步方法，需要用户授权</li>
-</ul>
-<p>groupForURL:resultBlock:failureBlock:使用资源分组url来访问该资源组</p>
-<ul>
-<li>同为异步方法</li>
-</ul>
-<h2 id="Constants"><a href="#Constants" class="headerlink" title="Constants"></a>Constants</h2><p>具体的资源类型、回调定义，权限类型，通知信息，错误信息。请参见 ALAssetsLibrary Class Reference(iOS 8.3 Documentation)</p>
 <blockquote>
 <p>如有任何知识产权、版权问题或理论错误，还请指正。</p>
 <p>转载请注明原作者及以上信息。</p>

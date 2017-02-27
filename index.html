@@ -54,6 +54,104 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2017-02-27-WebSocket" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/27/2017-02-27-WebSocket/">WebSocket</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/02/27/2017-02-27-WebSocket/" class="article-date">
+  <time datetime="2017-02-27T00:00:00.000Z" itemprop="datePublished">2017-02-27</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/NetWork/">NetWork</a><span>></span><a class="article-category-link" href="/categories/NetWork/WebSocket/">WebSocket</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><a href="#背景">背景</a></li>
+<li><a href="#握手协议">握手协议</a></li>
+<li><a href="#数据帧">数据帧</a></li>
+<li><a href="#掩码存在的必要性">掩码存在的必要性</a></li>
+<li><a href="#引用">引用</a></li>
+</ul>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>现在，很多网站为了实现推送技术，所用的技术都是轮询。轮询是在特定的的时间间隔（如每1秒），由浏览器对服务器发出HTTP请求，然后由服务器返回最新的数据给客户端的浏览器。这种传统的模式带来很明显的缺点，即浏览器需要不断的向服务器发出请求，然而HTTP请求可能包含较长的头部，其中真正有效的数据可能只是很小的一部分，显然这样会浪费很多的带宽等资源。</p>
+<p>而比较新的技术去做轮询的效果是Comet。这种技术虽然可以双向通信，但依然需要反复发出请求。而且在Comet中，普遍采用的长链接，也会消耗服务器资源。</p>
+<p>在这种情况下，HTML5定义了WebSocket协议，能更好的节省服务器资源和带宽，并且能够更实时地进行通讯。</p>
+<h2 id="握手协议"><a href="#握手协议" class="headerlink" title="握手协议"></a>握手协议</h2><p><code>WebSocket</code>是独立，建立在<code>TCP</code>上的协议。</p>
+<p>和<code>HTTP</code>的关系是，<code>WebSocket</code>第一次的握手请求是使用<code>HTTP</code>协议：</p>
+<p>一个典型的握手请求请求：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GET / HTTP/1.1</span><br><span class="line">Upgrade: websocket</span><br><span class="line">Connection: Upgrade</span><br><span class="line">Host: example.com</span><br><span class="line">Origin: http://example.com</span><br><span class="line">Sec-WebSocket-Key: sN9cRrP/n9NdMgdcy2VJFQ==</span><br><span class="line">Sec-WebSocket-Version: 13</span><br></pre></td></tr></table></figure>
+<p>服务端回应：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 101 Switching Protocols</span><br><span class="line">Upgrade: websocket</span><br><span class="line">Connection: Upgrade</span><br><span class="line">Sec-WebSocket-Accept: fFBooB7FAkLlXgRSz0BT3v4hq5s=</span><br><span class="line">Sec-WebSocket-Location: ws://example.com/</span><br></pre></td></tr></table></figure>
+<p>字段说明</p>
+<ul>
+<li>Connection必须设置Upgrade，表示客户端希望连接升级。</li>
+<li>Upgrade字段必须设置Websocket，表示希望升级到Websocket协议。</li>
+<li>Sec-WebSocket-Key是随机的字符串，服务器端会用这些数据来构造出一个SHA-1的信息摘要。把“Sec-WebSocket-Key”加上一个特殊字符串“258EAFA5-E914-47DA-95CA-C5AB0DC85B11”，然后计算SHA-1摘要，之后进行BASE-64编码，将结果做为“Sec-WebSocket-Accept”头的值，返回给客户端。如此操作，可以尽量避免普通HTTP请求被误认为Websocket协议。</li>
+<li>Sec-WebSocket-Version 表示支持的Websocket版本。RFC6455要求使用的版本是13，之前草案的版本均应当被弃用。</li>
+<li>Origin字段是可选的，通常用来表示在浏览器中发起此Websocket连接所在的页面，类似于Referer。但是，于Referer不同的是，Origin只包含了协议和主机名称。</li>
+<li>其他一些定义在HTTP协议中的字段，如Cookie等，也可以在Websocket中使用。</li>
+</ul>
+<p>客户端发送握手请求，要求服务端升级协议。服务端再回复<code>HTTP/1.1 101 Switching Protocols</code>。 自此双通道已搭建，两端使用发送序列化的数据帧传输数据</p>
+<p>除此之外，WebSocket也规定了加密数据传输方法，允许使用TLS/SSL对通信进行加密，类似HTTPS。默认情况下，ws协议使用80端口进行普通连接，加密的TLS连接默认使用443端口。</p>
+<h2 id="数据帧"><a href="#数据帧" class="headerlink" title="数据帧"></a>数据帧</h2><p>出于安全原因考虑。不管<code>WebSocket</code>协议是否基于<code>TLS</code>上，客户端发送的数据帧中必须包含掩码。</p>
+<ol>
+<li>客户端向服务器传输的数据帧必须进行掩码处理：服务器若接收到未经过掩码处理的数据帧，则必须主动关闭连接。</li>
+<li>服务器向客户端传输的数据帧一定不能进行掩码处理。客户端若接收到经过掩码处理的数据帧，则必须主动关闭连接。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">0               1               2               3                &lt;- byte</span><br><span class="line">0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7  &lt;- bit</span><br><span class="line">+-+-+-+-+-------+-+-------------+-----------------------------+</span><br><span class="line">|F|R|R|R| Opcode|M| Payload len |    Extended payload length  |</span><br><span class="line">|I|S|S|S|  (4)  |A|     (7)     |             (16/64)         |</span><br><span class="line">|N|V|V|V|       |S|             |   (if payload len==126/127) |</span><br><span class="line">| |1|2|3|       |K|             |                             |</span><br><span class="line">+-+-+-+-+-------+-+-------------+ - - - - - - - - - - - - - - +</span><br><span class="line">|   Extended payload length continued, if payload len == 127  |</span><br><span class="line">+ - - - - - - - - - - - - - - - +-----------------------------+</span><br><span class="line">|                               |Masking-key, if MASK set to 1|</span><br><span class="line">+-------------------------------+-----------------------------+</span><br><span class="line">| Masking-key (continued)       |          Payload Data       |</span><br><span class="line">+-------------------------------- - - - - - - - - - - - - - - +</span><br><span class="line">:                     Payload Data continued ...              :</span><br><span class="line">+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +</span><br><span class="line">|                     Payload Data continued ...              |</span><br><span class="line">+-------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+<p><code>FIN</code>占<code>1 bit</code> 指示这个是消息的最后片段。</p>
+<p><code>RSV1,RSV2,RSV3</code>各占<code>1 bit</code> 扩展协议非零值定义，一般为0。</p>
+<p><code>Opcode</code>操作码，占<code>4 bit</code>定义<code>payload Data</code>的意义。</p>
+<ul>
+<li>%x0 代表一个继续帧</li>
+<li>%x0 代表一个继续帧</li>
+<li>%x1 代表一个文本帧</li>
+<li>%x2 代表一个二进制帧</li>
+<li>%x3-7 保留用于未来的非控制帧</li>
+<li>%x8 代表连接关闭</li>
+<li>%x9 代表ping</li>
+<li>%xA 代表pong</li>
+<li>%xB-F 保留用于未来的控制帧</li>
+</ul>
+<p><code>Mask</code>是否存在掩码标志位，占<code>1 bit</code>。若为1，则<code>Masking-key</code>存在掩码。客户端发送的数据帧中必须为1</p>
+<p><code>Payload length</code>负载数据长度。占<code>7 bits</code>，且最高有效位必须为0。所以<code>7 bits</code>只能表示0~127（2^7 - 1),若值为0~125则表示<code>7 bits</code>是有效负载数据长度。若值为126，则表示需要查看后<code>16 bits</code>。若值为127，则表示需要查看后面<code>64 bits</code>。</p>
+<p><code>Masking-key</code> 客户端发送数据帧的掩码</p>
+<p><code>payload Data</code> 应用数据</p>
+<h2 id="掩码存在的必要性"><a href="#掩码存在的必要性" class="headerlink" title="掩码存在的必要性"></a>掩码存在的必要性</h2><p>掩码是由客户端随机选择的32位值。 客户端必须从允许的32位值集合中选择一个新的掩码。 掩码需要是不可预测的；因此，掩码键必须来自一个强大的熵源，且用于给定帧的掩码键必须不容易被服务器/代理预测用于后续帧的掩码键。 </p>
+<p>掩码键的不可预测性对防止恶意应用的作者选择出现在报文上的字节是必要的。 </p>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p><a href="https://tools.ietf.org/rfc/rfc6455.txt" target="_blank" rel="external">The WebSocket Protocol</a><br><a href="https://chenjianlong.gitbooks.io/rfc-6455-websocket-protocol-in-chinese/content/section3/section3.html" target="_blank" rel="external">The WebSocket Protocol 中文版</a></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WebSocket/">WebSocket</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2017-02-21-iOS runtime浅析Property和Ivar" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -899,70 +997,6 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/QCon-上海2016/">QCon 上海2016</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2016-10-03-Gas Station" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/03/2016-10-03-Gas Station/">Gas Station</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/10/03/2016-10-03-Gas Station/" class="article-date">
-  <time datetime="2016-10-03T00:00:00.000Z" itemprop="datePublished">2016-10-03</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a><span>></span><a class="article-category-link" href="/categories/Algorithm/LeetCode/">LeetCode</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://leetcode.com/problems/gas-station/" target="_blank" rel="external">LeetCode - 134.Gas Station</a></p>
-<h2 id="题目大意："><a href="#题目大意：" class="headerlink" title="题目大意："></a>题目大意：</h2><p>有<code>n</code>个加油站分布在 环形路线上。其中每个加油站的储油量为 <code>gas[i]</code>。 你有一辆巨大油箱(可以无限加油)的汽车,从 站点<code>i</code>到下一站<code>i+1</code>，油耗为 <code>cost[i]</code>。一开始的时候，汽车油箱是空的。</p>
-<p>如果你能一次开完全程的话，请返回一个起始站点。否则返回-1表示无法完成。</p>
-<ul>
-<li><p>提示： 测试用例保证答案是唯一的。</p>
-</li>
-<li><p>疑问：题目未明显指出 是顺时针开或逆时针开。但从测试数据理解 站点i 到 站点i+1，应该是顺时针开的。</p>
-</li>
-</ul>
-<h2 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h2><p>首先可以明确的是，如果 总油耗<code>sum{cost[0...n]}</code> 大于 总储量<code>sum{gas[0...n]}</code>的话，是无法完成任务的。直接返回-1。</p>
-<p>接着，思考一下当 总油耗 小等于 总储量时，是否必然存在可行解。</p>
-<p> C(i) + C(i+1) + C(i+2) + C(i+3) … + C(i+n) = C</p>
-<p> G(i) + G(i+1) + G(i+2) + G(i+3) … + G(i+n) = G</p>
-<p> G &gt;= C</p>
-<p> 如果 平均分布的话， 则 G(i)&gt;=C(i) 。 必然是ok的。</p>
-<p> 考虑极限情况，C(i) 油耗巨大。贪心策略保证每站必停(油不加白不加)，我们从i站点<code>逆时针</code>选点。基于贪心考虑，逆时针选站点要保证对经过C(i)最大油耗是有利：每一次后退选点对总油耗是正向的。</p>
-<h2 id="枚举-Time-Limit-Exceeded"><a href="#枚举-Time-Limit-Exceeded" class="headerlink" title="枚举 (Time Limit Exceeded)"></a>枚举 (Time Limit Exceeded)</h2><p>时间复杂度 大致为 O(n^2)。 测试用例数据极为暴力。。</p>
- <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">int</span> <span class="title">goRound</span><span class="params">(<span class="keyword">int</span> starInx,<span class="keyword">int</span> *gas,<span class="keyword">int</span> gasSize,<span class="keyword">int</span> *cost,<span class="keyword">int</span> costSize)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> nowGas = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> nowIdx = starInx;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;gasSize;i++)&#123;</span><br><span class="line">        nowGas += gas[nowIdx];</span><br><span class="line">        <span class="keyword">if</span>(nowGas &lt; cost[nowIdx]) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        </span><br><span class="line">        nowGas -= cost[nowIdx];</span><br><span class="line">        nowIdx = (nowIdx+<span class="number">1</span>)%gasSize;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> nowGas &gt;= <span class="number">0</span> ? starInx : <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">canCompleteCircuit</span><span class="params">(<span class="keyword">int</span>* gas, <span class="keyword">int</span> gasSize, <span class="keyword">int</span>* cost, <span class="keyword">int</span> costSize)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> totalGas = <span class="number">0</span>, totalCosts = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;costSize;i++)&#123;</span><br><span class="line">        totalCosts += cost[i];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;gasSize;i++)&#123;</span><br><span class="line">        totalGas += gas[i];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(totalGas &lt; totalCosts) <span class="keyword">return</span> ans;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;gasSize;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>((ans = goRound(i,gas,gasSize,cost,costSize)) != <span class="number">-1</span>)&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="贪心-Accepted"><a href="#贪心-Accepted" class="headerlink" title="贪心 (Accepted)"></a>贪心 (Accepted)</h2> <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">int</span> <span class="title">canCompleteCircuit</span><span class="params">(<span class="keyword">int</span>* gas, <span class="keyword">int</span> gasSize, <span class="keyword">int</span>* cost, <span class="keyword">int</span> costSize)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> totalGas = <span class="number">0</span>, totalCosts = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> maxCostIdx = <span class="number">-1</span>, maxCost = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;costSize;i++)&#123;</span><br><span class="line">        totalCosts += cost[i];</span><br><span class="line">        <span class="keyword">if</span>(cost[i] &gt; maxCost)&#123;</span><br><span class="line">            maxCostIdx = i;</span><br><span class="line">            maxCost = cost[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;gasSize;i++)&#123;</span><br><span class="line">        totalGas += gas[i];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(totalGas &lt; totalCosts) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> tmp = maxCostIdx;</span><br><span class="line">    <span class="keyword">int</span> tmpMaxgas = gas[tmp];</span><br><span class="line">    <span class="keyword">int</span> tmpMaxCost = cost[tmp];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (tmpMaxgas &lt; tmpMaxCost || gas[tmp] &gt;= cost[tmp]) &#123; <span class="comment">// 贪心策略</span></span><br><span class="line">        tmp--;</span><br><span class="line">        <span class="keyword">if</span>(tmp == <span class="number">-1</span>) tmp = gasSize - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(tmp == maxCostIdx) <span class="keyword">break</span>;</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        tmpMaxgas += gas[tmp];</span><br><span class="line">        tmpMaxCost += cost[tmp];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> (tmp+<span class="number">1</span>)%gasSize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> <img src="https://raw.githubusercontent.com/778477/778477.github.io/baa6788ce066521a1d0c315c37894e4791c99f55/img/gas-station.png" alt="Accepted"></p>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
 
       </footer>
     
