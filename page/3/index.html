@@ -54,6 +54,90 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2016-02-02-Range Sum Query - Mutable" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/02/2016-02-02-Range Sum Query - Mutable/">Range Sum Query Mutable</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/02/02/2016-02-02-Range Sum Query - Mutable/" class="article-date">
+  <time datetime="2016-02-02T00:00:00.000Z" itemprop="datePublished">2016-02-02</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a><span>></span><a class="article-category-link" href="/categories/Algorithm/LeetCode/">LeetCode</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://leetcode.com/problems/range-sum-query-mutable/" target="_blank" rel="external">Range Sum Query - Mutable</a></p>
+<p>给定一个整形数组。会有两个操作</p>
+<p>操作1：查询区间(i,j)的总和</p>
+<p>操作2：更新元素(i,val) 下标为i的元素 值更新为val</p>
+<p>提示：</p>
+<ul>
+<li>数组元素的修改只有通过 update 方法</li>
+<li>update 和 sumRange 方法调用是不确定次数和顺序的（distributed evenly 分布式）</li>
+</ul>
+<p>这个是一个经典的问题。类似 RMQ(Range Minimum/Maximum Query)，区间最值查询。不过我们注意到有操作2，就表示说数据是可变的，离线算法就不考虑了。</p>
+<p>这类题目有一个现成的数据结构可以解决：<a href="https://en.wikipedia.org/wiki/Segment_tree" target="_blank" rel="external">SegmentTree 线段树</a></p>
+<p>由于线段树是平衡二叉树，所以深度是logn。就是算查询的区间和的时间复杂度是 O(logn)的。</p>
+<p><img src="http://d1gjlxt8vb0knt.cloudfront.net//wp-content/uploads/segment-tree1.png" alt="segment-tree1"></p>
+<p>由上图可知，叶子节点均为数组元素。我们在做ACM题的常常会提到一个线段树常数，其实是指线段树的空间复杂度。按照数组n来推算线段树的空间复杂度。</p>
+<p>时间复杂度大体分为： </p>
+<ul>
+<li>初始化 建树O(n) </li>
+<li>区间查询和 O(logn) </li>
+<li>更新单值O(logn) </li>
+</ul>
+<p>时间复杂度理想是线性的，不因为n的变化产生剧烈抖动。空间复杂度是O(nlogn)</p>
+<blockquote>
+<p>A segment tree T on a set I of n intervals uses O(nlogn) storage.</p>
+<p>Proof:<br>Lemma: Any interval [x, x′] of I is stored in the canonical set for at most two nodes at the    same depth.</p>
+<p>Proof: Let v1, v2, v3 be the three nodes at the same depth, numbered from left to right; and let p(v) be the parent node of any given node v. Suppose [x, x′] is stored at v1 and v3. This means that [x, x′] spans the whole interval from the left endpoint of Int(v1) to the right endpoint of Int(v3). Note that all segments at a particular level are non-overlapping and ordered from left to right: this is true by construction for the level containing the leaves, and the property is not lost when moving from any level to the one above it by combining pairs of adjacent segments. Now either p(v2) = p(v1), or the former is to the right of the latter (edges in the tree do not cross). In the first case, Int(p(v2))’s leftmost point is the same as Int(v1)’s leftmost point; in the second case, Int(p(v2))’s leftmost point is to the right of Int(p(v1))’s rightmost point, and therefore also to the right of Int(v1)’s rightmost point. In both cases, Int(p(v2)) begins at or to the right of Int(v1)’s leftmost point. Similar reasoning shows that Int(p(v2)) ends at or to the left of Int(v3)’s rightmost point. Int(p(v2)) must therefore be contained in [x, x′]; hence, [x, x′] will not be stored at v2.<br>The set I has at most 4n + 1 elementary intervals. Because T is a binary balanced tree with at most 4n + 1 leaves, its height is O(logn). Since any interval is stored at most twice at a given depth of the tree, that the total amount of storage is O(nlogn).</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">typedef unsigned long lusigned;</span><br><span class="line"></span><br><span class="line">struct SegmenTreeNode&#123;</span><br><span class="line">    int val;</span><br><span class="line">    lusigned star,end;</span><br><span class="line">    SegmenTreeNode *left,*right;</span><br><span class="line">    SegmenTreeNode(lusigned _star,lusigned _end,int _val)&#123;</span><br><span class="line">        val = _val;</span><br><span class="line">        star = _star, end = _end;</span><br><span class="line">        left = right = NULL;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class NumArray &#123;</span><br><span class="line">public:</span><br><span class="line">    NumArray(vector&lt;int&gt; &amp;nums) &#123;</span><br><span class="line">        numbers = nums;</span><br><span class="line">        if(nums.size() &gt;= 1)&#123;</span><br><span class="line">            rootNode = buildSegmentTree(0, 0, nums.size()-1, nums);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    void update(int i, int val)&#123;</span><br><span class="line">        updateNodeVal(rootNode, i, val);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    int sumRange(int i, int j) &#123;</span><br><span class="line">        if(j &lt; i) return 0;</span><br><span class="line">        return querySumValInSegmentTree(rootNode, 0, numbers.size()-1, i, j);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">private:</span><br><span class="line">    vector&lt;int&gt; numbers;</span><br><span class="line">    SegmenTreeNode *rootNode;</span><br><span class="line">    SegmenTreeNode *buildSegmentTree(int root,lusigned star,lusigned end,const vector&lt;int&gt; nums)&#123;</span><br><span class="line">        </span><br><span class="line">        SegmenTreeNode *rootNode = new SegmenTreeNode(star, end, 0);</span><br><span class="line">        </span><br><span class="line">        if(star == end)&#123;</span><br><span class="line">            rootNode-&gt;val = nums[star];</span><br><span class="line">        &#125;</span><br><span class="line">        else&#123;</span><br><span class="line">            lusigned mid = (star + end)/2;</span><br><span class="line">            rootNode-&gt;left = buildSegmentTree(root*2+1, star, mid, nums);</span><br><span class="line">            rootNode-&gt;right =  buildSegmentTree(root*2+2, mid+1, end, nums);</span><br><span class="line">            </span><br><span class="line">            rootNode-&gt;val = rootNode-&gt;left-&gt;val + rootNode-&gt;right-&gt;val;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return rootNode;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    int updateNodeVal(SegmenTreeNode *root, int idx,int value)&#123;</span><br><span class="line">        if(root-&gt;star == root-&gt;end &amp;&amp; root-&gt;star == idx)  return (root-&gt;val = value);</span><br><span class="line">        else if(root-&gt;star == root-&gt;end) return root-&gt;val;</span><br><span class="line">        </span><br><span class="line">        lusigned mid = (root-&gt;star + root-&gt;end)&gt;&gt;1;</span><br><span class="line">        if(idx &lt;= mid)&#123;</span><br><span class="line">            root-&gt;left-&gt;val = updateNodeVal(root-&gt;left, idx, value);</span><br><span class="line">        &#125;</span><br><span class="line">        else&#123;</span><br><span class="line">            root-&gt;right-&gt;val = updateNodeVal(root-&gt;right, idx, value);</span><br><span class="line">        &#125;</span><br><span class="line">        return (root-&gt;val = root-&gt;left-&gt;val + root-&gt;right-&gt;val);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    int querySumValInSegmentTree(SegmenTreeNode *root, lusigned star,lusigned end,lusigned qSidx,lusigned qEidx)&#123;</span><br><span class="line">        </span><br><span class="line">        if(qSidx &lt;= star &amp;&amp; qEidx &gt;= end) return root-&gt;val;</span><br><span class="line">        </span><br><span class="line">        if(qEidx &lt; star || qSidx &gt; end) return 0;</span><br><span class="line">        </span><br><span class="line">        lusigned mid = (star + end) / 2;</span><br><span class="line">        </span><br><span class="line">        int leftSumVal = querySumValInSegmentTree(root-&gt;left, star, mid, qSidx, qEidx);</span><br><span class="line">        int rightSumVal = querySumValInSegmentTree(root-&gt;right, mid+1, end, qSidx, qEidx);</span><br><span class="line">        </span><br><span class="line">        return leftSumVal + rightSumVal;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Range%20Sum%20Query%20Accepted.png" alt="accepted"></p>
+<p>不太明白为什么 leetCode Judge 中 C/C++ 的效率最低，Java最高。这个明显是不合理的。。</p>
+<p>最后 关于 线段树的更新是有优化空间的。看一看这组操作</p>
+<ol>
+<li>操作1</li>
+<li>操作2 </li>
+<li>操作2</li>
+<li>操作2</li>
+<li>操作2</li>
+<li>操作2</li>
+<li>操作2</li>
+</ol>
+<p>其实 后面的操作2 如果没有接着操作1的话，其实我们没有必要实时更新单点值。这里就有一个延迟更新的优化点，也是线段树的精髓。 我之后有空补充:)</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2015-12-16-Lighter View Controller" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -664,86 +748,6 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2015-09-04-iOS 杂技" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/04/2015-09-04-iOS 杂技/">iOS杂记</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/09/04/2015-09-04-iOS 杂技/" class="article-date">
-  <time datetime="2015-09-04T00:00:00.000Z" itemprop="datePublished">2015-09-04</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/杂记/">杂记</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><a href="http://www.cnblogs.com/xdream86/p/3367401.html" target="_blank" rel="external">iOS代码工具箱</a></li>
-<li><a href="http://semver.org/lang/zh-CN/" target="_blank" rel="external">语义版本控制 for CocoaPods</a></li>
-<li><a href="http://www.cnblogs.com/sdjxcolin/archive/2007/07/02/803376.html" target="_blank" rel="external">软件项目版本号命名规则</a></li>
-</ul>
-<p>主版本号 . 子版本号 [. 修正版本号 [. 编译版本号 ]]<br> Major_Version_Number.Minor_Version_Number[.Revision_Number[.Build_Number]]应根据下面的约定使用这些部分：</p>
-<p>Major ：具有相同名称但不同主版本号的程序集不可互换。例如，这适用于对产品的大量重写，这些重写使得无法实现向后兼容性。</p>
-<p>Minor ：如果两个程序集的名称和主版本号相同，而次版本号不同，这指示显著增强，但照顾到了向后兼容性。例如，这适用于产品的修正版或完全向后兼容的新版本。</p>
-<p>Build ：内部版本号的不同表示对相同源所作的重新编译。这适合于更改处理器、平台或编译器的情况。</p>
-<p>Revision ：名称、主版本号和次版本号都相同但修订号不同的程序集应是完全可互换的。这适用于修复以前发布的程序集中的安全漏洞。</p>
-<p>程序集的只有内部版本号或修订号不同的后续版本被认为是先前版本的修补程序 (Hotfix) 更新。</p>
-<ul>
-<li><a href="http://nshipster.com/__attribute__/" target="_blank" rel="external"> attribute详解</a></li>
-</ul>
-<p>GNU C的一大特色（却不被初学者所知）就是<strong>attribute</strong>机制。<strong>attribute</strong>可以设置函数属性（Function Attribute）、变量属性（Variable Attribute）和类型属性（Type Attribute）。</p>
-<p>编写工业级代码必不可少的装逼技能</p>
-<ul>
-<li><a href="http://www.diffen.com/difference/GET_(HTTP" target="_blank" rel="external">Http Request GET VS POST</a>_vs<em>POST</em>(HTTP))</li>
-</ul>
-<p>对比http请求中 GET Method 和 POST Method两者的区别</p>
-<ul>
-<li><a href="https://github.com/ReactiveCocoa/ReactiveCocoa" target="_blank" rel="external">RAC(Reactive-Cocoa)函数响应式编程</a></li>
-</ul>
-<p>编程思想值得借鉴学习，可以在 Demo项目中试用一下</p>
-<ul>
-<li><a href="http://inessential.com/hownottocrash" target="_blank" rel="external">How Not to Crash</a></li>
-</ul>
-<p>笔者实践经验总结how not to crash</p>
-<ul>
-<li><a href="https://github.com/yoavlt/LiquidFloatingActionButton" target="_blank" rel="external">Animation in liquid state</a></li>
-</ul>
-<p><a href="http://jamie-wong.com/2014/08/19/metaballs-and-marching-squares/" target="_blank" rel="external">metaballs-and-marching-squares</a><br><img src="https://raw.githubusercontent.com/yoavlt/LiquidFloatingActionButton/master/Demo/top.gif" alt="demo"></p>
-<blockquote>
-<p>如有任何知识产权、版权问题或理论错误，还请指正。</p>
-<p>转载请注明原作者及以上信息。</p>
-</blockquote>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
 
       </footer>
     

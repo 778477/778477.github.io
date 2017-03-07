@@ -54,6 +54,61 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2017-03-07-TinyURL的生成" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/07/2017-03-07-TinyURL的生成/">TinyURL的生成</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/03/07/2017-03-07-TinyURL的生成/" class="article-date">
+  <time datetime="2017-03-07T00:00:00.000Z" itemprop="datePublished">2017-03-07</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a><span>></span><a class="article-category-link" href="/categories/Algorithm/Hash/">Hash</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://leetcode.com/problems/encode-and-decode-tinyurl/?tab=Description" target="_blank" rel="external">Encode and Decode TinyURL</a></p>
+<p>这题很有意思。</p>
+<p>题目大意是实现一个长链接和短链接的转化。</p>
+<p>形式是 <a href="http://tinyurl.com/4e9iAk。" target="_blank" rel="external">http://tinyurl.com/4e9iAk。</a> 只有6位标志包含(0-9),(a-z),(A-Z)</p>
+<p>一位有10+26+26 = 62种值。 6位的总数大致是 62^6 - 1。</p>
+<h3 id="思路1-哈希"><a href="#思路1-哈希" class="headerlink" title="思路1. 哈希"></a>思路1. 哈希</h3><p>既然我们想到了hash，就需要搞明白 URL的字符集，就是说URL中有可能会出现哪些字符。发现题目不控制长链接的长度，再加上URL的字符集也超过了62种。只有6位的话，再高明的hash也难免冲突</p>
+<h3 id="思路2-自增ID"><a href="#思路2-自增ID" class="headerlink" title="思路2. 自增ID"></a>思路2. 自增ID</h3><p>62^6次 大约为 2^32 左右。能发放2^32个ID。</p>
+<p>自增的问题在于不可逆。</p>
+<p>短链无法逆算出长链，存在这个需求的话需要将ID和长链接关联存储起来。</p>
+<p>自增在单点服务器上需要加锁，避免多线程访问ID重复。hash没有这个问题，hash算法保证唯一性。加锁QPS高的情况下，会出现排队等待的情况。分布式支持高QPS，不考虑分布式锁同步的话：</p>
+<p>有这种的思路：发单双号ID。A服务器只发单号，B服务器只发双号。类比你集群有多少台服务器。</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2017-02-27-WebSocket" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -778,225 +833,6 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2016-10-24-QCon2016上海站见闻" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/24/2016-10-24-QCon2016上海站见闻/">QCon 2016 上海站见闻</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/10/24/2016-10-24-QCon2016上海站见闻/" class="article-date">
-  <time datetime="2016-10-24T00:00:00.000Z" itemprop="datePublished">2016-10-24</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/QCon/">QCon</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>有幸参与了QCon 2016的上海站会议。官方宣传这是一个中高端会议，专题丰富涵盖了当前互联网各种技术领域。</p>
-<table>
-<thead>
-<tr>
-<th>10月20号周四</th>
-<th style="text-align:center">10月21号周五</th>
-<th style="text-align:right">10月22号周五</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>前端技术实践</td>
-<td style="text-align:center">玩转大数据</td>
-<td style="text-align:right">Growth Hacking，IoT &amp; React Native</td>
-</tr>
-<tr>
-<td>安全之战</td>
-<td style="text-align:center">移动开发探索</td>
-<td style="text-align:right">互联网广告系统实战</td>
-</tr>
-<tr>
-<td>新Java，新未来</td>
-<td style="text-align:center">移动视频</td>
-<td style="text-align:right">工程团队管理</td>
-</tr>
-<tr>
-<td>无处不在的容器</td>
-<td style="text-align:center">让架构更简单</td>
-<td style="text-align:right">技术创业</td>
-</tr>
-<tr>
-<td>微服务架构，我们该如何实践？</td>
-<td style="text-align:center">运维与监控</td>
-<td style="text-align:right">机器学习与深度学习</td>
-</tr>
-<tr>
-<td>大数据应用与系统优化实践(厂商共建专题)</td>
-<td style="text-align:center">大数据服务与应用</td>
-<td style="text-align:right">用户体验设计</td>
-</tr>
-<tr>
-<td>业务上云技术拆解(厂商共建专题)</td>
-<td style="text-align:center">高并发与实时处理架构设计(厂商共建专题)</td>
-<td style="text-align:right">研发支撑体系</td>
-</tr>
-<tr>
-<td>智能出行 - 高德开放平台专场(厂商共建专题)</td>
-<td style="text-align:center">微服务实践与架构演进之路(厂商共建专题)</td>
-<td style="text-align:right">业务系统架构</td>
-</tr>
-<tr>
-<td></td>
-<td style="text-align:center"></td>
-<td style="text-align:right">大数据分析与应用</td>
-</tr>
-<tr>
-<td></td>
-<td style="text-align:center"></td>
-<td style="text-align:right">大规模前端系统</td>
-</tr>
-</tbody>
-</table>
-<p><a href="http://ppt.geekbang.org/qconsh2016" target="_blank" rel="external">QCon 上海站PPT 下载</a></p>
-<p>其中每个专题会在固定的宴会厅进行，由专题出品人主持专题的会议开展。专题下面是各个议题，时长大致为45分钟包含Q&amp;A环节。</p>
-<p>根据自身技术栈出发，我选择了以下专题</p>
-<ul>
-<li>20号 前端技术实践</li>
-<li>21号 移动开发探索</li>
-<li>22号 Growth Hacking &amp; 用户体验设计 &amp; 技术创业</li>
-</ul>
-<h2 id="前端技术实践"><a href="#前端技术实践" class="headerlink" title="前端技术实践"></a>前端技术实践</h2><p>周四的专题对于 客户端开发来说稍显尴尬，没有与之相关的议题。 我选择了和客户端相对平等的前端专题。 下面重点介绍一下我认为有意思的议题：</p>
-<h3 id="Vue-2-0-渐进式前端解决方案"><a href="#Vue-2-0-渐进式前端解决方案" class="headerlink" title="Vue 2.0: 渐进式前端解决方案"></a>Vue 2.0: 渐进式前端解决方案</h3><p>讲师@尤雨溪，很早就关注他了。这次总算见到真人了。<a href="https://github.com/vuejs/vue" target="_blank" rel="external">Vue</a>已经在Github上收获了3w+颗star，对于开源项目来说，无疑是相当成功了。</p>
-<p>我很认同他对框架的理解。<strong>框架的存在是为了帮助我们应对复杂度。但同时框架也有复杂度，Pick the right tool for the job.</strong></p>
-<p>开篇的框架理解引出了 Vue ，这个渐进式前端解决方案。可能就是他对当下JS开发环境的一个答案。</p>
-<p>框架本身，我不是JS开发，没有使用经历就不做主观评价了。 回到一开始的”框架”，他是如何解决框架复杂度的呢？ 答案是”渐进式”。</p>
-<p><img src="https://github.com/778477/778477.github.io/blob/51ed1eda4322c046a4bfe958f96dfcb3c744f7ec/img/Vue-Progressive.png?raw=true" alt="progressive"></p>
-<p>Vue框架提供 声明式渲染 核心功能，加上可选的附加库/工具链，来打造弹性复杂度。这个区别于传统框架，集成整合了一整套解决方案。提高框架复杂度，增加开发者的学习使用成本。</p>
-<p>这种框架的设计思路，是明智的。</p>
-<h3 id="Progressive-Web-App：反击序章"><a href="#Progressive-Web-App：反击序章" class="headerlink" title="Progressive Web App：反击序章"></a>Progressive Web App：反击序章</h3><p>讲师@黄玄开篇讲述了web在当下移动时代的窘境。有一定的技术高度看待这类行业问题是蛮赞的。不认可web在移动时代只有Hybrid这一种选择。</p>
-<p>开始布道 PWA(Progressive Web App),认为这是web针对native的一次反击。<br><strong>The new application model for Web</strong></p>
-<ul>
-<li>add To HomeScreen (web 也有像native原生应用一样的桌面图标入口)</li>
-<li>Instant Loading &amp; ReliableExperience (提供一种缓存机制，类似原生应用的首次下载)</li>
-<li>Push Notifications (web 也可以像原生应用一样接受通知)</li>
-</ul>
-<p>…等等一些特性。让我这种native同学感到十分新鲜。确实<strong>在 纯web 到 纯navite 之间有许多可能的点</strong>。</p>
-<p>反观业界，应该很少有企业对自己的网站能支持到这种体验程度。特别是在iOS 9提供了 web mark机制之后，直接把web流量切给了native。不知道有没有统计过用户是愿意留在浏览器 还是 更愿意跳往原生应用</p>
-<p>不过在原生应用开发实践中，我个人偏向于 hybrid 方案。这个取决于你的App大多数是什么样的业务场景，需要权衡体验和发布节奏等利益点。</p>
-<ol>
-<li>纯native，体验是有可以保证的。 缺点就是发版受限</li>
-<li>hybrid，这里讨论指的是 RN，Weex这种跨端方案。好处是 发布不受限制，一人开发跨两端(iOS,Android) 节省人力。体验稍逊于native</li>
-<li>纯web，包括不经优化，直接套用webview的这种。缺点是体验差，卡顿，load时间久</li>
-</ol>
-<h2 id="移动开发探索"><a href="#移动开发探索" class="headerlink" title="移动开发探索"></a>移动开发探索</h2><p>这个专题与我息息相关，吸引的我是这些议题</p>
-<h3 id="React-Native-业务实践和性能优化"><a href="#React-Native-业务实践和性能优化" class="headerlink" title="React Native 业务实践和性能优化"></a>React Native 业务实践和性能优化</h3><p><img src="https://github.com/778477/778477.github.io/blob/c35a39b54f811e27512715841869cb6dd1b1ca2c/img/who%20use%20RN.png?raw=true" alt="who use RN"></p>
-<p>讲师 携程@赵辛贵。 携程积极拥抱RN技术，多数业务和页面使用RN搭建。<br>好处明显</p>
-<ul>
-<li>size优势，RN页面大小计算脱离原生包大小</li>
-<li>支持动态发布，跨端节省开发人力</li>
-<li>RN技术成熟，社区活跃(参会时和旁边的途牛网开发交流，他们动态方案也是选择RN)</li>
-</ul>
-<p>携程内部还演化出了CRN(ctrip RN)业务框架。做了性能和稳定性优化(思路参见PPT)，规划支持CRN-web实现跨三端(iOS,android,H5)。</p>
-<p>外界RN动态方案使用的如火如荼，他们正在证明这是未来移动前端开发的方向。</p>
-<h3 id="Weex-极致性能优化"><a href="#Weex-极致性能优化" class="headerlink" title="Weex 极致性能优化"></a>Weex 极致性能优化</h3><p>公司同学分享，Weex性能优化的几个思路方向。围绕性能，干货较多。<br>不过，这种经历只能听听思路。 基本没有实践复用场景 ：）<br>安利Weex性能很好，倒是真的。</p>
-<h3 id="蘑菇街-App-的稳定性与性能实践"><a href="#蘑菇街-App-的稳定性与性能实践" class="headerlink" title="蘑菇街 App 的稳定性与性能实践"></a>蘑菇街 App 的稳定性与性能实践</h3><p>从用户角度出发看 性能和稳定性问题：</p>
-<ul>
-<li>闪退</li>
-<li>打开慢</li>
-<li>滑动不流畅</li>
-<li>耗电</li>
-<li>网络不畅/出错</li>
-<li>流量大</li>
-</ul>
-<p>都是客户端常见的问题，相信各大公司都有自己的答案实践。</p>
-<p>他们有一个比较有意思的工具：AppMate(小蘑菇) 提供给测试和业务开发进行开发阶段的一个性能把控。</p>
-<p>或许是在阿里的原因，这些东西听来都不足以让我兴奋。</p>
-<h2 id="Growth-Hacking-最新动态和最佳实践"><a href="#Growth-Hacking-最新动态和最佳实践" class="headerlink" title="Growth Hacking 最新动态和最佳实践"></a>Growth Hacking 最新动态和最佳实践</h2><p>这个是受团队运营产品委托，刻意留意了这个议题(我所在的天猫team也负责push通道来召回用户，提高留存)</p>
-<h3 id="Growth-Hacking-最新动态和最佳实践-1"><a href="#Growth-Hacking-最新动态和最佳实践-1" class="headerlink" title="Growth Hacking 最新动态和最佳实践"></a>Growth Hacking 最新动态和最佳实践</h3><ol>
-<li>数据看板 - 数据分析 - 数据监控 </li>
-<li>数据驱动产品决策</li>
-<li>AB 测试实验</li>
-<li>灰度渠道发布</li>
-</ol>
-<p>其中的数据分析提到：”Core Action” 指到的是核心操作，关键路径到达。<br>列举了几类APP的”Core Action”</p>
-<table>
-<thead>
-<tr>
-<th>APP类型</th>
-<th style="text-align:center">Core Action</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Facebook</td>
-<td style="text-align:center">connect(连接？相互关注？朋友互动？)</td>
-</tr>
-<tr>
-<td>Slack/Wechat</td>
-<td style="text-align:center">接发信息</td>
-</tr>
-<tr>
-<td>Pinterest</td>
-<td style="text-align:center">晒图</td>
-</tr>
-<tr>
-<td>电商</td>
-<td style="text-align:center">浏览、下单购买</td>
-</tr>
-<tr>
-<td>知乎</td>
-<td style="text-align:center">回答，点赞，收藏，感谢</td>
-</tr>
-<tr>
-<td>互联网金融</td>
-<td style="text-align:center">购买理财产品</td>
-</tr>
-<tr>
-<td>二手车</td>
-<td style="text-align:center">购买，砍价</td>
-</tr>
-</tbody>
-</table>
-<p>这里有一个观点 <strong>重点关心产品核心操作是否被用户触达</strong><br><img src="https://github.com/778477/778477.github.io/blob/ab7afbca4d9a27b303743598400c76fa1651c367/img/growth-push-recall.png?raw=true" alt="recall"><br>这个模型 描述了 新客或流失客户(最近打开app的时候是在30-60天之前)，我们应该积极的通过Push通道来进行用户召回，当用户下沉为忠实用户之后。要谨慎使用push。这个模型是可逆的，也就是说当用户不再活跃的时候，回归上层我们也要通过push相关利益点来进行召回。</p>
-<p>分享了业界做病毒式扩散的几个经典例子：</p>
-<ol>
-<li>airbnb 分享给朋友，两方都能获得25刀的优惠券</li>
-<li>PRISMA 图片滤镜软件 制作图片打上软件水印</li>
-<li>Pokémon Go 户外现象级户外捕捉小精灵</li>
-</ol>
-<p>这些快速扩散区别于 用户推荐和口口相传。分享者和你分享的时候，并不是在说这个平台或者软件如何如何，还是在和你分享他们得到了什么。分享一定要满足用户一些心理：增加声望、财富、乐趣。</p>
-<p>最后病毒式扩散一定要作用在Core Action上。</p>
-<h3 id="产品思维和设计思维详解"><a href="#产品思维和设计思维详解" class="headerlink" title="产品思维和设计思维详解"></a>产品思维和设计思维详解</h3><p>讲师 @张玉婷，她的设计思路蛮不错的。她认为设计师设计产品交互的时候，一定是从产品架构出发分析产品用户需求，进而推导出产品界面。而不是接到需求在网上一通翻找竞品界面。不同的需求场景有不同的用户语境，进而有不同的视觉交互表达。</p>
-<p>比如 从业参与的Weico客户端，是设计驱动的一个产品。目前是最大的微博第三方客户端，跳脱开 官方微博客户端的通用性和功能化，主打个性化和情感化。围绕核心功能(阅读和发送微博)进行 特色的设计扩展。</p>
-<p>后面提及高德客户端的交互设计，虽然 App类型不同，设计很难参考。但思路是ok的。要关注 用户与产品发生交互的真实场景，介绍了高德在这方面的交互实践。</p>
-<h3 id="如何选好技术初创风口：从0到1，1到100"><a href="#如何选好技术初创风口：从0到1，1到100" class="headerlink" title="如何选好技术初创风口：从0到1，1到100"></a>如何选好技术初创风口：从0到1，1到100</h3><p>这个。实话说我睡着了，可能是吃完中饭乏了。恩，是的。</p>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/QCon-上海2016/">QCon 上海2016</a></li></ul>
 
       </footer>
     

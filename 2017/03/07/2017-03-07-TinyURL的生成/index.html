@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>TinyURL的生成 - 778477</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Encode and Decode TinyURL
+这题很有意思。
+题目大意是实现一个长链接和短链接的转化。
+形式是 http://tinyurl.com/4e9iAk。 只有6位标志包含(0-9),(a-z),(A-Z)
+一位有10+26+26 = 62种值。 6位的总数大致是 62^6 - 1。
+思路1. 哈希既然我们想到了hash，就需要搞明白 URL的字符集，就是说URL中有可能会出现哪些">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TinyURL的生成">
+<meta property="og:url" content="http://yoursite.com/2017/03/07/2017-03-07-TinyURL的生成/index.html">
+<meta property="og:site_name" content="778477">
+<meta property="og:description" content="Encode and Decode TinyURL
+这题很有意思。
+题目大意是实现一个长链接和短链接的转化。
+形式是 http://tinyurl.com/4e9iAk。 只有6位标志包含(0-9),(a-z),(A-Z)
+一位有10+26+26 = 62种值。 6位的总数大致是 62^6 - 1。
+思路1. 哈希既然我们想到了hash，就需要搞明白 URL的字符集，就是说URL中有可能会出现哪些">
+<meta property="og:updated_time" content="2017-03-07T13:22:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TinyURL的生成">
+<meta name="twitter:description" content="Encode and Decode TinyURL
+这题很有意思。
+题目大意是实现一个长链接和短链接的转化。
+形式是 http://tinyurl.com/4e9iAk。 只有6位标志包含(0-9),(a-z),(A-Z)
+一位有10+26+26 = 62种值。 6位的总数大致是 62^6 - 1。
+思路1. 哈希既然我们想到了hash，就需要搞明白 URL的字符集，就是说URL中有可能会出现哪些">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">778477</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-2017-03-07-TinyURL的生成" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      TinyURL的生成
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/03/07/2017-03-07-TinyURL的生成/" class="article-date">
+  <time datetime="2017-03-07T00:00:00.000Z" itemprop="datePublished">2017-03-07</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a><span>></span><a class="article-category-link" href="/categories/Algorithm/Hash/">Hash</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://leetcode.com/problems/encode-and-decode-tinyurl/?tab=Description" target="_blank" rel="external">Encode and Decode TinyURL</a></p>
+<p>这题很有意思。</p>
+<p>题目大意是实现一个长链接和短链接的转化。</p>
+<p>形式是 <a href="http://tinyurl.com/4e9iAk。" target="_blank" rel="external">http://tinyurl.com/4e9iAk。</a> 只有6位标志包含(0-9),(a-z),(A-Z)</p>
+<p>一位有10+26+26 = 62种值。 6位的总数大致是 62^6 - 1。</p>
+<h3 id="思路1-哈希"><a href="#思路1-哈希" class="headerlink" title="思路1. 哈希"></a>思路1. 哈希</h3><p>既然我们想到了hash，就需要搞明白 URL的字符集，就是说URL中有可能会出现哪些字符。发现题目不控制长链接的长度，再加上URL的字符集也超过了62种。只有6位的话，再高明的hash也难免冲突</p>
+<h3 id="思路2-自增ID"><a href="#思路2-自增ID" class="headerlink" title="思路2. 自增ID"></a>思路2. 自增ID</h3><p>62^6次 大约为 2^32 左右。能发放2^32个ID。</p>
+<p>自增的问题在于不可逆。</p>
+<p>短链无法逆算出长链，存在这个需求的话需要将ID和长链接关联存储起来。</p>
+<p>自增在单点服务器上需要加锁，避免多线程访问ID重复。hash没有这个问题，hash算法保证唯一性。加锁QPS高的情况下，会出现排队等待的情况。分布式支持高QPS，不考虑分布式锁同步的话：</p>
+<p>有这种的思路：发单双号ID。A服务器只发单号，B服务器只发双号。类比你集群有多少台服务器。</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/02/27/2017-02-27-WebSocket/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">WebSocket&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 miaoyou.gmy&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>
