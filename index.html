@@ -92,6 +92,7 @@
 <p>短链无法逆算出长链，存在这个需求的话需要将ID和长链接关联存储起来。</p>
 <p>自增在单点服务器上需要加锁，避免多线程访问ID重复。hash没有这个问题，hash算法保证唯一性。加锁QPS高的情况下，会出现排队等待的情况。分布式支持高QPS，不考虑分布式锁同步的话：</p>
 <p>有这种的思路：发单双号ID。A服务器只发单号，B服务器只发双号。类比你集群有多少台服务器。</p>
+<p><a href="https://raw.githubusercontent.com/778477/LeetCode/master/00535.%20Encode%20and%20Decode%20TinyURL.cpp" target="_blank" rel="external">Raw 535. Encode and Decode TinyURL.cpp</a></p>
 
       
     </div>
