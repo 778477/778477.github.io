@@ -54,6 +54,74 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2015-09-06-Permutation- Sequence" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/06/2015-09-06-Permutation- Sequence/">Permutation Sequence</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/09/06/2015-09-06-Permutation- Sequence/" class="article-date">
+  <time datetime="2015-09-06T00:00:00.000Z" itemprop="datePublished">2015-09-06</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a><span>></span><a class="article-category-link" href="/categories/Algorithm/LeetCode/">LeetCode</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://leetcode.com/problems/permutation-sequence/" target="_blank" rel="external">Permutation Sequence</a></p>
+<p>题目大意：一个[1,2,3,…,n]n个数字的集合有 n！个唯一的排列组合。对这些排列组合排序我们能得到一个有序的数组，现在给你一个n和k求第k个顺序的排列。</p>
+<p>ie，for n = 3，k = 4</p>
+<ol>
+<li>“123”</li>
+<li>“132”</li>
+<li>“213”</li>
+<li>“231”</li>
+<li>“312”</li>
+<li>“321”</li>
+</ol>
+<p>应该返回第4个排列情况”231”。</p>
+<p><strong>Note</strong> 给定的n在[1,9]之间</p>
+<p>解题思路：一开始我使用C++ STL自带的next_permutation API,以为能水过去。结果超时了(Time Limit Exceeded) 看来不能偷懒。</p>
+<p>我们来重新看一下题目，n个数字有n！种排列情况，求第k个排列组合(排序之后)。大致能理解为 给n个数字，组成第k小的数。 这么想的话，我们可以思考一下 如果有n个数，求组成第k小的数，我们第一位数字应该如何选择呢？</p>
+<p>还是这个(n = 3, k = 4)的case，我们手上有1，2，3这三个数字，我们要组成第4小的数，我们第一个数字应该选2，为什么选2需要解释一下：</p>
+<p>我们要组成第4小的数，手上有3个数，有3！= 6种排列情况(组成情况)。要先选一个最高位数， 我们看一下 剩下有2个数，有2种组成情况。显然最高位选1的话，最多也是一个第2小的数。选3的话，怎么组成也是第5小的数起跳。选2的话，组成的数区间是第4-第5。所以我们选择2作为 第4小的数的最高位。</p>
+<p>由此规律为：最高位数字是 (k-1)/(n-1)！<br>同理 选择次最高位思路是一样的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    string getPermutation(int n, int k) &#123;</span><br><span class="line">        </span><br><span class="line">        string str = &quot;&quot;;</span><br><span class="line">        if(k == factorial(n))&#123;</span><br><span class="line">            for(int i=n;i&gt;0;i--) str+=(&apos;0&apos;+i);</span><br><span class="line">            return str;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        vector&lt;int&gt; numbers;</span><br><span class="line">        for(int i=1;i&lt;=n;i++) numbers.push_back(i);</span><br><span class="line">        for(int i=1;i&lt;n;i++)&#123;</span><br><span class="line">            int num = factorial(n-i);</span><br><span class="line">            int index = (k-1)/num;</span><br><span class="line">            str += (&apos;0&apos; + numbers[index]);</span><br><span class="line">            numbers.erase(numbers.begin() + index);</span><br><span class="line">            k = k-index*num;</span><br><span class="line">        &#125;</span><br><span class="line">        str+= (&apos;0&apos; + numbers[0]);</span><br><span class="line">        return str;</span><br><span class="line">    &#125;</span><br><span class="line">private:</span><br><span class="line">    int factorial(int n)&#123;</span><br><span class="line">        int ans = n;</span><br><span class="line">        while(--n) ans*=n;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Permutation%20Sequence.png" alt="accepted"></p>
+<blockquote>
+<p>如有任何知识产权、版权问题或理论错误，还请指正。</p>
+<p>转载请注明原作者及以上信息。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2015-09-04-iOS 杂技" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
