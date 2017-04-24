@@ -54,6 +54,64 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2017-04-24-iClean" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/20/2017-04-24-iClean/">iClean</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/04/20/2017-04-24-iClean/" class="article-date">
+  <time datetime="2017-04-20T00:00:00.000Z" itemprop="datePublished">2017-04-20</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/macOS/">macOS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>令人费解的AppKit</p>
+<h2 id="脱离nib-和-storyboard-开发方式"><a href="#脱离nib-和-storyboard-开发方式" class="headerlink" title="脱离nib 和 storyboard 开发方式"></a>脱离nib 和 storyboard 开发方式</h2><p> nib和storyboard 千好万好。但在多人开发模式下，修改同一份storyborad，产生的冲突简直是灾难。</p>
+<p>干掉项目中<code>info.plist</code> 关于<code>Main.storyboard</code>的设置。在<code>main.m</code>中手动绑定<code>AppDelegate</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Cocoa/Cocoa.h&gt;</span><br><span class="line">#import &quot;AppDelegate.h&quot;</span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    AppDelegate *app = [[AppDelegate alloc] init];</span><br><span class="line">    [NSApplication sharedApplication].delegate = app;</span><br><span class="line">    return NSApplicationMain(argc, argv);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>按照<code>iOS</code>的开发经验，<code>Window</code>下要放置一个<code>ViewController</code>。需要注意的是重写<code>loadview</code>方法不要调用<code>super</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Instantiates a view from a nib file and sets the value of the view property.</span><br></pre></td></tr></table></figure>
+<p><code>super</code>会去加载同名的<code>nib</code>文件。正确的纯编码方式是不调用父类方法，再自己设置一个<code>NSView</code>即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)loadView&#123;</span><br><span class="line">    self.view = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, iCleanMainWindowWidth, iCleanMainWindowHeight)];</span><br><span class="line">    self.view.wantsLayer = YES;</span><br><span class="line">    self.view.layer.backgroundColor = [NSColor brownColor].CGColor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="NSTableView"><a href="#NSTableView" class="headerlink" title="NSTableView"></a>NSTableView</h2><p>编码使用<code>NSTableView</code>的话，要配置使用<code>NSScorllView</code> 和 <code>NSTableColumn</code>。 具体实践是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">_scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(iCleanMainWindowWidth - 400, 0, 400, iCleanMainWindowHeight)];</span><br><span class="line">_scrollView.hasVerticalScroller = _scrollView.hasVerticalRuler = YES;</span><br><span class="line">_scrollView.hasHorizontalScroller = _scrollView.hasHorizontalRuler = NO;</span><br><span class="line">        </span><br><span class="line">_tableView = [[NSTableView alloc] initWithFrame:_scrollView.bounds];</span><br><span class="line">_tableView.delegate = self;</span><br><span class="line">_tableView.dataSource = self;</span><br><span class="line">_tableView.headerView = nil;</span><br><span class="line">_scrollView.contentView.documentView = _tableView;</span><br><span class="line">        </span><br><span class="line">NSTableColumn *col = [[NSTableColumn alloc] initWithIdentifier:@&quot;col1&quot;];</span><br><span class="line">col.minWidth = 400;</span><br><span class="line">[_tableView addTableColumn:col];</span><br></pre></td></tr></table></figure>
+<p>其中<code>NSTableDataSource</code> 和 <code>NSTableViewDelegate</code> 虽然都是<code>optional</code>的办法。但仍需要实现下面的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - NSTableViewDelegate</span><br><span class="line">- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row&#123;</span><br><span class="line">    NSTextField *cell = [tableView makeViewWithIdentifier:@&quot;cellReuseId&quot; owner:self];</span><br><span class="line">    if(!cell)&#123;</span><br><span class="line">        cell = [NSTextField labelWithString:@&quot;&quot;];</span><br><span class="line">        cell.identifier = @&quot;cellReuseId&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@&quot;%@ \n%@&quot;,self.data[row].path.lastPathComponent,self.data[row].formatSize] attributes:@&#123;NSForegroundColorAttributeName:[NSColor blackColor]&#125;];</span><br><span class="line">    </span><br><span class="line">    cell.placeholderAttributedString = str;</span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row&#123;</span><br><span class="line">    return 50.f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)tableViewSelectionDidChange:(NSNotification *)notification&#123;</span><br><span class="line">    NSInteger row = [[notification object] selectedRow];</span><br><span class="line">    NSLog(@&quot;%ld&quot;,row);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#pragma mark - NSTableViewDataSource</span><br><span class="line">- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView&#123;</span><br><span class="line">    return self.data.count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意是 <code>AppKit</code>里面是没有<code>Label</code>控件的，我这是使用的是<code>NSTextField</code>。就是输入框了，借助<code>placeholderString</code>属性能实现文本展示的效果。</p>
+<p><img src="../img/iClean-snapshot1.png" alt="tt"></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocoa/">cocoa</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2017-04-20-iClean 一款Mac OS 软件的诞生" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -749,96 +807,6 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态化方案/">动态化方案</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2016-11-01-iOS Responder Chain" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/01/2016-11-01-iOS Responder Chain/">iOS Responder Chain</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/11/01/2016-11-01-iOS Responder Chain/" class="article-date">
-  <time datetime="2016-11-01T00:00:00.000Z" itemprop="datePublished">2016-11-01</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS/">iOS</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Hit-Testing-Returns-the-View-Where-a-Touch-Occurred"><a href="#Hit-Testing-Returns-the-View-Where-a-Touch-Occurred" class="headerlink" title="Hit-Testing Returns the View Where a Touch Occurred"></a>Hit-Testing Returns the View Where a Touch Occurred</h2><p>iOS 使用 <code>hit-testing</code> 找到具体的视图来响应点击。 <code>Hit-testing</code>实现检查了点击手势是落在了哪个视图区域。如果找到了视图，会递归遍历检查该视图下的所有子视图。最终会找到 位于视图层次最靠前(最靠近屏幕)的视图。iOS将其确定为<code>hit-test view</code>，将由它来消费这次<code>touch</code>事件。</p>
-<p><img src="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/hit_testing_2x.png" alt="Figure 2-1  Hit-testing returns the subview that was touched"></p>
-<p>更形象点的例子。我们结合<code>Figure 2-1</code>图片来看</p>
-<pre><code>1. 当点击手势位于view A。 我们要检查子视图view B 和view C
-2. 点击手势没有位于view B，所以我们开始检查view C的子视图view D 和view E
-3. 点击手势没有位于view D，所以点击手势被view E响应
-</code></pre><p><code>hitTest:withEvent:</code> 跟<code>CGPoint</code>和<code>UIEvent</code>参数找到对应的<code>hit test view</code>。</p>
-<p>The <code>hitTest:withEvent:</code> method returns the hit test view for a given CGPoint and UIEvent. The <code>hitTest:withEvent:</code> method begins by calling the <code>pointInside:withEvent:</code> method on itself. If the point passed into <code>hitTest:withEvent:</code> is inside the bounds of the view, <code>pointInside:withEvent:</code> returns YES. Then, the method recursively calls <code>hitTest:withEvent:</code> on every subview that returns YES.</p>
-<p>If the point passed into <code>hitTest:withEvent:</code> is not inside the bounds of the view, the first call to the <code>pointInside:withEvent:</code> method returns NO, the point is ignored, and <code>hitTest:withEvent:</code> returns nil. If a subview returns NO, that whole branch of the view hierarchy is ignored, because if the touch did not occur in that subview, it also did not occur in any of that subview’s subviews. This means that any point in a subview that is outside of its superview can’t receive touch events because the touch point has to be within the bounds of the superview and the subview. This can occur if the subview’s clipsToBounds property is set to NO.</p>
-<p>Note: A touch object is associated with its hit-test view for its lifetime, even if the touch later moves outside the view.<br>The hit-test view is given the first opportunity to handle a touch event. If the hit-test view cannot handle an event, the event travels up that view’s chain of responders as described in The Responder Chain Is Made Up of Responder Objects until the system finds an object that can handle it.</p>
-<h2 id="The-Responder-Chain-Is-Made-Up-of-Responder-Objects"><a href="#The-Responder-Chain-Is-Made-Up-of-Responder-Objects" class="headerlink" title="The Responder Chain Is Made Up of Responder Objects"></a>The Responder Chain Is Made Up of Responder Objects</h2><p>我们再聊聊如果事件没有被消费掉怎么办？ </p>
-<p>答案是: 事件会跟随响应链一级一级向上传递。最终给到 Application(继承自UIResponer)。</p>
-<p>一个响应者对象(UIApplication/UIViewController/UIView)是能够响应和处理事件的。</p>
-<p>第一响应者被设计为能第一个接受事件。要成为第一响应者，需要做以下两件事。</p>
-<pre><code>1. 重写 canBecomeFirstResponder 返回YES
-2. 处理 becomeFirstResponder 调用。 必要情况可以主动调用这个方法
-</code></pre><p><strong>提示：</strong> becomeFirstResponder调用时机最好 在视图都准备到位之后。比如不要在<code>viewWillAppear</code>阶段。应该在<code>viewDidAppear</code>阶段在调用</p>
-<p>响应者能处理的事件有：</p>
-<pre><code>* 触摸事件(Touch Events): 如果`hit test view`没有消费这个事件。事件按照响应链被向上传递
-* 运动事件(Motion Events): UIKit处理这个事件，第一响应者必须要实现` motionBegan:withEvent:` 或 `motionEnded:withEvent:`方法
-* 遥控事件(Remote control events): 第一响应者必须实现` remoteControlReceivedWithEvent:`方法
-* Action messages: 比如按钮啊、开关啊。如果接受者的action为nil，也会按照响应链向上传递事件
-* Editing-menu messages.  
-* Text editing. 用户点击输入框或文本视图，UIKit默认自动将其置为第一响应者。接着，模拟键盘被唤起，光标聚焦。
-</code></pre><p>只有<code>Text Field</code>或<code>Text View</code>在用户点击之后，UIKit会自动将其置为第一响应者。其他的需要主动的调用<code>becomeFirstResponder</code>方法</p>
-<p>响应链向上传递事件是有一些规则的。 看看以下图片的两种情况：</p>
-<p><img src="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/iOS_responder_chain_2x.png" alt="iOS_responder_chain"></p>
-<p>左图：</p>
-<pre><code>1. initial view不处理事件/消息，传递给父级view
-2. 父级view接受到事件，不处理的话接着传递给父级view(viewController&apos;s view)
-3. 父级view(viewController&apos;s view)接受到事件，不处理的话传递给viewController
-4. viewController接收到事件，不处理传递给windows
-5. windows接受到事件，不处理传递给 Application
-6. 如果Application最后再不处理的话，事件就被忽略了。。
-</code></pre><p>其中传递链路上任一响应者处理了事件，就中断传递了</p>
-<p>右图：</p>
-<pre><code>1. initial view不处理事件/消息，传递给父级view(viewController&apos;s view)
-2. 父级view接受到事件，传递给viewController
-3. viewController接受到事件，传递给父级view
-    步骤1-3 重复直到找到rootViewController
-4. rootViewController 传递给 windows
-5. windows 传递给 Application
-</code></pre><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
-<li><a href="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html" target="_blank" rel="external">Event Delivery: The Responder Chain</a></li>
-<li><a href="http://smnh.me/hit-testing-in-ios/" target="_blank" rel="external">Hit-Testing in iOS</a></li>
-</ul>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Responder-Chain/">Responder Chain</a></li></ul>
 
       </footer>
     

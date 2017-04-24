@@ -54,6 +54,63 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2016-03-30-Cocoa Auto Update" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/30/2016-03-30-Cocoa Auto Update/">Cocoa Auto Update</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/03/30/2016-03-30-Cocoa Auto Update/" class="article-date">
+  <time datetime="2016-03-30T00:00:00.000Z" itemprop="datePublished">2016-03-30</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/macOS/">macOS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Cocoa-auto-update"><a href="#Cocoa-auto-update" class="headerlink" title="Cocoa auto update"></a>Cocoa auto update</h1><p>我们在进行Mac 桌面应用开发的时候，需要维护应用的更新。我们希望说每一次的新版本发布,用户都能够自动更新下载版本并且替换掉老版本。</p>
+<p>首先需要一个文件服务器来存放 对外发布的软件压缩包。这里还维护一份releaseInfo.json对外描述已有的版本信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;app&quot;: &quot;MyApp&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &quot;channels&quot;: [&quot;release&quot;],</span><br><span class="line">  &quot;entries&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;os&quot;: &quot;osx&quot;,</span><br><span class="line">      &quot;architectures&quot;: [&quot;x86-64&quot;],</span><br><span class="line">      &quot;osversion&quot;: &quot; &gt;= 10.6 &quot;,</span><br><span class="line">      &quot;appversion&quot;: &quot;1.0.0&quot;,</span><br><span class="line">      &quot;path&quot;: &quot;MyApp-1.0.0-osx.tar.gz&quot;,</span><br><span class="line">      &quot;format&quot;: &quot;gz&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>客户端定时check版本信息，发现服务端有版本号大于自身版本号的时候 触发更新下载逻辑。 这里使用<code>NSURLSession</code>即可，下载过程不在这里描述了。</p>
+<p>当我们自行下载完安装包之后，如何帮助用户自动安装呢?</p>
+<p>我们下载完成之后，可用使用<code>NSTask</code>来调用一个 shell 脚本，让它来帮助我们结束老版本的进程，同时将下载好的新版本解压、拷贝内容到老版本的路径下、重新唤起App。 这个时候，app运行就是新版本的样式和逻辑</p>
+<p>附上具体的shell脚本：</p>
+<p><strong>注意需要传入的参数：tarball指的下载的安装包路径，destination指的当前app的bundlePath</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">function abort() &#123;</span><br><span class="line">    echo &quot;Update script aborted.&quot;</span><br><span class="line">    echo &quot;Removing temporary directory...&quot;</span><br><span class="line">    rm -rf $tempdir</span><br><span class="line">    echo &quot;Removing tarball...&quot;</span><br><span class="line">    rm -rf &quot;$tarball&quot;</span><br><span class="line">    echo &quot;Relaunching bundle...&quot;</span><br><span class="line">    open &quot;$destination&quot;</span><br><span class="line">    rm -f ~/.auto-update.lock</span><br><span class="line">    exit 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">tarball=$1</span><br><span class="line">destination=$2</span><br><span class="line"></span><br><span class="line">lockfile ~/.auto-update.lock</span><br><span class="line"></span><br><span class="line"># Step 1. Wait until all processes from within the bundle are closed</span><br><span class="line"></span><br><span class="line">processes=$(echo &quot;$(ps ax)&quot; | grep -v &quot;$0&quot;)</span><br><span class="line"># Escape the destination into a regexp that matches it</span><br><span class="line">regexp=$(echo &quot;$destination&quot; | sed &apos;s/[^[:alnum:]_-]/\\&amp;/g&apos;)</span><br><span class="line"># Filters entries matching the regexp, and do some magic to preserve the trailing newline</span><br><span class="line">matches=$(echo &quot;$processes&quot; | awk &quot;/$regexp/ &#123; print \$1 &#125;&quot;; echo .)</span><br><span class="line">matches=$&#123;matches%.&#125;</span><br><span class="line"># Count matches</span><br><span class="line">count=`printf &quot;%s&quot; &quot;$matches&quot; | wc -l`</span><br><span class="line">if [[ $count -gt 0 ]]; then</span><br><span class="line">    for pid in $matches</span><br><span class="line">    do</span><br><span class="line">        echo &quot;$pid&quot;</span><br><span class="line">        kill -9 &quot;$pid&quot;</span><br><span class="line">    done</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Step 2. Check if the downloaded tar is empty, if so abort</span><br><span class="line">if [ ! -s &quot;$tarball&quot; ]</span><br><span class="line">then</span><br><span class="line">    abort</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"># Step 3. Extract the new contents</span><br><span class="line">echo &quot;Creating temporary directory...&quot;</span><br><span class="line">tempdir=`mktemp -d /tmp/auto-update.XXXXX`</span><br><span class="line">echo &quot;Extracting new content from tarball...&quot;</span><br><span class="line">tar -xf &quot;$tarball&quot; -C &quot;$tempdir&quot;</span><br><span class="line"></span><br><span class="line"># Step 4. Check if the extraction worked, if not abort</span><br><span class="line">if [ $? -ne 0 ]</span><br><span class="line">then</span><br><span class="line">    abort</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"># Step 5. Remove the old bundle directory</span><br><span class="line">echo &quot;Removing bundle...&quot;</span><br><span class="line">rm -rf &quot;$destination&quot;/*</span><br><span class="line">echo &quot;Moving new content into place...&quot;</span><br><span class="line">mv -f $tempdir&apos;/&apos;$(ls $tempdir | head -n 1)&apos;/&apos;* &quot;$destination&quot;&apos;/&apos;</span><br><span class="line">echo &quot;Make sure destination is not quarantined...&quot;</span><br><span class="line">xattr -d com.apple.quarantine &quot;$destination&quot;</span><br><span class="line">echo &quot;Removing temporary directory...&quot;</span><br><span class="line">rm -rf $tempdir</span><br><span class="line">echo &quot;Removing tarball...&quot;</span><br><span class="line">rm -rf &quot;$tarball&quot;</span><br><span class="line"></span><br><span class="line"># Step 6. (Re)launch the destination bundle</span><br><span class="line">echo &quot;Relaunching bundle...&quot;</span><br><span class="line">open &quot;$destination&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;Done.&quot;</span><br><span class="line">rm -f ~/.auto-update.lock</span><br></pre></td></tr></table></figure>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://github.com/Automattic/auto-update" target="_blank" rel="external">https://github.com/Automattic/auto-update</a></li>
+<li><a href="https://github.com/Automattic/auto-update-server" target="_blank" rel="external">https://github.com/Automattic/auto-update-server</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cocoa/">Cocoa</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2016-02-29-Cocoa Launch at Login" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -669,85 +726,6 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2015-10-01-Make-Your-App-Searchable" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/01/2015-10-01-Make-Your-App-Searchable/">Make Your App Searchable</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/10/01/2015-10-01-Make-Your-App-Searchable/" class="article-date">
-  <time datetime="2015-10-01T00:00:00.000Z" itemprop="datePublished">2015-10-01</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS/">iOS</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="https://48ce6c28e7bf5f42a1b7-2712e00ea34e3076747650c92426bbb5.ssl.cf1.rackcdn.com/2015-06-17-013455.jpeg" alt="1"></p>
-<p><img src="http://searchengineland.com/figz/wp-content/seloads/2015/06/iOS-9-Apple-Search-Indexing-Methods-800x553-800x553.png" alt="2"></p>
-<ul>
-<li><a href="https://developer.apple.com/library/prerelease/ios/technotes/tn2416/_index.html#//apple_ref/doc/uid/DTS40016269-CH1-SEARCH_API_FAQ-WHICH_IS_THE_RIGHT_API_FOR_ME_TO_USE_" target="_blank" rel="external">官方FAQ</a></li>
-</ul>
-<p><strong>How Does Apple Rank Apps In Apple Search?</strong></p>
-<p><strong>Positive Ranking Factors</strong></p>
-<ul>
-<li><strong>App Installation Status.</strong> Is the app is installed on the device? (installed apps seem to get preference)</li>
-<li><strong>Personalized App Engagement.</strong> Does the individual engage with the screen in the app? This is based on time spent with result that Apple determines from session analytics.</li>
-<li><strong>App Result Click-Through Rate.</strong> Do users frequently click through the search result vs. picking another result or searching again?</li>
-<li><strong>Keywords/ Title.</strong> Do keywords from the “keywords” and “title” designations in the app markup match up with the user’s query?</li>
-<li><strong>Aggregated Engagement.</strong> How many users engage with the app screen?</li>
-<li><strong>Structured Data on Web.</strong> Is structured data correctly implemented?</li>
-<li><strong>Canonical App IDs.</strong> Is the same screen associated with one unique ID or URL across multiple indexing methods (NSUserActivity, CoreSpotlight, and Web Markup)?</li>
-<li><strong>Strength/Popularity of Web URL.</strong> How popular is the website associated with the app deep links? (Presumably, this is based on Applebot’s crawl.)</li>
-</ul>
-<p><strong>Negative Ranking Factors</strong></p>
-<ul>
-<li><strong>Low Engagement.</strong> Do very few users engage with the app screen? (engagement determined by session analytics)</li>
-<li><strong>Over-Indexing.</strong> Does the app have many screens in the index with low or no engagement?</li>
-<li><strong>Returns.</strong> Do users return to search results right after looking at the app?</li>
-<li><strong>Keywords Spamming.</strong> Are developers stuffing too many irrelevant keywords into the keyword field?</li>
-<li><strong>Interstitials.</strong> Is something covering the content in the app or preventing users from accessing it?</li>
-<li><strong>Javascript (web only).</strong> Is Javascript preventing Applebot from crawling your site to find new app deep links?</li>
-<li><strong>Low Star Ratings, Low Review Volume, Poor Reviews.</strong> Apple has not explicitly called these negative ranking factors for Apple Search, but they are negative ranking factors for the App Store, so we expect Apple to treat them similarly here.</li>
-</ul>
-<p>Apple recommends pursuing multiple indexing methods to optimize app visibility, but the overlapping methods will inevitably create duplication across the various indexes. For example, private content could have both a NSUserActivity and CSSearchableItem indexed, and public content could have both a NSUserActivity and a Web Markup deep link indexed.</p>
-<p>This is obviously not ideal for controlling Applebot’s efficiency, so Apple strongly recommends associating each NSUserActivity, CSSearchableItem, and Web Markup deep link with the same uniqueIdentifier and/or URL. This is Applebot’s version of a canonical, and it’s so important to Apple that they’ve even made it a ranking factor in the Apple Search algorithm.</p>
-<p><a href="https://developer.apple.com/library/prerelease/ios/documentation/CoreSpotlight/Reference/CoreSpotlight_Framework/" target="_blank" rel="external">CoreSpotlight Framework</a></p>
-<p><a href="http://applidium.com/en/news/ios9_search_api/" target="_blank" rel="external">How to use the new search API</a></p>
-<blockquote>
-<p>如有任何知识产权、版权问题或理论错误，还请指正</p>
-<p>转载请注明原作者及以上信息</p>
-</blockquote>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Core-Spotlight/">Core Spotlight</a></li></ul>
 
       </footer>
     

@@ -54,6 +54,96 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2016-11-01-iOS Responder Chain" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/01/2016-11-01-iOS Responder Chain/">iOS Responder Chain</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/11/01/2016-11-01-iOS Responder Chain/" class="article-date">
+  <time datetime="2016-11-01T00:00:00.000Z" itemprop="datePublished">2016-11-01</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Hit-Testing-Returns-the-View-Where-a-Touch-Occurred"><a href="#Hit-Testing-Returns-the-View-Where-a-Touch-Occurred" class="headerlink" title="Hit-Testing Returns the View Where a Touch Occurred"></a>Hit-Testing Returns the View Where a Touch Occurred</h2><p>iOS 使用 <code>hit-testing</code> 找到具体的视图来响应点击。 <code>Hit-testing</code>实现检查了点击手势是落在了哪个视图区域。如果找到了视图，会递归遍历检查该视图下的所有子视图。最终会找到 位于视图层次最靠前(最靠近屏幕)的视图。iOS将其确定为<code>hit-test view</code>，将由它来消费这次<code>touch</code>事件。</p>
+<p><img src="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/hit_testing_2x.png" alt="Figure 2-1  Hit-testing returns the subview that was touched"></p>
+<p>更形象点的例子。我们结合<code>Figure 2-1</code>图片来看</p>
+<pre><code>1. 当点击手势位于view A。 我们要检查子视图view B 和view C
+2. 点击手势没有位于view B，所以我们开始检查view C的子视图view D 和view E
+3. 点击手势没有位于view D，所以点击手势被view E响应
+</code></pre><p><code>hitTest:withEvent:</code> 跟<code>CGPoint</code>和<code>UIEvent</code>参数找到对应的<code>hit test view</code>。</p>
+<p>The <code>hitTest:withEvent:</code> method returns the hit test view for a given CGPoint and UIEvent. The <code>hitTest:withEvent:</code> method begins by calling the <code>pointInside:withEvent:</code> method on itself. If the point passed into <code>hitTest:withEvent:</code> is inside the bounds of the view, <code>pointInside:withEvent:</code> returns YES. Then, the method recursively calls <code>hitTest:withEvent:</code> on every subview that returns YES.</p>
+<p>If the point passed into <code>hitTest:withEvent:</code> is not inside the bounds of the view, the first call to the <code>pointInside:withEvent:</code> method returns NO, the point is ignored, and <code>hitTest:withEvent:</code> returns nil. If a subview returns NO, that whole branch of the view hierarchy is ignored, because if the touch did not occur in that subview, it also did not occur in any of that subview’s subviews. This means that any point in a subview that is outside of its superview can’t receive touch events because the touch point has to be within the bounds of the superview and the subview. This can occur if the subview’s clipsToBounds property is set to NO.</p>
+<p>Note: A touch object is associated with its hit-test view for its lifetime, even if the touch later moves outside the view.<br>The hit-test view is given the first opportunity to handle a touch event. If the hit-test view cannot handle an event, the event travels up that view’s chain of responders as described in The Responder Chain Is Made Up of Responder Objects until the system finds an object that can handle it.</p>
+<h2 id="The-Responder-Chain-Is-Made-Up-of-Responder-Objects"><a href="#The-Responder-Chain-Is-Made-Up-of-Responder-Objects" class="headerlink" title="The Responder Chain Is Made Up of Responder Objects"></a>The Responder Chain Is Made Up of Responder Objects</h2><p>我们再聊聊如果事件没有被消费掉怎么办？ </p>
+<p>答案是: 事件会跟随响应链一级一级向上传递。最终给到 Application(继承自UIResponer)。</p>
+<p>一个响应者对象(UIApplication/UIViewController/UIView)是能够响应和处理事件的。</p>
+<p>第一响应者被设计为能第一个接受事件。要成为第一响应者，需要做以下两件事。</p>
+<pre><code>1. 重写 canBecomeFirstResponder 返回YES
+2. 处理 becomeFirstResponder 调用。 必要情况可以主动调用这个方法
+</code></pre><p><strong>提示：</strong> becomeFirstResponder调用时机最好 在视图都准备到位之后。比如不要在<code>viewWillAppear</code>阶段。应该在<code>viewDidAppear</code>阶段在调用</p>
+<p>响应者能处理的事件有：</p>
+<pre><code>* 触摸事件(Touch Events): 如果`hit test view`没有消费这个事件。事件按照响应链被向上传递
+* 运动事件(Motion Events): UIKit处理这个事件，第一响应者必须要实现` motionBegan:withEvent:` 或 `motionEnded:withEvent:`方法
+* 遥控事件(Remote control events): 第一响应者必须实现` remoteControlReceivedWithEvent:`方法
+* Action messages: 比如按钮啊、开关啊。如果接受者的action为nil，也会按照响应链向上传递事件
+* Editing-menu messages.  
+* Text editing. 用户点击输入框或文本视图，UIKit默认自动将其置为第一响应者。接着，模拟键盘被唤起，光标聚焦。
+</code></pre><p>只有<code>Text Field</code>或<code>Text View</code>在用户点击之后，UIKit会自动将其置为第一响应者。其他的需要主动的调用<code>becomeFirstResponder</code>方法</p>
+<p>响应链向上传递事件是有一些规则的。 看看以下图片的两种情况：</p>
+<p><img src="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/iOS_responder_chain_2x.png" alt="iOS_responder_chain"></p>
+<p>左图：</p>
+<pre><code>1. initial view不处理事件/消息，传递给父级view
+2. 父级view接受到事件，不处理的话接着传递给父级view(viewController&apos;s view)
+3. 父级view(viewController&apos;s view)接受到事件，不处理的话传递给viewController
+4. viewController接收到事件，不处理传递给windows
+5. windows接受到事件，不处理传递给 Application
+6. 如果Application最后再不处理的话，事件就被忽略了。。
+</code></pre><p>其中传递链路上任一响应者处理了事件，就中断传递了</p>
+<p>右图：</p>
+<pre><code>1. initial view不处理事件/消息，传递给父级view(viewController&apos;s view)
+2. 父级view接受到事件，传递给viewController
+3. viewController接受到事件，传递给父级view
+    步骤1-3 重复直到找到rootViewController
+4. rootViewController 传递给 windows
+5. windows 传递给 Application
+</code></pre><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html" target="_blank" rel="external">Event Delivery: The Responder Chain</a></li>
+<li><a href="http://smnh.me/hit-testing-in-ios/" target="_blank" rel="external">Hit-Testing in iOS</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Responder-Chain/">Responder Chain</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2016-10-30-LeetCode" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -827,63 +917,6 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2016-03-30-Cocoa Auto Update" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/2016-03-30-Cocoa Auto Update/">Cocoa Auto Update</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/03/30/2016-03-30-Cocoa Auto Update/" class="article-date">
-  <time datetime="2016-03-30T00:00:00.000Z" itemprop="datePublished">2016-03-30</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/macOS/">macOS</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Cocoa-auto-update"><a href="#Cocoa-auto-update" class="headerlink" title="Cocoa auto update"></a>Cocoa auto update</h1><p>我们在进行Mac 桌面应用开发的时候，需要维护应用的更新。我们希望说每一次的新版本发布,用户都能够自动更新下载版本并且替换掉老版本。</p>
-<p>首先需要一个文件服务器来存放 对外发布的软件压缩包。这里还维护一份releaseInfo.json对外描述已有的版本信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;app&quot;: &quot;MyApp&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &quot;channels&quot;: [&quot;release&quot;],</span><br><span class="line">  &quot;entries&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;os&quot;: &quot;osx&quot;,</span><br><span class="line">      &quot;architectures&quot;: [&quot;x86-64&quot;],</span><br><span class="line">      &quot;osversion&quot;: &quot; &gt;= 10.6 &quot;,</span><br><span class="line">      &quot;appversion&quot;: &quot;1.0.0&quot;,</span><br><span class="line">      &quot;path&quot;: &quot;MyApp-1.0.0-osx.tar.gz&quot;,</span><br><span class="line">      &quot;format&quot;: &quot;gz&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>客户端定时check版本信息，发现服务端有版本号大于自身版本号的时候 触发更新下载逻辑。 这里使用<code>NSURLSession</code>即可，下载过程不在这里描述了。</p>
-<p>当我们自行下载完安装包之后，如何帮助用户自动安装呢?</p>
-<p>我们下载完成之后，可用使用<code>NSTask</code>来调用一个 shell 脚本，让它来帮助我们结束老版本的进程，同时将下载好的新版本解压、拷贝内容到老版本的路径下、重新唤起App。 这个时候，app运行就是新版本的样式和逻辑</p>
-<p>附上具体的shell脚本：</p>
-<p><strong>注意需要传入的参数：tarball指的下载的安装包路径，destination指的当前app的bundlePath</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">function abort() &#123;</span><br><span class="line">    echo &quot;Update script aborted.&quot;</span><br><span class="line">    echo &quot;Removing temporary directory...&quot;</span><br><span class="line">    rm -rf $tempdir</span><br><span class="line">    echo &quot;Removing tarball...&quot;</span><br><span class="line">    rm -rf &quot;$tarball&quot;</span><br><span class="line">    echo &quot;Relaunching bundle...&quot;</span><br><span class="line">    open &quot;$destination&quot;</span><br><span class="line">    rm -f ~/.auto-update.lock</span><br><span class="line">    exit 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">tarball=$1</span><br><span class="line">destination=$2</span><br><span class="line"></span><br><span class="line">lockfile ~/.auto-update.lock</span><br><span class="line"></span><br><span class="line"># Step 1. Wait until all processes from within the bundle are closed</span><br><span class="line"></span><br><span class="line">processes=$(echo &quot;$(ps ax)&quot; | grep -v &quot;$0&quot;)</span><br><span class="line"># Escape the destination into a regexp that matches it</span><br><span class="line">regexp=$(echo &quot;$destination&quot; | sed &apos;s/[^[:alnum:]_-]/\\&amp;/g&apos;)</span><br><span class="line"># Filters entries matching the regexp, and do some magic to preserve the trailing newline</span><br><span class="line">matches=$(echo &quot;$processes&quot; | awk &quot;/$regexp/ &#123; print \$1 &#125;&quot;; echo .)</span><br><span class="line">matches=$&#123;matches%.&#125;</span><br><span class="line"># Count matches</span><br><span class="line">count=`printf &quot;%s&quot; &quot;$matches&quot; | wc -l`</span><br><span class="line">if [[ $count -gt 0 ]]; then</span><br><span class="line">    for pid in $matches</span><br><span class="line">    do</span><br><span class="line">        echo &quot;$pid&quot;</span><br><span class="line">        kill -9 &quot;$pid&quot;</span><br><span class="line">    done</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Step 2. Check if the downloaded tar is empty, if so abort</span><br><span class="line">if [ ! -s &quot;$tarball&quot; ]</span><br><span class="line">then</span><br><span class="line">    abort</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"># Step 3. Extract the new contents</span><br><span class="line">echo &quot;Creating temporary directory...&quot;</span><br><span class="line">tempdir=`mktemp -d /tmp/auto-update.XXXXX`</span><br><span class="line">echo &quot;Extracting new content from tarball...&quot;</span><br><span class="line">tar -xf &quot;$tarball&quot; -C &quot;$tempdir&quot;</span><br><span class="line"></span><br><span class="line"># Step 4. Check if the extraction worked, if not abort</span><br><span class="line">if [ $? -ne 0 ]</span><br><span class="line">then</span><br><span class="line">    abort</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"># Step 5. Remove the old bundle directory</span><br><span class="line">echo &quot;Removing bundle...&quot;</span><br><span class="line">rm -rf &quot;$destination&quot;/*</span><br><span class="line">echo &quot;Moving new content into place...&quot;</span><br><span class="line">mv -f $tempdir&apos;/&apos;$(ls $tempdir | head -n 1)&apos;/&apos;* &quot;$destination&quot;&apos;/&apos;</span><br><span class="line">echo &quot;Make sure destination is not quarantined...&quot;</span><br><span class="line">xattr -d com.apple.quarantine &quot;$destination&quot;</span><br><span class="line">echo &quot;Removing temporary directory...&quot;</span><br><span class="line">rm -rf $tempdir</span><br><span class="line">echo &quot;Removing tarball...&quot;</span><br><span class="line">rm -rf &quot;$tarball&quot;</span><br><span class="line"></span><br><span class="line"># Step 6. (Re)launch the destination bundle</span><br><span class="line">echo &quot;Relaunching bundle...&quot;</span><br><span class="line">open &quot;$destination&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;Done.&quot;</span><br><span class="line">rm -f ~/.auto-update.lock</span><br></pre></td></tr></table></figure>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><a href="https://github.com/Automattic/auto-update" target="_blank" rel="external">https://github.com/Automattic/auto-update</a></li>
-<li><a href="https://github.com/Automattic/auto-update-server" target="_blank" rel="external">https://github.com/Automattic/auto-update-server</a></li>
-</ul>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cocoa/">Cocoa</a></li></ul>
 
       </footer>
     
