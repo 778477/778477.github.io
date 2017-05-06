@@ -83,8 +83,17 @@
       
         <p>我们在迭代完一个版本之后，需要使用 <code>Instruments</code> 中的一些 <code>Profile</code> 来获取应用性能数据。</p>
 <p>测试过程中，尽可能的还原用户真实的使用场景。 比如 应用的 <code>target scheme</code>应该为<code>release</code>，和渠道发布的保持一致。</p>
-<h2 id="Core-Animation"><a href="#Core-Animation" class="headerlink" title="Core Animation"></a>Core Animation</h2><p>我们使用<code>Core Animation</code>可以方便的看到 页面滚动时的帧率和<code>cpu</code>计算资源开销 - 对应工程具体方法代码。</p>
+<h2 id="Core-Animation"><a href="#Core-Animation" class="headerlink" title="Core Animation"></a>Core Animation</h2><p>我们使用<code>Core Animation</code>可以方便的看到 页面滚动时的帧率和<code>cpu</code>计算资源开销还能对应到工程具体方法代码。</p>
 <p>但是，有时候我们使用这个工具会出现看不到正常的函数符号的情况。如：</p>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-1.png" alt=""></p>
+<p>这里的地址对应的方法都没有被符号化，我们找不到那些有问题的代码。</p>
+<h2 id="How-to-fix"><a href="#How-to-fix" class="headerlink" title="How to fix"></a>How to fix</h2><p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-2.png" alt=""></p>
+<p>在使用<code>Core Animation Profile</code>之前，你应该确认一下 <code>Symbols -&gt; Search paths for dSYMs</code>这个路径下的<code>dSYMs</code>文件是否存在且是对应的。</p>
+<p>开发iOS的同学，应该对<code>dSYMs</code>文件并不陌生。每次上传发布应用的时候，都需要<code>archvie</code>归档生成这个<code>dSYMs</code>文件。方便线上发生<code>Crash</code>的时候，可以对日志进行符号处理：可以看到对应崩溃的执行堆栈。</p>
+<p>如果，没有找到 <code>dSYMs</code>文件的话，还得再确认工程构建配置中是否允许生成<code>dSYMs</code>文件。 在 <code>Target - Build Setting</code>-&gt;<code>Debug Information Format</code> 中将你现在对应的<code>Target scheme</code>设置为 <code>DWARF with dSYM File</code></p>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-3.png" alt=""></p>
+<p>如此，这般配置之后，就可以看到正常的符号化之后的代码了。</p>
+<p>另外，一些常用的设置项入口被挪到这里了：<br><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-4.png" alt=""></p>
 
       
     </div>
