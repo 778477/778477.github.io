@@ -54,7 +54,7 @@
   </div>
 </header>
     <section id="main" class="outer">
-      <article id="post-2017-04-24-iClean" class="article article-type-post" itemscope itemprop="blogPost">
+      <article id="post-2017-05-06-Core Animation Profile Symbols Not Found" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
     
@@ -62,39 +62,29 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/20/2017-04-24-iClean/">iClean</a>
+      <a class="article-title" href="/2017/04/20/2017-05-06-Core Animation Profile Symbols Not Found/">Core Animation Profile Symbols Not Found</a>
     </h1>
   
 
       </header>
     
     <div class="article-meta">
-      <a href="/2017/04/20/2017-04-24-iClean/" class="article-date">
+      <a href="/2017/04/20/2017-05-06-Core Animation Profile Symbols Not Found/" class="article-date">
   <time datetime="2017-04-20T00:00:00.000Z" itemprop="datePublished">2017-04-20</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/macOS/">macOS</a>
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/Instruments/">Instruments</a>
   </div>
 
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>令人费解的AppKit</p>
-<h2 id="脱离nib-和-storyboard-开发方式"><a href="#脱离nib-和-storyboard-开发方式" class="headerlink" title="脱离nib 和 storyboard 开发方式"></a>脱离nib 和 storyboard 开发方式</h2><p> nib和storyboard 千好万好。但在多人开发模式下，修改同一份storyborad，产生的冲突简直是灾难。</p>
-<p>干掉项目中<code>info.plist</code> 关于<code>Main.storyboard</code>的设置。在<code>main.m</code>中手动绑定<code>AppDelegate</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Cocoa/Cocoa.h&gt;</span><br><span class="line">#import &quot;AppDelegate.h&quot;</span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    AppDelegate *app = [[AppDelegate alloc] init];</span><br><span class="line">    [NSApplication sharedApplication].delegate = app;</span><br><span class="line">    return NSApplicationMain(argc, argv);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>按照<code>iOS</code>的开发经验，<code>Window</code>下要放置一个<code>ViewController</code>。需要注意的是重写<code>loadview</code>方法不要调用<code>super</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Instantiates a view from a nib file and sets the value of the view property.</span><br></pre></td></tr></table></figure>
-<p><code>super</code>会去加载同名的<code>nib</code>文件。正确的纯编码方式是不调用父类方法，再自己设置一个<code>NSView</code>即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)loadView&#123;</span><br><span class="line">    self.view = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, iCleanMainWindowWidth, iCleanMainWindowHeight)];</span><br><span class="line">    self.view.wantsLayer = YES;</span><br><span class="line">    self.view.layer.backgroundColor = [NSColor brownColor].CGColor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="NSTableView"><a href="#NSTableView" class="headerlink" title="NSTableView"></a>NSTableView</h2><p>编码使用<code>NSTableView</code>的话，要配置使用<code>NSScorllView</code> 和 <code>NSTableColumn</code>。 具体实践是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">_scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(iCleanMainWindowWidth - 400, 0, 400, iCleanMainWindowHeight)];</span><br><span class="line">_scrollView.hasVerticalScroller = _scrollView.hasVerticalRuler = YES;</span><br><span class="line">_scrollView.hasHorizontalScroller = _scrollView.hasHorizontalRuler = NO;</span><br><span class="line">        </span><br><span class="line">_tableView = [[NSTableView alloc] initWithFrame:_scrollView.bounds];</span><br><span class="line">_tableView.delegate = self;</span><br><span class="line">_tableView.dataSource = self;</span><br><span class="line">_tableView.headerView = nil;</span><br><span class="line">_scrollView.contentView.documentView = _tableView;</span><br><span class="line">        </span><br><span class="line">NSTableColumn *col = [[NSTableColumn alloc] initWithIdentifier:@&quot;col1&quot;];</span><br><span class="line">col.minWidth = 400;</span><br><span class="line">[_tableView addTableColumn:col];</span><br></pre></td></tr></table></figure>
-<p>其中<code>NSTableDataSource</code> 和 <code>NSTableViewDelegate</code> 虽然都是<code>optional</code>的办法。但仍需要实现下面的方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - NSTableViewDelegate</span><br><span class="line">- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row&#123;</span><br><span class="line">    NSTextField *cell = [tableView makeViewWithIdentifier:@&quot;cellReuseId&quot; owner:self];</span><br><span class="line">    if(!cell)&#123;</span><br><span class="line">        cell = [NSTextField labelWithString:@&quot;&quot;];</span><br><span class="line">        cell.identifier = @&quot;cellReuseId&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@&quot;%@ \n%@&quot;,self.data[row].path.lastPathComponent,self.data[row].formatSize] attributes:@&#123;NSForegroundColorAttributeName:[NSColor blackColor]&#125;];</span><br><span class="line">    </span><br><span class="line">    cell.placeholderAttributedString = str;</span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row&#123;</span><br><span class="line">    return 50.f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)tableViewSelectionDidChange:(NSNotification *)notification&#123;</span><br><span class="line">    NSInteger row = [[notification object] selectedRow];</span><br><span class="line">    NSLog(@&quot;%ld&quot;,row);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#pragma mark - NSTableViewDataSource</span><br><span class="line">- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView&#123;</span><br><span class="line">    return self.data.count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注意是 <code>AppKit</code>里面是没有<code>Label</code>控件的，我这是使用的是<code>NSTextField</code>。就是输入框了，借助<code>placeholderString</code>属性能实现文本展示的效果。</p>
-<p><img src="../img/iClean-snapshot1.png" alt="tt"></p>
+        <p>我们在迭代完一个版本之后，需要使用 <code>Instruments</code> 中的一些 <code>Profile</code> 来获取应用性能数据。</p>
+<p>测试过程中，尽可能的还原用户真实的使用场景。 比如 应用的 <code>target scheme</code>应该为<code>release</code>，和渠道发布的保持一致。</p>
+<h2 id="Core-Animation"><a href="#Core-Animation" class="headerlink" title="Core Animation"></a>Core Animation</h2><p>我们使用<code>Core Animation</code>可以方便的看到 页面滚动时的帧率和<code>cpu</code>计算资源开销 - 对应工程具体方法代码。</p>
+<p>但是，有时候我们使用这个工具会出现看不到正常的函数符号的情况。如：</p>
 
       
     </div>
@@ -102,7 +92,7 @@
     
       <footer class="article-footer">
         
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocoa/">cocoa</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Core-Animation/">Core Animation</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
 
       </footer>
     
@@ -147,6 +137,64 @@
 <blockquote>
 <p><a href="https://www.cerebralgardens.com/watchdog" target="_blank" rel="external">watchdog for Xcode</a></p>
 </blockquote>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocoa/">cocoa</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
+      <article id="post-2017-04-24-iClean" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/20/2017-04-24-iClean/">iClean</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/04/20/2017-04-24-iClean/" class="article-date">
+  <time datetime="2017-04-20T00:00:00.000Z" itemprop="datePublished">2017-04-20</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/macOS/">macOS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>令人费解的AppKit</p>
+<h2 id="脱离nib-和-storyboard-开发方式"><a href="#脱离nib-和-storyboard-开发方式" class="headerlink" title="脱离nib 和 storyboard 开发方式"></a>脱离nib 和 storyboard 开发方式</h2><p> nib和storyboard 千好万好。但在多人开发模式下，修改同一份storyborad，产生的冲突简直是灾难。</p>
+<p>干掉项目中<code>info.plist</code> 关于<code>Main.storyboard</code>的设置。在<code>main.m</code>中手动绑定<code>AppDelegate</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Cocoa/Cocoa.h&gt;</span><br><span class="line">#import &quot;AppDelegate.h&quot;</span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    AppDelegate *app = [[AppDelegate alloc] init];</span><br><span class="line">    [NSApplication sharedApplication].delegate = app;</span><br><span class="line">    return NSApplicationMain(argc, argv);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>按照<code>iOS</code>的开发经验，<code>Window</code>下要放置一个<code>ViewController</code>。需要注意的是重写<code>loadview</code>方法不要调用<code>super</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Instantiates a view from a nib file and sets the value of the view property.</span><br></pre></td></tr></table></figure>
+<p><code>super</code>会去加载同名的<code>nib</code>文件。正确的纯编码方式是不调用父类方法，再自己设置一个<code>NSView</code>即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)loadView&#123;</span><br><span class="line">    self.view = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, iCleanMainWindowWidth, iCleanMainWindowHeight)];</span><br><span class="line">    self.view.wantsLayer = YES;</span><br><span class="line">    self.view.layer.backgroundColor = [NSColor brownColor].CGColor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="NSTableView"><a href="#NSTableView" class="headerlink" title="NSTableView"></a>NSTableView</h2><p>编码使用<code>NSTableView</code>的话，要配置使用<code>NSScorllView</code> 和 <code>NSTableColumn</code>。 具体实践是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">_scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(iCleanMainWindowWidth - 400, 0, 400, iCleanMainWindowHeight)];</span><br><span class="line">_scrollView.hasVerticalScroller = _scrollView.hasVerticalRuler = YES;</span><br><span class="line">_scrollView.hasHorizontalScroller = _scrollView.hasHorizontalRuler = NO;</span><br><span class="line">        </span><br><span class="line">_tableView = [[NSTableView alloc] initWithFrame:_scrollView.bounds];</span><br><span class="line">_tableView.delegate = self;</span><br><span class="line">_tableView.dataSource = self;</span><br><span class="line">_tableView.headerView = nil;</span><br><span class="line">_scrollView.contentView.documentView = _tableView;</span><br><span class="line">        </span><br><span class="line">NSTableColumn *col = [[NSTableColumn alloc] initWithIdentifier:@&quot;col1&quot;];</span><br><span class="line">col.minWidth = 400;</span><br><span class="line">[_tableView addTableColumn:col];</span><br></pre></td></tr></table></figure>
+<p>其中<code>NSTableDataSource</code> 和 <code>NSTableViewDelegate</code> 虽然都是<code>optional</code>的办法。但仍需要实现下面的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - NSTableViewDelegate</span><br><span class="line">- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row&#123;</span><br><span class="line">    NSTextField *cell = [tableView makeViewWithIdentifier:@&quot;cellReuseId&quot; owner:self];</span><br><span class="line">    if(!cell)&#123;</span><br><span class="line">        cell = [NSTextField labelWithString:@&quot;&quot;];</span><br><span class="line">        cell.identifier = @&quot;cellReuseId&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@&quot;%@ \n%@&quot;,self.data[row].path.lastPathComponent,self.data[row].formatSize] attributes:@&#123;NSForegroundColorAttributeName:[NSColor blackColor]&#125;];</span><br><span class="line">    </span><br><span class="line">    cell.placeholderAttributedString = str;</span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row&#123;</span><br><span class="line">    return 50.f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)tableViewSelectionDidChange:(NSNotification *)notification&#123;</span><br><span class="line">    NSInteger row = [[notification object] selectedRow];</span><br><span class="line">    NSLog(@&quot;%ld&quot;,row);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#pragma mark - NSTableViewDataSource</span><br><span class="line">- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView&#123;</span><br><span class="line">    return self.data.count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意是 <code>AppKit</code>里面是没有<code>Label</code>控件的，我这是使用的是<code>NSTextField</code>。就是输入框了，借助<code>placeholderString</code>属性能实现文本展示的效果。</p>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/iClean-snapshot1.png" alt="目前的产品形态"></p>
 
       
     </div>
@@ -752,61 +800,6 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SpriteKit/">SpriteKit</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2016-12-29-iOS 动态方案探讨" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/29/2016-12-29-iOS 动态方案探讨/">动态化方案</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/12/29/2016-12-29-iOS 动态方案探讨/" class="article-date">
-  <time datetime="2016-12-29T00:00:00.000Z" itemprop="datePublished">2016-12-29</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/动态化方案/">动态化方案</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="已知的一些动态化方案"><a href="#已知的一些动态化方案" class="headerlink" title="已知的一些动态化方案"></a>已知的一些动态化方案</h2><ul>
-<li><a href="https://github.com/spotify/HubFramework" target="_blank" rel="external">HubFramework</a></li>
-<li><a href="https://github.com/alibaba/weex" target="_blank" rel="external">weex</a></li>
-<li><a href="https://github.com/facebook/react-native" target="_blank" rel="external">react-native</a></li>
-<li><a href="http://mp.weixin.qq.com/s/DhGR6J5fx04BPi-kMsMBJg" target="_blank" rel="external">OCS</a></li>
-<li><a href="https://github.com/DynamicCocoa/DynamicCocoa/issues" target="_blank" rel="external">DynamicCocoa</a></li>
-</ul>
-<h2 id="List-解耦方案"><a href="#List-解耦方案" class="headerlink" title="List 解耦方案"></a>List 解耦方案</h2><ul>
-<li><a href="https://github.com/Instagram/IGListKit" target="_blank" rel="external">IGListKit</a></li>
-</ul>
-<p>动态化方案的价值，这里就不讨论了。</p>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态化方案/">动态化方案</a></li></ul>
 
       </footer>
     

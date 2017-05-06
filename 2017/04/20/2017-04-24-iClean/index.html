@@ -17,15 +17,15 @@
 脱离nib 和 storyboard 开发方式 nib和storyboard 千好万好。但在多人开发模式下，修改同一份storyborad，产生的冲突简直是灾难。
 干掉项目中info.plist 关于Main.storyboard的设置。在main.m中手动绑定AppDelegate
 1234567#import &amp;lt;Cocoa/Cocoa.h&amp;gt;#import &amp;">
-<meta property="og:image" content="http://yoursite.com/../img/iClean-snapshot1.png">
-<meta property="og:updated_time" content="2017-04-24T06:28:38.000Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/iClean-snapshot1.png">
+<meta property="og:updated_time" content="2017-04-24T06:32:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iClean">
 <meta name="twitter:description" content="令人费解的AppKit
 脱离nib 和 storyboard 开发方式 nib和storyboard 千好万好。但在多人开发模式下，修改同一份storyborad，产生的冲突简直是灾难。
 干掉项目中info.plist 关于Main.storyboard的设置。在main.m中手动绑定AppDelegate
 1234567#import &amp;lt;Cocoa/Cocoa.h&amp;gt;#import &amp;">
-<meta name="twitter:image" content="http://yoursite.com/../img/iClean-snapshot1.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/iClean-snapshot1.png">
   
   
     <link rel="icon" href="/favicon.png">
@@ -105,7 +105,7 @@
 <p>其中<code>NSTableDataSource</code> 和 <code>NSTableViewDelegate</code> 虽然都是<code>optional</code>的办法。但仍需要实现下面的方法</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - NSTableViewDelegate</span><br><span class="line">- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row&#123;</span><br><span class="line">    NSTextField *cell = [tableView makeViewWithIdentifier:@&quot;cellReuseId&quot; owner:self];</span><br><span class="line">    if(!cell)&#123;</span><br><span class="line">        cell = [NSTextField labelWithString:@&quot;&quot;];</span><br><span class="line">        cell.identifier = @&quot;cellReuseId&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@&quot;%@ \n%@&quot;,self.data[row].path.lastPathComponent,self.data[row].formatSize] attributes:@&#123;NSForegroundColorAttributeName:[NSColor blackColor]&#125;];</span><br><span class="line">    </span><br><span class="line">    cell.placeholderAttributedString = str;</span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row&#123;</span><br><span class="line">    return 50.f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)tableViewSelectionDidChange:(NSNotification *)notification&#123;</span><br><span class="line">    NSInteger row = [[notification object] selectedRow];</span><br><span class="line">    NSLog(@&quot;%ld&quot;,row);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#pragma mark - NSTableViewDataSource</span><br><span class="line">- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView&#123;</span><br><span class="line">    return self.data.count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>注意是 <code>AppKit</code>里面是没有<code>Label</code>控件的，我这是使用的是<code>NSTextField</code>。就是输入框了，借助<code>placeholderString</code>属性能实现文本展示的效果。</p>
-<p><img src="../img/iClean-snapshot1.png" alt="tt"></p>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/iClean-snapshot1.png" alt="目前的产品形态"></p>
 
       
     </div>
@@ -122,9 +122,17 @@
     
 <nav id="article-nav">
   
+    <a href="/2017/04/20/2017-04-20-iClean 一款Mac OS 软件的诞生/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          iClean 一款Mac OS 软件的诞生
+        
+      </div>
+    </a>
   
-    <a href="/2017/04/20/2017-04-20-iClean 一款Mac OS 软件的诞生/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">iClean 一款Mac OS 软件的诞生&nbsp;<span>&gt;</span></div>
+  
+    <a href="/2017/03/07/2017-03-07-TinyURL的生成/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">TinyURL的生成&nbsp;<span>&gt;</span></div>
     </a>
   
 </nav>

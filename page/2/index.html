@@ -54,6 +54,61 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2016-12-29-iOS 动态方案探讨" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/29/2016-12-29-iOS 动态方案探讨/">动态化方案</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/12/29/2016-12-29-iOS 动态方案探讨/" class="article-date">
+  <time datetime="2016-12-29T00:00:00.000Z" itemprop="datePublished">2016-12-29</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/动态化方案/">动态化方案</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="已知的一些动态化方案"><a href="#已知的一些动态化方案" class="headerlink" title="已知的一些动态化方案"></a>已知的一些动态化方案</h2><ul>
+<li><a href="https://github.com/spotify/HubFramework" target="_blank" rel="external">HubFramework</a></li>
+<li><a href="https://github.com/alibaba/weex" target="_blank" rel="external">weex</a></li>
+<li><a href="https://github.com/facebook/react-native" target="_blank" rel="external">react-native</a></li>
+<li><a href="http://mp.weixin.qq.com/s/DhGR6J5fx04BPi-kMsMBJg" target="_blank" rel="external">OCS</a></li>
+<li><a href="https://github.com/DynamicCocoa/DynamicCocoa/issues" target="_blank" rel="external">DynamicCocoa</a></li>
+</ul>
+<h2 id="List-解耦方案"><a href="#List-解耦方案" class="headerlink" title="List 解耦方案"></a>List 解耦方案</h2><ul>
+<li><a href="https://github.com/Instagram/IGListKit" target="_blank" rel="external">IGListKit</a></li>
+</ul>
+<p>动态化方案的价值，这里就不讨论了。</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态化方案/">动态化方案</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2016-11-01-iOS Responder Chain" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -853,62 +908,6 @@
 </ol>
 <h2 id="动态规划-Accepted"><a href="#动态规划-Accepted" class="headerlink" title="动态规划 Accepted"></a>动态规划 <span style="color:green;">Accepted</span></h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> a,<span class="keyword">const</span> <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &gt; b ? a : b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">easyRob</span><span class="params">(<span class="keyword">int</span>* nums, <span class="keyword">int</span> numsSize)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> odd = <span class="number">0</span>, eve = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;numsSize;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i%<span class="number">2</span>) eve += nums[i];</span><br><span class="line">        <span class="keyword">else</span> odd += nums[i];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> max(odd,eve);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="keyword">int</span>* nums, <span class="keyword">int</span> numsSize)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(numsSize &lt;= <span class="number">3</span>) <span class="keyword">return</span> easyRob(nums,numsSize);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> *dp = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>)*(numsSize));</span><br><span class="line">    <span class="built_in">memset</span>(dp, <span class="number">0</span>, <span class="keyword">sizeof</span>(<span class="keyword">int</span>)*(numsSize));</span><br><span class="line">    dp[<span class="number">0</span>] = nums[<span class="number">0</span>];</span><br><span class="line">    dp[<span class="number">1</span>] = max(nums[<span class="number">1</span>],nums[<span class="number">0</span>]);</span><br><span class="line">    dp[<span class="number">2</span>] = max(dp[<span class="number">0</span>]+nums[<span class="number">2</span>],dp[<span class="number">1</span>]);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">3</span>;i&lt;numsSize;i++)&#123;</span><br><span class="line">        dp[i] = max(dp[i<span class="number">-2</span>]+nums[i],dp[i<span class="number">-1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> ans = dp[numsSize<span class="number">-1</span>];</span><br><span class="line">    <span class="built_in">free</span>(dp);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/house_robber.png" alt=""></p>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2016-04-08-Minimum Size Subarray Sum" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/08/2016-04-08-Minimum Size Subarray Sum/">Minimum Size Subarray Sum</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/04/08/2016-04-08-Minimum Size Subarray Sum/" class="article-date">
-  <time datetime="2016-04-08T00:00:00.000Z" itemprop="datePublished">2016-04-08</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a><span>></span><a class="article-category-link" href="/categories/Algorithm/LeetCode/">LeetCode</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://leetcode.com/problems/minimum-size-subarray-sum/" target="_blank" rel="external">Minimum Size Subarray Sum</a></p>
-<blockquote>
-<p>Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s. If there isn’t one, return 0 instead.</p>
-<p>For example, given the array [2,3,1,2,4,3] and s = 7,<br>the subarray [4,3] has the minimal length under the problem constraint.</p>
-</blockquote>
-<p>题目大意： 给定一个正数数组 nums和一个正数 s，找出最短长度的连续子数组 使其和 大于等于 s。如果没有的话，返回 0.</p>
-<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><h2 id="暴力枚举-Accepted"><a href="#暴力枚举-Accepted" class="headerlink" title="暴力枚举 Accepted"></a>暴力枚举 <span style="color:green;">Accepted</span></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int minSubArrayLen(int s, vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        size_t n = nums.size();</span><br><span class="line">        int sum = 0;</span><br><span class="line">        int ans = INT_MAX;</span><br><span class="line">        for(int i=0;i&lt;n;i++)&#123;</span><br><span class="line">            sum = nums[i];</span><br><span class="line">            if(sum &gt;= s) return 1;</span><br><span class="line">            for(int j=i+1;j&lt;n;j++)&#123;</span><br><span class="line">                sum += nums[j];</span><br><span class="line">                if(sum &gt;= s)&#123;</span><br><span class="line">                    ans = min(ans,j-i+1);</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return ans==INT_MAX ? 0 : ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Minimum%20Size%20Subarray%20Sum.png" alt=""></p>
-<h2 id="暴力枚举-flag优化-Accepted"><a href="#暴力枚举-flag优化-Accepted" class="headerlink" title="暴力枚举 + flag优化 Accepted"></a>暴力枚举 + flag优化 <span style="color:green;">Accepted</span></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int minSubArrayLen(int s, vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        size_t n = nums.size();</span><br><span class="line">        int sum = 0;</span><br><span class="line">        int ans = INT_MAX;</span><br><span class="line">        </span><br><span class="line">        bool flag;</span><br><span class="line">        for(int i=0;i&lt;n;i++)&#123;</span><br><span class="line">            sum = nums[i];</span><br><span class="line">            if(sum &gt;= s) return 1;</span><br><span class="line">            flag = false;</span><br><span class="line">            for(int j=i+1;j&lt;n;j++)&#123;</span><br><span class="line">                sum += nums[j];</span><br><span class="line">                if(sum &gt;= s)&#123;</span><br><span class="line">                    ans = min(ans,j-i+1);</span><br><span class="line">                    flag = true;</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            if(!flag) break;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return ans==INT_MAX ? 0 : ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Minimum%20Size%20Subarray%20Sum%202.png" alt=""></p>
-<h2 id="枚举小窗口-Accepted"><a href="#枚举小窗口-Accepted" class="headerlink" title="枚举小窗口 Accepted"></a>枚举小窗口 <span style="color:green;">Accepted</span></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int minSubArrayLen(int s, vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        size_t n = nums.size();</span><br><span class="line">        int sum = 0;</span><br><span class="line">        int ans = INT_MAX;</span><br><span class="line">        int p = 0,q = 0;</span><br><span class="line">        </span><br><span class="line">        while(q &lt; n)&#123;</span><br><span class="line">            sum += nums[q++];</span><br><span class="line">            </span><br><span class="line">            while(sum &gt;= s)&#123;</span><br><span class="line">                ans = min(ans,q-p);</span><br><span class="line">                sum -= nums[p++];</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return ans==INT_MAX ? 0 : ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Minimum%20Size%20Subarray%20Sum%203.png" alt=""></p>
 
       
     </div>
