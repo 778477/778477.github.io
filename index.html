@@ -54,7 +54,7 @@
   </div>
 </header>
     <section id="main" class="outer">
-      <article id="post-2017-05-06-Core Animation Profile Symbols Not Found" class="article article-type-post" itemscope itemprop="blogPost">
+      <article id="post-2017-06-19-为什么iOS更新UI操作必须在主线程" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
     
@@ -62,38 +62,50 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/20/2017-05-06-Core Animation Profile Symbols Not Found/">Core Animation Profile Symbols Not Found</a>
+      <a class="article-title" href="/2017/06/19/2017-06-19-为什么iOS更新UI操作必须在主线程/">为什么iOS更新UI操作必须在主线程</a>
     </h1>
   
 
       </header>
     
     <div class="article-meta">
-      <a href="/2017/04/20/2017-05-06-Core Animation Profile Symbols Not Found/" class="article-date">
-  <time datetime="2017-04-20T00:00:00.000Z" itemprop="datePublished">2017-04-20</time>
+      <a href="/2017/06/19/2017-06-19-为什么iOS更新UI操作必须在主线程/" class="article-date">
+  <time datetime="2017-06-19T00:00:00.000Z" itemprop="datePublished">2017-06-19</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/Instruments/">Instruments</a>
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
   </div>
 
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>我们在迭代完一个版本之后，需要使用 <code>Instruments</code> 中的一些 <code>Profile</code> 来获取应用性能数据。</p>
-<p>测试过程中，尽可能的还原用户真实的使用场景。 比如 应用的 <code>target scheme</code>应该为<code>release</code>，和渠道发布的保持一致。</p>
-<h2 id="Core-Animation"><a href="#Core-Animation" class="headerlink" title="Core Animation"></a>Core Animation</h2><p>我们使用<code>Core Animation</code>可以方便的看到 页面滚动时的帧率和<code>cpu</code>计算资源开销还能对应到工程具体方法代码。</p>
-<p>但是，有时候我们使用这个工具会出现看不到正常的函数符号的情况。如：</p>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-1.png" alt=""></p>
-<p>这里的地址对应的方法都没有被符号化，我们找不到那些有问题的代码。</p>
-<h2 id="How-to-fix"><a href="#How-to-fix" class="headerlink" title="How to fix"></a>How to fix</h2><p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-2.png" alt=""></p>
-<p>在使用<code>Core Animation Profile</code>之前，你应该确认一下 <code>Symbols -&gt; Search paths for dSYMs</code>这个路径下的<code>dSYMs</code>文件是否存在且是对应的。</p>
-<p>开发iOS的同学，应该对<code>dSYMs</code>文件并不陌生。每次上传发布应用的时候，都需要<code>archvie</code>归档生成这个<code>dSYMs</code>文件。方便线上发生<code>Crash</code>的时候，可以对日志进行符号处理：可以看到对应崩溃的执行堆栈。</p>
-<p>如果，没有找到 <code>dSYMs</code>文件的话，还得再确认工程构建配置中是否允许生成<code>dSYMs</code>文件。 在 <code>Target - Build Setting</code>-&gt;<code>Debug Information Format</code> 中将你现在对应的<code>Target scheme</code>设置为 <code>DWARF with dSYM File</code></p>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-3.png" alt=""></p>
-<p>如此，这般配置之后，就可以看到正常的符号化之后的代码了。</p>
-<p>另外，一些常用的设置项入口被挪到这里了：<br><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-4.png" alt=""></p>
+        <h2 id="为什么iOS更新UI操作必须在主线程"><a href="#为什么iOS更新UI操作必须在主线程" class="headerlink" title="为什么iOS更新UI操作必须在主线程"></a>为什么iOS更新UI操作必须在主线程</h2><p>开发iOS应用程序的同学都知道UI操作如果在非主线程进行的话是会Crash的。</p>
+<p>但是本质原因可能很少人真正明白。</p>
+<p>如果我来回答的话，我的答案是：<br> UI操作涉及到渲染访问各种View对象的属性，如果是异步操作会有读写问题。加锁呢，性能损耗大(视图层次深，属性多)。所以主线程操作UI，是约定俗成的开发规则。</p>
+<p> 我们来看看<code>Quora</code>网友关于这个”经典”问题的回答：</p>
+<p> <a href="https://www.quora.com/Why-must-the-UI-always-be-updated-on-Main-Thread" target="_blank" rel="external">Why must the UI always be updated on Main Thread?</a></p>
+<p> 来自 <a href="https://www.quora.com/profile/Reinder-de-Vries" target="_blank" rel="external">Reinder de Vries</a> 的回答：</p>
+<blockquote>
+<p>The first one is that, in Cocoa Touch, the UIApplication gets set up on the main thread</p>
+<p>Another reason is graphics rendering: the graphics pipeline of the iPhone is ultimately synchronous.</p>
+</blockquote>
+<p>他的一个理由是：</p>
+<ol>
+<li>在<code>Cocoa Touch</code>框架中，<code>UIApplication</code>初始化工作是在主线程进行的。而界面上所有的视图都是在<code>UIApplication 实例</code>的叶子节点(内存管理角度)，所以所有的手势交互操作都是在主线程上才能响应</li>
+<li>图形渲染在<code>iPhone</code>设备本质上是同步的。图形渲染计算最终要显示的像素值，以每秒60帧的频率刷新到屏幕上，绘制到屏幕的过程实际上就是通过<code>LED display</code>点亮各个像素。这个过程需要一次将所有将要实现的像素刷新到屏幕上(同时的)。如果要异步化的话，对应的你无法确定这个处理过程是否真正的全部完成。</li>
+</ol>
+<p>他最后指出，在主线程操作UI。能帮助你避免不少的麻烦和减少产生产品缺陷。当然，有部分UI操作是可异步化的，只要最后的更新操作是在主线程</p>
+<ul>
+<li>叠加滤镜效果在视图上</li>
+<li>创建动态图形，比如动画</li>
+</ul>
+<p>最后推荐了<code>WWDC</code>上关于UI渲染的录像 <a href="https://developer.apple.com/videos/play/wwdc2012/211/" target="_blank" rel="external">Building Concurrent User Interfaces on iOS</a></p>
+<h2 id="相关阅读"><a href="#相关阅读" class="headerlink" title="相关阅读"></a>相关阅读</h2><ul>
+<li><a href="https://www.objc.io/issues/2-concurrency/thread-safe-class-design/" target="_blank" rel="external">Thread-Safe Class Design</a></li>
+<li><a href="https://stackoverflow.com/questions/18467114/why-must-uikit-operations-be-performed-on-the-main-thread" target="_blank" rel="external">stackoverflow - Why must UIKit operations be performed on the main thread?</a></li>
+</ul>
 
       
     </div>
@@ -101,7 +113,65 @@
     
       <footer class="article-footer">
         
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Core-Animation/">Core Animation</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
+      <article id="post-2017-04-24-iClean" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/20/2017-04-24-iClean/">iClean</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/04/20/2017-04-24-iClean/" class="article-date">
+  <time datetime="2017-04-20T00:00:00.000Z" itemprop="datePublished">2017-04-20</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/macOS/">macOS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>令人费解的AppKit</p>
+<h2 id="脱离nib-和-storyboard-开发方式"><a href="#脱离nib-和-storyboard-开发方式" class="headerlink" title="脱离nib 和 storyboard 开发方式"></a>脱离nib 和 storyboard 开发方式</h2><p> nib和storyboard 千好万好。但在多人开发模式下，修改同一份storyborad，产生的冲突简直是灾难。</p>
+<p>干掉项目中<code>info.plist</code> 关于<code>Main.storyboard</code>的设置。在<code>main.m</code>中手动绑定<code>AppDelegate</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Cocoa/Cocoa.h&gt;</span><br><span class="line">#import &quot;AppDelegate.h&quot;</span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    AppDelegate *app = [[AppDelegate alloc] init];</span><br><span class="line">    [NSApplication sharedApplication].delegate = app;</span><br><span class="line">    return NSApplicationMain(argc, argv);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>按照<code>iOS</code>的开发经验，<code>Window</code>下要放置一个<code>ViewController</code>。需要注意的是重写<code>loadview</code>方法不要调用<code>super</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Instantiates a view from a nib file and sets the value of the view property.</span><br></pre></td></tr></table></figure>
+<p><code>super</code>会去加载同名的<code>nib</code>文件。正确的纯编码方式是不调用父类方法，再自己设置一个<code>NSView</code>即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)loadView&#123;</span><br><span class="line">    self.view = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, iCleanMainWindowWidth, iCleanMainWindowHeight)];</span><br><span class="line">    self.view.wantsLayer = YES;</span><br><span class="line">    self.view.layer.backgroundColor = [NSColor brownColor].CGColor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="NSTableView"><a href="#NSTableView" class="headerlink" title="NSTableView"></a>NSTableView</h2><p>编码使用<code>NSTableView</code>的话，要配置使用<code>NSScorllView</code> 和 <code>NSTableColumn</code>。 具体实践是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">_scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(iCleanMainWindowWidth - 400, 0, 400, iCleanMainWindowHeight)];</span><br><span class="line">_scrollView.hasVerticalScroller = _scrollView.hasVerticalRuler = YES;</span><br><span class="line">_scrollView.hasHorizontalScroller = _scrollView.hasHorizontalRuler = NO;</span><br><span class="line">        </span><br><span class="line">_tableView = [[NSTableView alloc] initWithFrame:_scrollView.bounds];</span><br><span class="line">_tableView.delegate = self;</span><br><span class="line">_tableView.dataSource = self;</span><br><span class="line">_tableView.headerView = nil;</span><br><span class="line">_scrollView.contentView.documentView = _tableView;</span><br><span class="line">        </span><br><span class="line">NSTableColumn *col = [[NSTableColumn alloc] initWithIdentifier:@&quot;col1&quot;];</span><br><span class="line">col.minWidth = 400;</span><br><span class="line">[_tableView addTableColumn:col];</span><br></pre></td></tr></table></figure>
+<p>其中<code>NSTableDataSource</code> 和 <code>NSTableViewDelegate</code> 虽然都是<code>optional</code>的办法。但仍需要实现下面的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - NSTableViewDelegate</span><br><span class="line">- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row&#123;</span><br><span class="line">    NSTextField *cell = [tableView makeViewWithIdentifier:@&quot;cellReuseId&quot; owner:self];</span><br><span class="line">    if(!cell)&#123;</span><br><span class="line">        cell = [NSTextField labelWithString:@&quot;&quot;];</span><br><span class="line">        cell.identifier = @&quot;cellReuseId&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@&quot;%@ \n%@&quot;,self.data[row].path.lastPathComponent,self.data[row].formatSize] attributes:@&#123;NSForegroundColorAttributeName:[NSColor blackColor]&#125;];</span><br><span class="line">    </span><br><span class="line">    cell.placeholderAttributedString = str;</span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row&#123;</span><br><span class="line">    return 50.f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)tableViewSelectionDidChange:(NSNotification *)notification&#123;</span><br><span class="line">    NSInteger row = [[notification object] selectedRow];</span><br><span class="line">    NSLog(@&quot;%ld&quot;,row);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#pragma mark - NSTableViewDataSource</span><br><span class="line">- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView&#123;</span><br><span class="line">    return self.data.count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意是 <code>AppKit</code>里面是没有<code>Label</code>控件的，我这是使用的是<code>NSTextField</code>。就是输入框了，借助<code>placeholderString</code>属性能实现文本展示的效果。</p>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/iClean-snapshot1.png" alt="目前的产品形态"></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocoa/">cocoa</a></li></ul>
 
       </footer>
     
@@ -163,7 +233,7 @@
 
 
     
-      <article id="post-2017-04-24-iClean" class="article article-type-post" itemscope itemprop="blogPost">
+      <article id="post-2017-05-06-Core Animation Profile Symbols Not Found" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
     
@@ -171,39 +241,38 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/20/2017-04-24-iClean/">iClean</a>
+      <a class="article-title" href="/2017/04/20/2017-05-06-Core Animation Profile Symbols Not Found/">Core Animation Profile Symbols Not Found</a>
     </h1>
   
 
       </header>
     
     <div class="article-meta">
-      <a href="/2017/04/20/2017-04-24-iClean/" class="article-date">
+      <a href="/2017/04/20/2017-05-06-Core Animation Profile Symbols Not Found/" class="article-date">
   <time datetime="2017-04-20T00:00:00.000Z" itemprop="datePublished">2017-04-20</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/macOS/">macOS</a>
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/Instruments/">Instruments</a>
   </div>
 
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>令人费解的AppKit</p>
-<h2 id="脱离nib-和-storyboard-开发方式"><a href="#脱离nib-和-storyboard-开发方式" class="headerlink" title="脱离nib 和 storyboard 开发方式"></a>脱离nib 和 storyboard 开发方式</h2><p> nib和storyboard 千好万好。但在多人开发模式下，修改同一份storyborad，产生的冲突简直是灾难。</p>
-<p>干掉项目中<code>info.plist</code> 关于<code>Main.storyboard</code>的设置。在<code>main.m</code>中手动绑定<code>AppDelegate</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Cocoa/Cocoa.h&gt;</span><br><span class="line">#import &quot;AppDelegate.h&quot;</span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    AppDelegate *app = [[AppDelegate alloc] init];</span><br><span class="line">    [NSApplication sharedApplication].delegate = app;</span><br><span class="line">    return NSApplicationMain(argc, argv);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>按照<code>iOS</code>的开发经验，<code>Window</code>下要放置一个<code>ViewController</code>。需要注意的是重写<code>loadview</code>方法不要调用<code>super</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Instantiates a view from a nib file and sets the value of the view property.</span><br></pre></td></tr></table></figure>
-<p><code>super</code>会去加载同名的<code>nib</code>文件。正确的纯编码方式是不调用父类方法，再自己设置一个<code>NSView</code>即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)loadView&#123;</span><br><span class="line">    self.view = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, iCleanMainWindowWidth, iCleanMainWindowHeight)];</span><br><span class="line">    self.view.wantsLayer = YES;</span><br><span class="line">    self.view.layer.backgroundColor = [NSColor brownColor].CGColor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="NSTableView"><a href="#NSTableView" class="headerlink" title="NSTableView"></a>NSTableView</h2><p>编码使用<code>NSTableView</code>的话，要配置使用<code>NSScorllView</code> 和 <code>NSTableColumn</code>。 具体实践是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">_scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(iCleanMainWindowWidth - 400, 0, 400, iCleanMainWindowHeight)];</span><br><span class="line">_scrollView.hasVerticalScroller = _scrollView.hasVerticalRuler = YES;</span><br><span class="line">_scrollView.hasHorizontalScroller = _scrollView.hasHorizontalRuler = NO;</span><br><span class="line">        </span><br><span class="line">_tableView = [[NSTableView alloc] initWithFrame:_scrollView.bounds];</span><br><span class="line">_tableView.delegate = self;</span><br><span class="line">_tableView.dataSource = self;</span><br><span class="line">_tableView.headerView = nil;</span><br><span class="line">_scrollView.contentView.documentView = _tableView;</span><br><span class="line">        </span><br><span class="line">NSTableColumn *col = [[NSTableColumn alloc] initWithIdentifier:@&quot;col1&quot;];</span><br><span class="line">col.minWidth = 400;</span><br><span class="line">[_tableView addTableColumn:col];</span><br></pre></td></tr></table></figure>
-<p>其中<code>NSTableDataSource</code> 和 <code>NSTableViewDelegate</code> 虽然都是<code>optional</code>的办法。但仍需要实现下面的方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - NSTableViewDelegate</span><br><span class="line">- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row&#123;</span><br><span class="line">    NSTextField *cell = [tableView makeViewWithIdentifier:@&quot;cellReuseId&quot; owner:self];</span><br><span class="line">    if(!cell)&#123;</span><br><span class="line">        cell = [NSTextField labelWithString:@&quot;&quot;];</span><br><span class="line">        cell.identifier = @&quot;cellReuseId&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@&quot;%@ \n%@&quot;,self.data[row].path.lastPathComponent,self.data[row].formatSize] attributes:@&#123;NSForegroundColorAttributeName:[NSColor blackColor]&#125;];</span><br><span class="line">    </span><br><span class="line">    cell.placeholderAttributedString = str;</span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row&#123;</span><br><span class="line">    return 50.f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)tableViewSelectionDidChange:(NSNotification *)notification&#123;</span><br><span class="line">    NSInteger row = [[notification object] selectedRow];</span><br><span class="line">    NSLog(@&quot;%ld&quot;,row);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#pragma mark - NSTableViewDataSource</span><br><span class="line">- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView&#123;</span><br><span class="line">    return self.data.count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注意是 <code>AppKit</code>里面是没有<code>Label</code>控件的，我这是使用的是<code>NSTextField</code>。就是输入框了，借助<code>placeholderString</code>属性能实现文本展示的效果。</p>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/iClean-snapshot1.png" alt="目前的产品形态"></p>
+        <p>我们在迭代完一个版本之后，需要使用 <code>Instruments</code> 中的一些 <code>Profile</code> 来获取应用性能数据。</p>
+<p>测试过程中，尽可能的还原用户真实的使用场景。 比如 应用的 <code>target scheme</code>应该为<code>release</code>，和渠道发布的保持一致。</p>
+<h2 id="Core-Animation"><a href="#Core-Animation" class="headerlink" title="Core Animation"></a>Core Animation</h2><p>我们使用<code>Core Animation</code>可以方便的看到 页面滚动时的帧率和<code>cpu</code>计算资源开销还能对应到工程具体方法代码。</p>
+<p>但是，有时候我们使用这个工具会出现看不到正常的函数符号的情况。如：</p>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-1.png" alt=""></p>
+<p>这里的地址对应的方法都没有被符号化，我们找不到那些有问题的代码。</p>
+<h2 id="How-to-fix"><a href="#How-to-fix" class="headerlink" title="How to fix"></a>How to fix</h2><p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-2.png" alt=""></p>
+<p>在使用<code>Core Animation Profile</code>之前，你应该确认一下 <code>Symbols -&gt; Search paths for dSYMs</code>这个路径下的<code>dSYMs</code>文件是否存在且是对应的。</p>
+<p>开发iOS的同学，应该对<code>dSYMs</code>文件并不陌生。每次上传发布应用的时候，都需要<code>archvie</code>归档生成这个<code>dSYMs</code>文件。方便线上发生<code>Crash</code>的时候，可以对日志进行符号处理：可以看到对应崩溃的执行堆栈。</p>
+<p>如果，没有找到 <code>dSYMs</code>文件的话，还得再确认工程构建配置中是否允许生成<code>dSYMs</code>文件。 在 <code>Target - Build Setting</code>-&gt;<code>Debug Information Format</code> 中将你现在对应的<code>Target scheme</code>设置为 <code>DWARF with dSYM File</code></p>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-3.png" alt=""></p>
+<p>如此，这般配置之后，就可以看到正常的符号化之后的代码了。</p>
+<p>另外，一些常用的设置项入口被挪到这里了：<br><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-4.png" alt=""></p>
 
       
     </div>
@@ -211,7 +280,7 @@
     
       <footer class="article-footer">
         
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocoa/">cocoa</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Core-Animation/">Core Animation</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
 
       </footer>
     
@@ -733,82 +802,6 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ASR/">ASR</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Translator/">Translator</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2016-12-29-个人开发者之游戏篇SpriteKit" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/29/2016-12-29-个人开发者之游戏篇SpriteKit/">Jumping into SpriteKit</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/12/29/2016-12-29-个人开发者之游戏篇SpriteKit/" class="article-date">
-  <time datetime="2016-12-29T00:00:00.000Z" itemprop="datePublished">2016-12-29</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/SpriteKit/">SpriteKit</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>如果你对个人开发者还有一些念想的话，游戏领域可能是个人开发者值得投入精力尝试的。<br>比起应用来说，游戏没有涉及到那么多的资源如服务端，产品经理，交互。 如果是简单的样式可能美工方面自己现学就可以搞定了<br>我这里指的是一些简单的游戏，如单场景的消除类:</p>
-<ul>
-<li><a href="https://itunes.apple.com/cn/app/xiao-chu-fang-kuai-2016mian/id1111099870?mt=8" target="_blank" rel="external">消除方块</a></li>
-<li><a href="https://itunes.apple.com/cn/app/duo-cai-fang-kuai-xiao-chu/id943380262?mt=8" target="_blank" rel="external">多彩方块消除</a></li>
-<li><a href="https://itunes.apple.com/cn/app/xing-zhi-xiao-chu!pop-star/id790766978?mt=8" target="_blank" rel="external">星之消除!pop star-免费中文消除小游戏</a></li>
-</ul>
-<p>大体都是一些较为经典的个人开发者作品。盈利模式可以是：App收费，App接入市场广告，App道具收费</p>
-<p>好了，下面进入正题。早些年做游戏的话，如果注重跨平台 你的选择可能就是 Cocos2d-X 了。 但其实Apple自身是有套游戏框架: SpriteKit</p>
-<p><a href="https://developer.apple.com/library/content/documentation/GraphicsAnimation/Conceptual/SpriteKit_PG/Introduction/Introduction.html#//apple_ref/doc/uid/TP40013043-CH1-SW1" target="_blank" rel="external">About SpriteKit</a></p>
-<p>可以按照 Jumping into SpriteKit 这个章节熟悉一下 SpriteKit 。</p>
-<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><p><strong>这里要注意的是 第一步里面一定要将storyboard里面的ViewController 的view object class 设置为 SKView。</strong></p>
-<blockquote>
-<p>Open the storyboard for the project. It has a single view controller (SpriteViewController). Select the view controller’s view object and change its class to SKView.</p>
-</blockquote>
-<p><code>SpriteKit</code>内容都是绘制在<code>SKView</code>里面的，而<code>SKView</code>渲染出来的东西叫做 <em>场景(scene)</em> 是<code>SKScene</code>类型。 场景的交互是响应传递链的。</p>
-<h2 id="Using-Actions-to-Animate-Scenes"><a href="#Using-Actions-to-Animate-Scenes" class="headerlink" title="Using Actions to Animate Scenes"></a>Using Actions to Animate Scenes</h2><p>每个<code>SKNode</code>都有<code>name</code>属性作为他的描述，给节点起个名字方便你后面查找和指定节点执行动作。 类似<code>UIKit</code>里面的<code>view.tag</code></p>
-<p><code>SKAction</code> 需要重点了解一下。</p>
-<h2 id="Transitioning-Between-Scenes"><a href="#Transitioning-Between-Scenes" class="headerlink" title="Transitioning Between Scenes"></a>Transitioning Between Scenes</h2><p>这个是区别于<code>UIKit</code>的，没有页面跳转的概念。这里指的 Scene A切换为Scene B。<br>使用<code>SKTransition</code>可以添加切换动画。查看<code>SKTransition.h</code>，SpriteKit还是自带了蛮多场景切换动画。</p>
-<h2 id="Creating-Nodes-That-Interact-with-Each-Other"><a href="#Creating-Nodes-That-Interact-with-Each-Other" class="headerlink" title="Creating Nodes That Interact with Each Other"></a>Creating Nodes That Interact with Each Other</h2><p>这个是最有意思的地方： 可以添加<code>SKNode physicsBody</code>属性，让其有物理特性。<br>这里还提到了 <code>didSimulatePhysics</code>,实际上 SpriteKit中 <code>Scene</code> 是在实时重复绘制的。他的每一帧绘制包括了以下时机回调</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> Override this to perform per-frame game logic. Called exactly once per frame before any actions are evaluated and any physics are simulated.</span><br><span class="line"> </span><br><span class="line"> @param currentTime the current time in the app. This must be monotonically increasing.</span><br><span class="line"> */</span><br><span class="line">- (void)update:(NSTimeInterval)currentTime;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> Override this to perform game logic. Called exactly once per frame after any actions have been evaluated but before any physics are simulated. Any additional actions applied is not evaluated until the next update.</span><br><span class="line"> */</span><br><span class="line">- (void)didEvaluateActions;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> Override this to perform game logic. Called exactly once per frame after any actions have been evaluated and any physics have been simulated. Any additional actions applied is not evaluated until the next update. Any changes to physics bodies is not simulated until the next update.</span><br><span class="line"> */</span><br><span class="line">- (void)didSimulatePhysics;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> Override this to perform game logic. Called exactly once per frame after any enabled constraints have been applied. Any additional actions applied is not evaluated until the next update. Any changes to physics bodies is not simulated until the next update. Any changes to constarints will not be applied until the next update.</span><br><span class="line"> */</span><br><span class="line">- (void)didApplyConstraints NS_AVAILABLE(10_10, 8_0);</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> Override this to perform game logic. Called after all update logic has been completed. Any additional actions applied are not evaluated until the next update. Any changes to physics bodies are not simulated until the next update. Any changes to constarints will not be applied until the next update.</span><br><span class="line"> </span><br><span class="line"> No futher update logic will be applied to the scene after this call. Any values set on nodes here will be used when the scene is rendered for the current frame.</span><br><span class="line"> */</span><br><span class="line">- (void)didFinishUpdate NS_AVAILABLE(10_10, 8_0);</span><br></pre></td></tr></table></figure>
-<p><img src="https://developer.apple.com/library/content/documentation/GraphicsAnimation/Conceptual/SpriteKit_PG/Art/update_loop_2x.png" alt="update_loop"></p>
-<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>来自 raywenderlich 的学习资料 </p>
-<ul>
-<li><a href="https://www.raywenderlich.com/category/swift" target="_blank" rel="external">swift</a></li>
-<li><p><a href="https://www.raywenderlich.com/category/apple-game-frameworks" target="_blank" rel="external">apple-game-frameworks</a></p>
-<p>来自 apple 官方的一些资料文档</p>
-</li>
-<li><p><a href="https://developer.apple.com/library/content/samplecode/SpriteKit_Physics_Collisions/Introduction/Intro.html#//apple_ref/doc/uid/DTS40013390" target="_blank" rel="external">SpriteKit Physics Collisions</a></p>
-</li>
-<li><a href="https://developer.apple.com/library/content/samplecode/Sprite_Tour/Introduction/Intro.html#//apple_ref/doc/uid/DTS40013389" target="_blank" rel="external">Sprite Tour</a></li>
-<li><a href="https://developer.apple.com/library/content/qa/qa1889/_index.html#//apple_ref/doc/uid/DTS40016267" target="_blank" rel="external">Tab-based SpriteKit Apps and Scene Caching</a></li>
-</ul>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SpriteKit/">SpriteKit</a></li></ul>
 
       </footer>
     

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>为什么iOS更新UI操作必须在主线程 - 778477</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="为什么iOS更新UI操作必须在主线程开发iOS应用程序的同学都知道UI操作如果在非主线程进行的话是会Crash的。
+但是本质原因可能很少人真正明白。
+如果我来回答的话，我的答案是： UI操作涉及到渲染访问各种View对象的属性，如果是异步操作会有读写问题。加锁呢，性能损耗大(视图层次深，属性多)。所以主线程操作UI，是约定俗成的开发规则。
+ 我们来看看Quora网友关于这个”经典”问题的回答：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么iOS更新UI操作必须在主线程">
+<meta property="og:url" content="http://yoursite.com/2017/06/19/2017-06-19-为什么iOS更新UI操作必须在主线程/index.html">
+<meta property="og:site_name" content="778477">
+<meta property="og:description" content="为什么iOS更新UI操作必须在主线程开发iOS应用程序的同学都知道UI操作如果在非主线程进行的话是会Crash的。
+但是本质原因可能很少人真正明白。
+如果我来回答的话，我的答案是： UI操作涉及到渲染访问各种View对象的属性，如果是异步操作会有读写问题。加锁呢，性能损耗大(视图层次深，属性多)。所以主线程操作UI，是约定俗成的开发规则。
+ 我们来看看Quora网友关于这个”经典”问题的回答：">
+<meta property="og:updated_time" content="2017-06-19T12:37:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么iOS更新UI操作必须在主线程">
+<meta name="twitter:description" content="为什么iOS更新UI操作必须在主线程开发iOS应用程序的同学都知道UI操作如果在非主线程进行的话是会Crash的。
+但是本质原因可能很少人真正明白。
+如果我来回答的话，我的答案是： UI操作涉及到渲染访问各种View对象的属性，如果是异步操作会有读写问题。加锁呢，性能损耗大(视图层次深，属性多)。所以主线程操作UI，是约定俗成的开发规则。
+ 我们来看看Quora网友关于这个”经典”问题的回答：">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">778477</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-2017-06-19-为什么iOS更新UI操作必须在主线程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      为什么iOS更新UI操作必须在主线程
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/06/19/2017-06-19-为什么iOS更新UI操作必须在主线程/" class="article-date">
+  <time datetime="2017-06-19T00:00:00.000Z" itemprop="datePublished">2017-06-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="为什么iOS更新UI操作必须在主线程"><a href="#为什么iOS更新UI操作必须在主线程" class="headerlink" title="为什么iOS更新UI操作必须在主线程"></a>为什么iOS更新UI操作必须在主线程</h2><p>开发iOS应用程序的同学都知道UI操作如果在非主线程进行的话是会Crash的。</p>
+<p>但是本质原因可能很少人真正明白。</p>
+<p>如果我来回答的话，我的答案是：<br> UI操作涉及到渲染访问各种View对象的属性，如果是异步操作会有读写问题。加锁呢，性能损耗大(视图层次深，属性多)。所以主线程操作UI，是约定俗成的开发规则。</p>
+<p> 我们来看看<code>Quora</code>网友关于这个”经典”问题的回答：</p>
+<p> <a href="https://www.quora.com/Why-must-the-UI-always-be-updated-on-Main-Thread" target="_blank" rel="external">Why must the UI always be updated on Main Thread?</a></p>
+<p> 来自 <a href="https://www.quora.com/profile/Reinder-de-Vries" target="_blank" rel="external">Reinder de Vries</a> 的回答：</p>
+<blockquote>
+<p>The first one is that, in Cocoa Touch, the UIApplication gets set up on the main thread</p>
+<p>Another reason is graphics rendering: the graphics pipeline of the iPhone is ultimately synchronous.</p>
+</blockquote>
+<p>他的一个理由是：</p>
+<ol>
+<li>在<code>Cocoa Touch</code>框架中，<code>UIApplication</code>初始化工作是在主线程进行的。而界面上所有的视图都是在<code>UIApplication 实例</code>的叶子节点(内存管理角度)，所以所有的手势交互操作都是在主线程上才能响应</li>
+<li>图形渲染在<code>iPhone</code>设备本质上是同步的。图形渲染计算最终要显示的像素值，以每秒60帧的频率刷新到屏幕上，绘制到屏幕的过程实际上就是通过<code>LED display</code>点亮各个像素。这个过程需要一次将所有将要实现的像素刷新到屏幕上(同时的)。如果要异步化的话，对应的你无法确定这个处理过程是否真正的全部完成。</li>
+</ol>
+<p>他最后指出，在主线程操作UI。能帮助你避免不少的麻烦和减少产生产品缺陷。当然，有部分UI操作是可异步化的，只要最后的更新操作是在主线程</p>
+<ul>
+<li>叠加滤镜效果在视图上</li>
+<li>创建动态图形，比如动画</li>
+</ul>
+<p>最后推荐了<code>WWDC</code>上关于UI渲染的录像 <a href="https://developer.apple.com/videos/play/wwdc2012/211/" target="_blank" rel="external">Building Concurrent User Interfaces on iOS</a></p>
+<h2 id="相关阅读"><a href="#相关阅读" class="headerlink" title="相关阅读"></a>相关阅读</h2><ul>
+<li><a href="https://www.objc.io/issues/2-concurrency/thread-safe-class-design/" target="_blank" rel="external">Thread-Safe Class Design</a></li>
+<li><a href="https://stackoverflow.com/questions/18467114/why-must-uikit-operations-be-performed-on-the-main-thread" target="_blank" rel="external">stackoverflow - Why must UIKit operations be performed on the main thread?</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/04/20/2017-04-24-iClean/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">iClean&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 miaoyou.gmy&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>
