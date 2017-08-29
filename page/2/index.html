@@ -54,6 +54,161 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2017-01-09-ASR&amp;Translator" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/09/2017-01-09-ASR&Translator/">ASR&amp;Translator</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/01/09/2017-01-09-ASR&Translator/" class="article-date">
+  <time datetime="2017-01-09T00:00:00.000Z" itemprop="datePublished">2017-01-09</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ASR-Automatic-Speech-Recognition"><a href="#ASR-Automatic-Speech-Recognition" class="headerlink" title="ASR(Automatic Speech Recognition)"></a>ASR(Automatic Speech Recognition)</h2><p>语音识别使用 Apple iOS10 SDK中的 speech.framework即可</p>
+<p>语音识别(ASR)领域，业界还有一个leading framework： <a href="http://www.nuance.com/index.htm" target="_blank" rel="external">Nuance</a> </p>
+<p>他们主要搞语音和图像方面，卖各种商业解决方案。早年间传闻 iPhone4S 那代的Siri 语音识别使用Nuance服务器</p>
+<h2 id="Translator"><a href="#Translator" class="headerlink" title="Translator"></a>Translator</h2><p>语音识别之后，我们可以利用文本做一些翻译功能：</p>
+<p>这里有些branchmark</p>
+<ul>
+<li><p><a href="http://lifehacker.com/translation-tool-showdown-google-translate-vs-microso-1787836106" target="_blank" rel="external">Translation Tool Showdown: Google Translate vs. Microsoft Translator</a></p>
+</li>
+<li><p><a href="https://www.slant.co/topics/5775/versus/~google-translate_vs_microsoft-translator_vs_itranslate" target="_blank" rel="external">google-translate_vs_microsoft-translator_vs_itranslate</a></p>
+</li>
+<li><p><a href="http://www.empowerlinguatranslation.com/microsoft-translator-vs-google-translate/" target="_blank" rel="external">Microsoft Translator Vs Google Translate</a></p>
+</li>
+</ul>
+<p>不过因为，国内Google被墙了。大多数用户访问不了Google的服务。不用比较，只能选择Microsoft了。。。囧</p>
+<p>使用Microsoft Translator服务可以实现 翻译功能<br>支持文本翻译文本，文本翻译成语音</p>
+<p>Getting Started</p>
+<p>To access the Microsoft Translator Text Translation API you will need to sign up for Microsoft Azure. Follow these steps.</p>
+<ol>
+<li>Sign up for a Microsoft Azure account at <a href="http://azure.com" target="_blank" rel="external">http://azure.com</a></li>
+<li>After you have an account go to <a href="http://portal.azure.com" target="_blank" rel="external">http://portal.azure.com</a></li>
+<li>Select the + New option.</li>
+<li>Select Intelligence from the list of services.</li>
+<li>Select Cognitive Services APIs</li>
+<li>Select the API Type option.</li>
+<li>Select Text Translation.</li>
+<li>In the Pricing Tier section select the pricing tier that fits your needs.</li>
+<li>Fill out the rest of the form, and select the Create button.</li>
+<li>You are now subscribed to Microsoft Translator.</li>
+<li>Go to All Resources and select the Microsoft Translator API you subscribed to.</li>
+<li>Go to the Keys option and copy your subscription key to access the service.</li>
+</ol>
+<p><strong>Translator 文本 API</strong></p>
+<table>
+<thead>
+<tr>
+<th>Plan</th>
+<th style="text-align:center">Description</th>
+<th style="text-align:right">Price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>免费</td>
+<td style="text-align:center">限每月 2M 文字</td>
+<td style="text-align:right">免费</td>
+</tr>
+<tr>
+<td>S1 标准</td>
+<td style="text-align:center">基于Azure使用量</td>
+<td style="text-align:right">每 1M 文字 $10</td>
+</tr>
+<tr>
+<td>S2 标准</td>
+<td style="text-align:center">每月 250M 文字</td>
+<td style="text-align:right">每月 $2,055，超额部分每 1M 文字 $8.22</td>
+</tr>
+<tr>
+<td>S3 标准</td>
+<td style="text-align:center">每月 1B 文字</td>
+<td style="text-align:right">每月 $6K，超额部分每 1M 文字 $6.00</td>
+</tr>
+<tr>
+<td>S4 标准</td>
+<td style="text-align:center">每月 10B 文字</td>
+<td style="text-align:right">每月 $45K，超额部分每 1M 文字 $4.5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Translator 语音 API</strong></p>
+<table>
+<thead>
+<tr>
+<th>Plan</th>
+<th style="text-align:center">Description</th>
+<th style="text-align:right">Price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>免费</td>
+<td style="text-align:center">限每月 2小时</td>
+<td style="text-align:right">免费</td>
+</tr>
+<tr>
+<td>S1 标准</td>
+<td style="text-align:center">基于Azure使用量</td>
+<td style="text-align:right">每小时 $12</td>
+</tr>
+<tr>
+<td>S2 标准</td>
+<td style="text-align:center">每月 100 小时</td>
+<td style="text-align:right">每月 $1K，超出部分每小时 $10</td>
+</tr>
+<tr>
+<td>S2 标准</td>
+<td style="text-align:center">每月 1000 小时</td>
+<td style="text-align:right">每月 $7K，超额部分每小时 $7</td>
+</tr>
+<tr>
+<td>S4 标准</td>
+<td style="text-align:center">每月 10,000 小时</td>
+<td style="text-align:right">每月 $35K，超额部分每小时 $3.50</td>
+</tr>
+</tbody>
+</table>
+<p>PS：还有<a href="https://www.microsoft.com/cognitive-services/en-us/face-api" target="_blank" rel="external">face api</a></p>
+<p>具体的文档地址：<a href="http://docs.microsofttranslator.com/text-translate.html" target="_blank" rel="external">text-translate</a></p>
+<h2 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h2><p><del>一个封装了Microsoft Speech Translator服务的功能库<a href="https://github.com/bitmapdata/MSTranslateVendor" target="_blank" rel="external">MSTranslateVendor</a></del></p>
+<p><del><a href="https://msdn.microsoft.com/en-us/library/hh454950.aspx" target="_blank" rel="external">Obtaining an Access Token</a></del></p>
+<p>上面举出的Microsoft的API资料都是过期了的文档。不要花时间在这上面-，-。。。</p>
+<p>一句话就是：最新的API 已经不需要去注册<code>Azure DataMarket application</code>了，不用<code>client_id</code>和<code>client_secret</code>。直接使用<code>Subscription Key</code>即可</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ASR/">ASR</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Translator/">Translator</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2016-12-29-个人开发者之游戏篇SpriteKit" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -875,65 +1030,6 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS-Simulator/">iOS Simulator</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2016-05-28-Word Search II" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/28/2016-05-28-Word Search II/">Word Search II</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/05/28/2016-05-28-Word Search II/" class="article-date">
-  <time datetime="2016-05-28T00:00:00.000Z" itemprop="datePublished">2016-05-28</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a><span>></span><a class="article-category-link" href="/categories/Algorithm/LeetCode/">LeetCode</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://leetcode.com/problems/word-search-ii/" target="_blank" rel="external">Word Search</a></p>
-<blockquote>
-<p>Given a 2D board and a list of words from the dictionary, find all words in the board.</p>
-<p>Each word must be constructed from letters of sequentially adjacent cell, where “adjacent” cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">For example,</span><br><span class="line">Given words = [&quot;oath&quot;,&quot;pea&quot;,&quot;eat&quot;,&quot;rain&quot;] and board =</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">  [&apos;o&apos;,&apos;a&apos;,&apos;a&apos;,&apos;n&apos;],</span><br><span class="line">  [&apos;e&apos;,&apos;t&apos;,&apos;a&apos;,&apos;e&apos;],</span><br><span class="line">  [&apos;i&apos;,&apos;h&apos;,&apos;k&apos;,&apos;r&apos;],</span><br><span class="line">  [&apos;i&apos;,&apos;f&apos;,&apos;l&apos;,&apos;v&apos;]</span><br><span class="line">]</span><br><span class="line">Return [&quot;eat&quot;,&quot;oath&quot;].</span><br></pre></td></tr></table></figure>
-<p>题目大意：给定一个二维面板和一组字符串，找出二维面板上存在的字符串。<br><strong>必须使用面板上的字母且水平连续或垂直连续拼接单词。</strong></p>
-<h2 id="思路1：-深度优先搜索-DFS-Time-Limit-Exceeded"><a href="#思路1：-深度优先搜索-DFS-Time-Limit-Exceeded" class="headerlink" title="思路1： 深度优先搜索(DFS)  Time Limit Exceeded"></a>思路1： 深度优先搜索(DFS)  <span style="color:red">Time Limit Exceeded</span></h2><p>先遍历每个单词，如果单词首字母面板上有存在则开始深度优先搜索单词剩余的字母。</p>
-<p>来分析一下超时的Test Case：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[&quot;aaaa&quot;,&quot;aaaa&quot;,&quot;aaaa&quot;,&quot;aaaa&quot;,&quot;bcde&quot;,&quot;fghi&quot;,&quot;jklm&quot;,&quot;nopq&quot;,&quot;rstu&quot;,&quot;vwxy&quot;,&quot;zzzz&quot;]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[&quot;aaaaaaaaaaaaaaaa&quot;,&quot;aaaaaaaaaaaaaaab&quot;,&quot;aaaaaaaaaaaaaaac&quot;,&quot;aaaaaaaaaaaaaaad&quot;,&quot;aaaaaaaaaaaaaaae&quot;,&quot;aaaaaaaaaaaaaaaf&quot;,&quot;aaaaaaaaaaaaaaag&quot;,&quot;aaaaaaaaaaaaaaah&quot;,&quot;aaaaaaaaaaaaaaai&quot;,&quot;aaaaaaaaaaaaaaaj&quot;,&quot;aaaaaaaaaaaaaaak&quot;,&quot;aaaaaaaaaaaaaaal&quot;,&quot;aaaaaaaaaaaaaaam&quot;,&quot;aaaaaaaaaaaaaaan&quot;,&quot;aaaaaaaaaaaaaaao&quot;,&quot;aaaaaaaaaaaaaaap&quot;,&quot;aaaaaaaaaaaaaaaq&quot;,&quot;aaaaaaaaaaaaaaar&quot;,&quot;aaaaaaaaaaaaaaas&quot;,&quot;aaaaaaaaaaaaaaat&quot;,&quot;aaaaaaaaaaaaaaau&quot;,&quot;aaaaaaaaaaaaaaav&quot;,&quot;aaaaaaaaaaaaaaaw&quot;,&quot;aaaaaaaaaaaaaaax&quot;,&quot;aaaaaaaaaaaaaaay&quot;,&quot;aaaaaaaaaaaaaaaz&quot;,&quot;aaaaaaaaaaaaaaaa&quot;,&quot;aaaaaaaaaaaaaaab&quot;,&quot;aaaaaaaaaaaaaaac&quot;,&quot;aaaaaaaaaaaaaaad&quot;,&quot;aaaaaaaaaaaaaaae&quot;,&quot;aaaaaaaaaaaaaaaf&quot;,&quot;aaaaaaaaaaaaaaag&quot;,&quot;aaaaaaaaaaaaaaah&quot;,&quot;aaaaaaaaaaaaaaai&quot;,&quot;aaaaaaaaaaaaaaaj&quot;,&quot;aaaaaaaaaaaaaaak&quot;,&quot;aaaaaaaaaaaaaaal&quot;,&quot;aaaaaaaaaaaaaaam&quot;,&quot;aaaaaaaaaaaaaaan&quot;,&quot;aaaaaaaaaaaaaaao&quot;,&quot;aaaaaaaaaaaaaaap&quot;,&quot;aaaaaaaaaaaaaaaq&quot;,&quot;aaaaaaaaaaaaaaar&quot;,&quot;aaaaaaaaaaaaaaas&quot;,&quot;aaaaaaaaaaaaaaat&quot;,&quot;aaaaaaaaaaaaaaau&quot;,&quot;aaaaaaaaaaaaaaav&quot;,&quot;aaaaaaaaaaaaaaaw&quot;,&quot;aaaaaaaaaaaaaaax&quot;,&quot;aaaaaaaaaaaaaaay&quot;,&quot;aaaaaaaaaaaaaaaz&quot;,&quot;aaaaaaaaaaaaaaba&quot;,&quot;aaaaaaaaaaaaaabb&quot;,&quot;aaaaaaaaaaaaaabc&quot;]</span><br></pre></td></tr></table></figure>
-<p>发现这个Test Case很有意思，有大量重复相同的前缀<code>aaaaaaaaaaaaaaaa</code>。使用DFS遍历图的话，如果没有高效的剪枝策略。光是这个前缀的深度优先搜索效率就很低下了。</p>
-<h2 id="思路2-：-字典树-Trie-深度优先搜索-DFS-Accepted"><a href="#思路2-：-字典树-Trie-深度优先搜索-DFS-Accepted" class="headerlink" title="思路2 ： 字典树(Trie) + 深度优先搜索(DFS) Accepted"></a>思路2 ： 字典树(Trie) + 深度优先搜索(DFS) <span style="color:green">Accepted</span></h2><p>建立Trie字典树，能有效的避免大量重复前缀的搜索。 </p>
-<p>LeetCodeOJ 上有<a href="https://leetcode.com/problems/implement-trie-prefix-tree/" target="_blank" rel="external">关于Trie建树的题目</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">const int TrieChildNodeMax(26);</span><br><span class="line">class Trie&#123;</span><br><span class="line">public:</span><br><span class="line">    class TrieNode&#123;</span><br><span class="line">    public:</span><br><span class="line">        TrieNode()&#123;</span><br><span class="line">            isWord = false;</span><br><span class="line">            word = &quot;&quot;;</span><br><span class="line">            memset(childNode, NULL, sizeof(TrieNode *) * TrieChildNodeMax);</span><br><span class="line">        &#125;</span><br><span class="line">        TrieNode *childNode[TrieChildNodeMax];</span><br><span class="line">        string word;</span><br><span class="line">        bool isWord;</span><br><span class="line">    &#125;;</span><br><span class="line">    TrieNode *root;</span><br><span class="line">    </span><br><span class="line">    Trie()&#123;</span><br><span class="line">        root = new TrieNode();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    void insert(const string word,TrieNode* node,int idx = 0)&#123;</span><br><span class="line">        if(idx == word.length()) return ;</span><br><span class="line">        int k = word[idx] - &apos;a&apos;;</span><br><span class="line">        if(node-&gt;childNode[k] == NULL)&#123;</span><br><span class="line">            node-&gt;childNode[k] = new TrieNode();</span><br><span class="line">        &#125;</span><br><span class="line">        if(idx == word.length() - 1)&#123;</span><br><span class="line">            node-&gt;childNode[k]-&gt;isWord = true;</span><br><span class="line">            node-&gt;childNode[k]-&gt;word = word;</span><br><span class="line">        &#125;</span><br><span class="line">        else&#123;</span><br><span class="line">            insert(word, node-&gt;childNode[k],idx+1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;string&gt; findWords(vector&lt;vector&lt;char&gt;&gt;&amp; board, vector&lt;string&gt;&amp; words) &#123;</span><br><span class="line">        vector&lt;string&gt; ans;</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        for_each(words.begin(), words.end(), [&amp;](const string word)&#123;</span><br><span class="line">            trie.insert(word, trie.root);</span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        n = (int)board.size();</span><br><span class="line">        m = 0;</span><br><span class="line">        if(n &gt; 0) m = (int)board[0].size();</span><br><span class="line">        </span><br><span class="line">        for(int i=0;i&lt;n;i++)&#123;</span><br><span class="line">            for(int j=0;j&lt;m;j++)&#123;</span><br><span class="line">                memset(vis, false, sizeof(bool)*1024*1024);</span><br><span class="line">                if(boardHasWord(board,i,j,trie.root,ans))&#123;</span><br><span class="line">                    cout&lt;&lt;&quot;Yes,find word in borad&quot;&lt;&lt;endl;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        sort(ans.begin(), ans.end());</span><br><span class="line">        </span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">private:</span><br><span class="line">    bool judge(const int x,const int y)&#123;</span><br><span class="line">        return (x&gt;-1&amp;&amp;x&lt;n&amp;&amp;y&gt;-1&amp;&amp;y&lt;m&amp;&amp;!vis[x][y]);</span><br><span class="line">    &#125;</span><br><span class="line">    bool boardHasWord(const vector&lt;vector&lt;char&gt;&gt; board,int x,int y,Trie::TrieNode* root,vector&lt;string&gt;&amp; ans)&#123;</span><br><span class="line">        int k = board[x][y] - &apos;a&apos;;</span><br><span class="line">        vis[x][y] = true;</span><br><span class="line">        if(root-&gt;childNode[k])&#123;</span><br><span class="line">            if(root-&gt;childNode[k]-&gt;isWord)&#123;</span><br><span class="line">                root-&gt;childNode[k]-&gt;isWord = false;</span><br><span class="line">                ans.push_back(root-&gt;childNode[k]-&gt;word);</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            </span><br><span class="line">            for(int i=0;i&lt;4;i++)&#123;</span><br><span class="line">                int xx = x + dir[i][0];</span><br><span class="line">                int yy = y + dir[i][1];</span><br><span class="line">                </span><br><span class="line">                if(judge(xx, yy))&#123;</span><br><span class="line">                    vis[xx][yy] = true;</span><br><span class="line">                    if(boardHasWord(board, xx, yy, root-&gt;childNode[k], ans)) return true;</span><br><span class="line">                    vis[xx][yy] = false;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    int n,m;</span><br><span class="line">    const int dir[4][2] = &#123; &#123;1,0&#125;,&#123;0,1&#125;,&#123;-1,0&#125;,&#123;0,-1&#125; &#125;;</span><br><span class="line">    bool vis[1024][1024];</span><br><span class="line">    Trie trie;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    </span><br><span class="line">    freopen(INPUT,&quot;r&quot;,stdin);</span><br><span class="line">    </span><br><span class="line">    string buf;</span><br><span class="line">    vector&lt;vector&lt;char&gt;&gt; board;</span><br><span class="line">    while(cin&gt;&gt;buf)&#123;</span><br><span class="line">        vector&lt;char&gt; chars;</span><br><span class="line">        chars.assign(buf.begin(), buf.end());</span><br><span class="line">        board.push_back(chars);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    Solution solve;</span><br><span class="line">    vector&lt;string&gt; words(&#123;&quot;aaaaaaaaaaaaaaaa&quot;,&quot;aaaaaaaaaaaaaaab&quot;,&quot;aaaaaaaaaaaaaaac&quot;,&quot;aaaaaaaaaaaaaaad&quot;&#125;);</span><br><span class="line">    vector&lt;string&gt; ans = solve.findWords(board,words);</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    for_each(ans.begin(), ans.end(), [](const string str)&#123;</span><br><span class="line">        cout&lt;&lt;str&lt;&lt;endl;</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/*	Wrong Answer */</span><br><span class="line">/*</span><br><span class="line">[&quot;ab&quot;,&quot;aa&quot;]</span><br><span class="line">[&quot;aba&quot;,&quot;baa&quot;,&quot;bab&quot;,&quot;aaab&quot;,&quot;aaa&quot;,&quot;aaaa&quot;,&quot;aaba&quot;]</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/* Time Limit Exceeded */</span><br><span class="line">/*</span><br><span class="line"> </span><br><span class="line"> [&quot;aaaa&quot;,&quot;aaaa&quot;,&quot;aaaa&quot;,&quot;aaaa&quot;,&quot;bcde&quot;,&quot;fghi&quot;,&quot;jklm&quot;,&quot;nopq&quot;,&quot;rstu&quot;,&quot;vwxy&quot;,&quot;zzzz&quot;]</span><br><span class="line"> [&quot;aaaaaaaaaaaaaaaa&quot;,&quot;aaaaaaaaaaaaaaab&quot;,&quot;aaaaaaaaaaaaaaac&quot;,&quot;aaaaaaaaaaaaaaad&quot;]</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Word_Search_II.png" alt="Accepted"></p>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li></ul>
 
       </footer>
     

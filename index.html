@@ -54,6 +54,85 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2017-08-29-Spring Boot" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/29/2017-08-29-Spring Boot/">Spring Boot</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/08/29/2017-08-29-Spring Boot/" class="article-date">
+  <time datetime="2017-08-29T00:00:00.000Z" itemprop="datePublished">2017-08-29</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Building-an-Application-with-Spring-Boot"><a href="#Building-an-Application-with-Spring-Boot" class="headerlink" title="Building an Application with Spring Boot"></a>Building an Application with Spring Boot</h1><p><a href="https://spring.io/guides/gs/spring-boot/" target="_blank" rel="external">GETTING STARTED</a> </p>
+<p>开发环境</p>
+<ul>
+<li>一个主流文本编辑器(text editor)或一个集成开发环境(IDE)</li>
+<li>JDK 1.8版本以上</li>
+<li>Gradle 2.3以上或Maven 3.0以上</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> ~ mvn -v</span><br><span class="line">Apache Maven 3.5.0 (ff8f5e7444045639af65f6095c62210b5713f426; 2017-04-04T03:39:06+08:00)</span><br><span class="line">Maven home: /usr/local/Cellar/maven/3.5.0/libexec</span><br><span class="line">Java version: 1.8.0_144, vendor: Oracle Corporation</span><br><span class="line">Java home: /Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre</span><br><span class="line">Default locale: zh_CN, platform encoding: UTF-8</span><br><span class="line">OS name: &quot;mac os x&quot;, version: &quot;10.12.5&quot;, arch: &quot;x86_64&quot;, family: &quot;mac&quot;</span><br></pre></td></tr></table></figure>
+<h1 id="Build"><a href="#Build" class="headerlink" title="Build"></a>Build</h1><p>简单的一个maven入手教程</p>
+<p><a href="https://spring.io/guides/gs/maven/" target="_blank" rel="external">Building Java Projects with Maven</a></p>
+<p>简单的一个gradle入手教程</p>
+<p><a href="https://spring.io/guides/gs/gradle/" target="_blank" rel="external">Building JavaProjects with Gradle</a></p>
+<p><code>build.gradle</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">buildscript&#123;</span><br><span class="line">    repositories&#123;</span><br><span class="line">        mavenCentral()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies&#123;</span><br><span class="line">        classpath(&quot;org.springframework.boot:spring-boot-gradle-plugin:1.5.6.RELEASE&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">apply plugin: &apos;java&apos;</span><br><span class="line">apply plugin: &apos;idea&apos;</span><br><span class="line">apply plugin: &apos;eclipse&apos;</span><br><span class="line">apply plugin: &apos;org.springframework.boot&apos;</span><br><span class="line"></span><br><span class="line">sourceCompatibility = 1.8</span><br><span class="line">targetCompatibility = 1.8</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">jar &#123;</span><br><span class="line">    baseName = &apos;gs-spring-boot&apos;</span><br><span class="line">    version = &apos;0.1.0&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">repositories &#123;</span><br><span class="line">    mavenCentral()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    compile(&quot;org.springframework.boot:spring-boot-starter-web&quot;)&#123;</span><br><span class="line">        exclude module: &quot;spring-boot-starter-tomcat&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    compile(&quot;org.springframework.boot:spring-boot-starter-jetty&quot;)</span><br><span class="line">    compile(&quot;org.springframework.boot:spring-boot-starter-actuator&quot;)</span><br><span class="line">    testCompile(&quot;junit:junit&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Create-a-Simple-Web-Application"><a href="#Create-a-Simple-Web-Application" class="headerlink" title="Create a Simple Web Application"></a>Create a Simple Web Application</h2><p>这里是一个简单的页面控制器逻辑</p>
+<p><code>src/main/java/hello/HelloController.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> hello;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"/"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">index</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Greetings from Spring Boot!"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>@RestController</code> 表示这个类基于<code>Spring MVC</code>框架可以响应网络请求。</p>
+<p><code>@RestMapping</code>匹配<code>\</code>访问路径到<code>index()</code>方法。</p>
+<p>当一个请求来自客户端或者是命令行(<code>curl</code>)时，这个方法返回纯文本。<br>这是因为<code>@RestController</code>联合了<code>@Controller</code>和<code>@ResponseBody</code>两个注解在网络请求中响应了数据而不是视图</p>
+<h2 id="Create-an-Application-Class"><a href="#Create-an-Application-Class" class="headerlink" title="Create an Application Class"></a>Create an Application Class</h2><p><code>src/main/java/hello/Application.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> hello;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.CommandLineRunner;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.ApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(Application.class, args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CommandLineRunner <span class="title">commandLineRunner</span><span class="params">(ApplicationContext ctx)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> args -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">"Let's inspect the beans provided by Spring Boot:"</span>);</span><br><span class="line">            String[] beanNames = ctx.getBeanDefinitionNames();</span><br><span class="line">            Arrays.sort(beanNames);</span><br><span class="line">            <span class="keyword">for</span> (String beanName : beanNames) &#123;</span><br><span class="line">                System.out.println(beanName);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>main()</code>入口主函数，调用了<code>Spring Boot</code>的<code>SpringApplication.run()</code>唤起应用程序。</p>
+<p><code>CommandLineRunner</code>方法被标记为<code>@Bean</code>注解，会运行在<code>start up</code>阶段。他打印出了所有<code>Spring Boot</code>框架所有自动注册的服务组件。</p>
+<h3 id="运行应用"><a href="#运行应用" class="headerlink" title="运行应用"></a>运行应用</h3><ol>
+<li><p><code>Gradle</code> </p>
+<p><code>gs-spring-boot-0.1.0.jar</code>是<code>build.gradle</code>中的<code>jar block</code>的<code>baseName</code>+<code>version</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gradlew build &amp;&amp; java -jar build/libs/gs-spring-boot-0.1.0.jar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>Maven</code> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn package &amp;&amp; java -jar target/gs-spring-boot-0.1.0.jar</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="查看对应jar内容"><a href="#查看对应jar内容" class="headerlink" title="查看对应jar内容"></a>查看对应jar内容</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line">➜  hello jar tvf build/libs/gs-spring-boot-0.1.0.jar </span><br><span class="line">     0 Tue Aug 29 10:44:00 CST 2017 META-INF/</span><br><span class="line">   222 Tue Aug 29 10:44:00 CST 2017 META-INF/MANIFEST.MF</span><br><span class="line">     0 Tue Aug 29 10:44:00 CST 2017 BOOT-INF/</span><br><span class="line">     0 Tue Aug 29 10:44:00 CST 2017 BOOT-INF/classes/</span><br><span class="line">     0 Mon Aug 28 17:36:04 CST 2017 BOOT-INF/classes/hello/</span><br><span class="line">  2208 Mon Aug 28 17:36:04 CST 2017 BOOT-INF/classes/hello/Application.class</span><br><span class="line">   749 Mon Aug 28 17:36:04 CST 2017 BOOT-INF/classes/hello/HelloController.class</span><br><span class="line">     0 Tue Aug 29 10:44:00 CST 2017 BOOT-INF/lib/</span><br><span class="line">  2349 Thu Jul 27 07:24:58 CST 2017 BOOT-INF/lib/spring-boot-starter-web-1.5.6.RELEASE.jar</span><br><span class="line">  2529 Thu Jul 27 07:25:02 CST 2017 BOOT-INF/lib/spring-boot-starter-jetty-1.5.6.RELEASE.jar</span><br><span class="line">  2302 Thu Jul 27 07:25:06 CST 2017 BOOT-INF/lib/spring-boot-starter-actuator-1.5.6.RELEASE.jar</span><br><span class="line">  2290 Thu Jul 27 07:24:42 CST 2017 BOOT-INF/lib/spring-boot-starter-1.5.6.RELEASE.jar</span><br><span class="line">725755 Wed Mar 15 13:14:58 CST 2017 BOOT-INF/lib/hibernate-validator-5.3.5.Final.jar</span><br><span class="line">1242477 Mon Jun 12 00:53:20 CST 2017 BOOT-INF/lib/jackson-databind-2.8.9.jar</span><br><span class="line">822491 Thu Jul 20 11:39:20 CST 2017 BOOT-INF/lib/spring-web-4.3.10.RELEASE.jar</span><br><span class="line">915665 Thu Jul 20 11:40:18 CST 2017 BOOT-INF/lib/spring-webmvc-4.3.10.RELEASE.jar</span><br><span class="line"> 86901 Wed May 31 16:32:34 CST 2017 BOOT-INF/lib/jetty-servlets-9.4.6.v20170531.jar</span><br><span class="line">121362 Wed May 31 16:28:28 CST 2017 BOOT-INF/lib/jetty-webapp-9.4.6.v20170531.jar</span><br><span class="line"> 34891 Wed May 31 16:38:10 CST 2017 BOOT-INF/lib/websocket-server-9.4.6.v20170531.jar</span><br><span class="line"> 36848 Wed May 31 16:38:58 CST 2017 BOOT-INF/lib/javax-websocket-server-impl-9.4.6.v20170531.jar</span><br><span class="line">241490 Thu Mar 31 16:58:14 CST 2016 BOOT-INF/lib/apache-el-8.0.33.jar</span><br><span class="line">556647 Thu Jul 27 07:23:38 CST 2017 BOOT-INF/lib/spring-boot-actuator-1.5.6.RELEASE.jar</span><br><span class="line">674636 Thu Jul 27 07:12:50 CST 2017 BOOT-INF/lib/spring-boot-1.5.6.RELEASE.jar</span><br><span class="line">1069471 Thu Jul 27 07:19:22 CST 2017 BOOT-INF/lib/spring-boot-autoconfigure-1.5.6.RELEASE.jar</span><br><span class="line">  2312 Thu Jul 27 07:24:42 CST 2017 BOOT-INF/lib/spring-boot-starter-logging-1.5.6.RELEASE.jar</span><br><span class="line">1122794 Thu Jul 20 11:37:08 CST 2017 BOOT-INF/lib/spring-core-4.3.10.RELEASE.jar</span><br><span class="line">273599 Fri Feb 19 13:13:32 CST 2016 BOOT-INF/lib/snakeyaml-1.17.jar</span><br><span class="line"> 63777 Wed Apr 10 15:02:44 CST 2013 BOOT-INF/lib/validation-api-1.1.0.Final.jar</span><br><span class="line"> 66023 Wed Mar 15 13:22:08 CST 2017 BOOT-INF/lib/jboss-logging-3.3.1.Final.jar</span><br><span class="line"> 64982 Tue Sep 27 22:24:16 CST 2016 BOOT-INF/lib/classmate-1.3.3.jar</span><br><span class="line"> 55784 Sun Jul 03 22:20:36 CST 2016 BOOT-INF/lib/jackson-annotations-2.8.0.jar</span><br><span class="line">282633 Sun Jun 11 17:43:12 CST 2017 BOOT-INF/lib/jackson-core-2.8.9.jar</span><br><span class="line">380667 Thu Jul 20 11:37:16 CST 2017 BOOT-INF/lib/spring-aop-4.3.10.RELEASE.jar</span><br><span class="line">763052 Thu Jul 20 11:37:14 CST 2017 BOOT-INF/lib/spring-beans-4.3.10.RELEASE.jar</span><br><span class="line">1140861 Thu Jul 20 11:37:48 CST 2017 BOOT-INF/lib/spring-context-4.3.10.RELEASE.jar</span><br><span class="line">263371 Thu Jul 20 11:37:28 CST 2017 BOOT-INF/lib/spring-expression-4.3.10.RELEASE.jar</span><br><span class="line"> 16702 Wed May 31 16:32:14 CST 2017 BOOT-INF/lib/jetty-continuation-9.4.6.v20170531.jar</span><br><span class="line">163922 Wed May 31 16:25:14 CST 2017 BOOT-INF/lib/jetty-http-9.4.6.v20170531.jar</span><br><span class="line">457682 Wed May 31 16:23:48 CST 2017 BOOT-INF/lib/jetty-util-9.4.6.v20170531.jar</span><br><span class="line">128844 Wed May 31 16:24:50 CST 2017 BOOT-INF/lib/jetty-io-9.4.6.v20170531.jar</span><br><span class="line"> 50392 Wed May 31 16:25:38 CST 2017 BOOT-INF/lib/jetty-xml-9.4.6.v20170531.jar</span><br><span class="line">110502 Wed May 31 16:27:48 CST 2017 BOOT-INF/lib/jetty-servlet-9.4.6.v20170531.jar</span><br><span class="line">199656 Wed May 31 16:37:00 CST 2017 BOOT-INF/lib/websocket-common-9.4.6.v20170531.jar</span><br><span class="line"> 35362 Wed May 31 16:37:26 CST 2017 BOOT-INF/lib/websocket-client-9.4.6.v20170531.jar</span><br><span class="line"> 21303 Wed May 31 16:37:50 CST 2017 BOOT-INF/lib/websocket-servlet-9.4.6.v20170531.jar</span><br><span class="line"> 78056 Wed May 31 16:30:06 CST 2017 BOOT-INF/lib/jetty-annotations-9.4.6.v20170531.jar</span><br><span class="line">160705 Wed May 31 16:38:36 CST 2017 BOOT-INF/lib/javax-websocket-client-impl-9.4.6.v20170531.jar</span><br><span class="line"> 36611 Fri May 10 13:09:16 CST 2013 BOOT-INF/lib/javax.websocket-api-1.0.jar</span><br><span class="line">309130 Wed Mar 01 20:40:20 CST 2017 BOOT-INF/lib/logback-classic-1.1.11.jar</span><br><span class="line"> 16515 Thu Mar 16 17:37:30 CST 2017 BOOT-INF/lib/jcl-over-slf4j-1.7.25.jar</span><br><span class="line">  4596 Thu Mar 16 17:37:48 CST 2017 BOOT-INF/lib/jul-to-slf4j-1.7.25.jar</span><br><span class="line"> 23645 Thu Mar 16 17:37:40 CST 2017 BOOT-INF/lib/log4j-over-slf4j-1.7.25.jar</span><br><span class="line"> 93085 Wed May 31 16:27:16 CST 2017 BOOT-INF/lib/jetty-security-9.4.6.v20170531.jar</span><br><span class="line"> 41996 Wed May 31 16:36:36 CST 2017 BOOT-INF/lib/websocket-api-9.4.6.v20170531.jar</span><br><span class="line">268784 Wed May 31 16:33:08 CST 2017 BOOT-INF/lib/jetty-client-9.4.6.v20170531.jar</span><br><span class="line"> 95806 Thu Apr 25 16:52:26 CST 2013 BOOT-INF/lib/javax.servlet-api-3.1.0.jar</span><br><span class="line"> 55037 Wed May 31 16:29:38 CST 2017 BOOT-INF/lib/jetty-plus-9.4.6.v20170531.jar</span><br><span class="line"> 26366 Fri Apr 26 19:47:18 CST 2013 BOOT-INF/lib/javax.annotation-api-1.2.jar</span><br><span class="line"> 53468 Sat Mar 05 14:37:34 CST 2016 BOOT-INF/lib/asm-5.1.jar</span><br><span class="line"> 47195 Sat Mar 05 14:37:36 CST 2016 BOOT-INF/lib/asm-commons-5.1.jar</span><br><span class="line">475477 Wed Mar 01 20:39:16 CST 2017 BOOT-INF/lib/logback-core-1.1.11.jar</span><br><span class="line"> 41203 Thu Mar 16 17:36:32 CST 2017 BOOT-INF/lib/slf4j-api-1.7.25.jar</span><br><span class="line">579819 Wed May 31 16:26:32 CST 2017 BOOT-INF/lib/jetty-server-9.4.6.v20170531.jar</span><br><span class="line"> 29130 Sat Mar 05 14:37:38 CST 2016 BOOT-INF/lib/asm-tree-5.1.jar</span><br><span class="line">     0 Tue Aug 29 10:44:00 CST 2017 org/</span><br><span class="line">     0 Tue Aug 29 10:44:00 CST 2017 org/springframework/</span><br><span class="line">     0 Tue Aug 29 10:44:00 CST 2017 org/springframework/boot/</span><br><span class="line">     0 Tue Aug 29 10:44:00 CST 2017 org/springframework/boot/loader/</span><br><span class="line">  2415 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/LaunchedURLClassLoader$1.class</span><br><span class="line">  1454 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/PropertiesLauncher$ArchiveEntryFilter.class</span><br><span class="line">  1912 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/PropertiesLauncher$PrefixMatchingArchiveFilter.class</span><br><span class="line">  4599 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/Launcher.class</span><br><span class="line">  1165 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/ExecutableArchiveLauncher$1.class</span><br><span class="line">     0 Tue Aug 29 10:44:00 CST 2017 org/springframework/boot/loader/jar/</span><br><span class="line">  2002 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/JarFile$1.class</span><br><span class="line"> 10016 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/Handler.class</span><br><span class="line">  3350 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/JarEntry.class</span><br><span class="line">  1427 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/JarFile$3.class</span><br><span class="line">  3104 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/CentralDirectoryEndRecord.class</span><br><span class="line">   430 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/CentralDirectoryVisitor.class</span><br><span class="line">  1300 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/JarFile$JarFileType.class</span><br><span class="line"> 10924 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/JarFileEntries.class</span><br><span class="line"> 12762 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/JarFile.class</span><br><span class="line">  1540 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/JarFileEntries$1.class</span><br><span class="line">   672 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/JarURLConnection$1.class</span><br><span class="line">  1199 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/JarFile$2.class</span><br><span class="line">   262 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/JarEntryFilter.class</span><br><span class="line">  4457 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/AsciiBytes.class</span><br><span class="line">  4602 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/CentralDirectoryParser.class</span><br><span class="line">  2169 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/Bytes.class</span><br><span class="line">  1629 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/ZipInflaterInputStream.class</span><br><span class="line">  1967 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/JarFileEntries$EntryIterator.class</span><br><span class="line">   306 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/FileHeader.class</span><br><span class="line">  3641 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/JarURLConnection$JarEntryName.class</span><br><span class="line">  9303 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/JarURLConnection.class</span><br><span class="line">  5449 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/jar/CentralDirectoryFileHeader.class</span><br><span class="line">     0 Tue Aug 29 10:44:00 CST 2017 org/springframework/boot/loader/data/</span><br><span class="line">  1531 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/data/ByteArrayRandomAccessData.class</span><br><span class="line">  3549 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/data/RandomAccessDataFile$DataInputStream.class</span><br><span class="line">  1862 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/data/RandomAccessDataFile$FilePool.class</span><br><span class="line">  1341 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/data/RandomAccessData$ResourceAccess.class</span><br><span class="line">  3319 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/data/RandomAccessDataFile.class</span><br><span class="line">   551 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/data/RandomAccessData.class</span><br><span class="line">  4698 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/LaunchedURLClassLoader.class</span><br><span class="line">  1533 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/JarLauncher.class</span><br><span class="line">  1468 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/MainMethodRunner.class</span><br><span class="line">  1425 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/PropertiesLauncher$1.class</span><br><span class="line">  3128 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/ExecutableArchiveLauncher.class</span><br><span class="line">  1669 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/WarLauncher.class</span><br><span class="line">     0 Tue Aug 29 10:44:00 CST 2017 org/springframework/boot/loader/archive/</span><br><span class="line">  1749 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/archive/JarFileArchive$EntryIterator.class</span><br><span class="line">  3792 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/archive/ExplodedArchive$FileEntryIterator.class</span><br><span class="line">  1068 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/archive/ExplodedArchive$FileEntry.class</span><br><span class="line">  1051 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/archive/JarFileArchive$JarFileEntry.class</span><br><span class="line">   302 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/archive/Archive$Entry.class</span><br><span class="line">  7189 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/archive/JarFileArchive.class</span><br><span class="line">  4974 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/archive/ExplodedArchive.class</span><br><span class="line">   906 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/archive/Archive.class</span><br><span class="line">  1438 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/archive/ExplodedArchive$FileEntryIterator$EntryComparator.class</span><br><span class="line">   399 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/archive/Archive$EntryFilter.class</span><br><span class="line">   273 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/archive/ExplodedArchive$1.class</span><br><span class="line"> 18041 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/PropertiesLauncher.class</span><br><span class="line">     0 Tue Aug 29 10:44:00 CST 2017 org/springframework/boot/loader/util/</span><br><span class="line">  4887 Thu Jul 27 07:07:34 CST 2017 org/springframework/boot/loader/util/SystemPropertyUtils.class</span><br></pre></td></tr></table></figure>
+<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><p><a href="https://gradle.org/maven-vs-gradle/" target="_blank" rel="external">Gradle vs Maven: Feature Comparison Chart</a></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Boot/">Spring Boot</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2017-06-19-为什么iOS更新UI操作必须在主线程" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -114,6 +193,63 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
+      <article id="post-2017-05-06-Core Animation Profile Symbols Not Found" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/20/2017-05-06-Core Animation Profile Symbols Not Found/">Core Animation Profile Symbols Not Found</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/04/20/2017-05-06-Core Animation Profile Symbols Not Found/" class="article-date">
+  <time datetime="2017-04-20T00:00:00.000Z" itemprop="datePublished">2017-04-20</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/Instruments/">Instruments</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们在迭代完一个版本之后，需要使用 <code>Instruments</code> 中的一些 <code>Profile</code> 来获取应用性能数据。</p>
+<p>测试过程中，尽可能的还原用户真实的使用场景。 比如 应用的 <code>target scheme</code>应该为<code>release</code>，和渠道发布的保持一致。</p>
+<h2 id="Core-Animation"><a href="#Core-Animation" class="headerlink" title="Core Animation"></a>Core Animation</h2><p>我们使用<code>Core Animation</code>可以方便的看到 页面滚动时的帧率和<code>cpu</code>计算资源开销还能对应到工程具体方法代码。</p>
+<p>但是，有时候我们使用这个工具会出现看不到正常的函数符号的情况。如：</p>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-1.png" alt=""></p>
+<p>这里的地址对应的方法都没有被符号化，我们找不到那些有问题的代码。</p>
+<h2 id="How-to-fix"><a href="#How-to-fix" class="headerlink" title="How to fix"></a>How to fix</h2><p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-2.png" alt=""></p>
+<p>在使用<code>Core Animation Profile</code>之前，你应该确认一下 <code>Symbols -&gt; Search paths for dSYMs</code>这个路径下的<code>dSYMs</code>文件是否存在且是对应的。</p>
+<p>开发iOS的同学，应该对<code>dSYMs</code>文件并不陌生。每次上传发布应用的时候，都需要<code>archvie</code>归档生成这个<code>dSYMs</code>文件。方便线上发生<code>Crash</code>的时候，可以对日志进行符号处理：可以看到对应崩溃的执行堆栈。</p>
+<p>如果，没有找到 <code>dSYMs</code>文件的话，还得再确认工程构建配置中是否允许生成<code>dSYMs</code>文件。 在 <code>Target - Build Setting</code>-&gt;<code>Debug Information Format</code> 中将你现在对应的<code>Target scheme</code>设置为 <code>DWARF with dSYM File</code></p>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-3.png" alt=""></p>
+<p>如此，这般配置之后，就可以看到正常的符号化之后的代码了。</p>
+<p>另外，一些常用的设置项入口被挪到这里了：<br><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-4.png" alt=""></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Core-Animation/">Core Animation</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
 
       </footer>
     
@@ -224,63 +360,6 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocoa/">cocoa</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2017-05-06-Core Animation Profile Symbols Not Found" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/20/2017-05-06-Core Animation Profile Symbols Not Found/">Core Animation Profile Symbols Not Found</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2017/04/20/2017-05-06-Core Animation Profile Symbols Not Found/" class="article-date">
-  <time datetime="2017-04-20T00:00:00.000Z" itemprop="datePublished">2017-04-20</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/Instruments/">Instruments</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我们在迭代完一个版本之后，需要使用 <code>Instruments</code> 中的一些 <code>Profile</code> 来获取应用性能数据。</p>
-<p>测试过程中，尽可能的还原用户真实的使用场景。 比如 应用的 <code>target scheme</code>应该为<code>release</code>，和渠道发布的保持一致。</p>
-<h2 id="Core-Animation"><a href="#Core-Animation" class="headerlink" title="Core Animation"></a>Core Animation</h2><p>我们使用<code>Core Animation</code>可以方便的看到 页面滚动时的帧率和<code>cpu</code>计算资源开销还能对应到工程具体方法代码。</p>
-<p>但是，有时候我们使用这个工具会出现看不到正常的函数符号的情况。如：</p>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-1.png" alt=""></p>
-<p>这里的地址对应的方法都没有被符号化，我们找不到那些有问题的代码。</p>
-<h2 id="How-to-fix"><a href="#How-to-fix" class="headerlink" title="How to fix"></a>How to fix</h2><p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-2.png" alt=""></p>
-<p>在使用<code>Core Animation Profile</code>之前，你应该确认一下 <code>Symbols -&gt; Search paths for dSYMs</code>这个路径下的<code>dSYMs</code>文件是否存在且是对应的。</p>
-<p>开发iOS的同学，应该对<code>dSYMs</code>文件并不陌生。每次上传发布应用的时候，都需要<code>archvie</code>归档生成这个<code>dSYMs</code>文件。方便线上发生<code>Crash</code>的时候，可以对日志进行符号处理：可以看到对应崩溃的执行堆栈。</p>
-<p>如果，没有找到 <code>dSYMs</code>文件的话，还得再确认工程构建配置中是否允许生成<code>dSYMs</code>文件。 在 <code>Target - Build Setting</code>-&gt;<code>Debug Information Format</code> 中将你现在对应的<code>Target scheme</code>设置为 <code>DWARF with dSYM File</code></p>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-3.png" alt=""></p>
-<p>如此，这般配置之后，就可以看到正常的符号化之后的代码了。</p>
-<p>另外，一些常用的设置项入口被挪到这里了：<br><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Core%20Animation%20Profile%20Symbols%20Not%20Found-4.png" alt=""></p>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Core-Animation/">Core Animation</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
 
       </footer>
     
@@ -647,161 +726,6 @@
       <footer class="article-footer">
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Reveal/">Reveal</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2017-01-09-ASR&amp;Translator" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/09/2017-01-09-ASR&Translator/">ASR&amp;Translator</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2017/01/09/2017-01-09-ASR&Translator/" class="article-date">
-  <time datetime="2017-01-09T00:00:00.000Z" itemprop="datePublished">2017-01-09</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS/">iOS</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="ASR-Automatic-Speech-Recognition"><a href="#ASR-Automatic-Speech-Recognition" class="headerlink" title="ASR(Automatic Speech Recognition)"></a>ASR(Automatic Speech Recognition)</h2><p>语音识别使用 Apple iOS10 SDK中的 speech.framework即可</p>
-<p>语音识别(ASR)领域，业界还有一个leading framework： <a href="http://www.nuance.com/index.htm" target="_blank" rel="external">Nuance</a> </p>
-<p>他们主要搞语音和图像方面，卖各种商业解决方案。早年间传闻 iPhone4S 那代的Siri 语音识别使用Nuance服务器</p>
-<h2 id="Translator"><a href="#Translator" class="headerlink" title="Translator"></a>Translator</h2><p>语音识别之后，我们可以利用文本做一些翻译功能：</p>
-<p>这里有些branchmark</p>
-<ul>
-<li><p><a href="http://lifehacker.com/translation-tool-showdown-google-translate-vs-microso-1787836106" target="_blank" rel="external">Translation Tool Showdown: Google Translate vs. Microsoft Translator</a></p>
-</li>
-<li><p><a href="https://www.slant.co/topics/5775/versus/~google-translate_vs_microsoft-translator_vs_itranslate" target="_blank" rel="external">google-translate_vs_microsoft-translator_vs_itranslate</a></p>
-</li>
-<li><p><a href="http://www.empowerlinguatranslation.com/microsoft-translator-vs-google-translate/" target="_blank" rel="external">Microsoft Translator Vs Google Translate</a></p>
-</li>
-</ul>
-<p>不过因为，国内Google被墙了。大多数用户访问不了Google的服务。不用比较，只能选择Microsoft了。。。囧</p>
-<p>使用Microsoft Translator服务可以实现 翻译功能<br>支持文本翻译文本，文本翻译成语音</p>
-<p>Getting Started</p>
-<p>To access the Microsoft Translator Text Translation API you will need to sign up for Microsoft Azure. Follow these steps.</p>
-<ol>
-<li>Sign up for a Microsoft Azure account at <a href="http://azure.com" target="_blank" rel="external">http://azure.com</a></li>
-<li>After you have an account go to <a href="http://portal.azure.com" target="_blank" rel="external">http://portal.azure.com</a></li>
-<li>Select the + New option.</li>
-<li>Select Intelligence from the list of services.</li>
-<li>Select Cognitive Services APIs</li>
-<li>Select the API Type option.</li>
-<li>Select Text Translation.</li>
-<li>In the Pricing Tier section select the pricing tier that fits your needs.</li>
-<li>Fill out the rest of the form, and select the Create button.</li>
-<li>You are now subscribed to Microsoft Translator.</li>
-<li>Go to All Resources and select the Microsoft Translator API you subscribed to.</li>
-<li>Go to the Keys option and copy your subscription key to access the service.</li>
-</ol>
-<p><strong>Translator 文本 API</strong></p>
-<table>
-<thead>
-<tr>
-<th>Plan</th>
-<th style="text-align:center">Description</th>
-<th style="text-align:right">Price</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>免费</td>
-<td style="text-align:center">限每月 2M 文字</td>
-<td style="text-align:right">免费</td>
-</tr>
-<tr>
-<td>S1 标准</td>
-<td style="text-align:center">基于Azure使用量</td>
-<td style="text-align:right">每 1M 文字 $10</td>
-</tr>
-<tr>
-<td>S2 标准</td>
-<td style="text-align:center">每月 250M 文字</td>
-<td style="text-align:right">每月 $2,055，超额部分每 1M 文字 $8.22</td>
-</tr>
-<tr>
-<td>S3 标准</td>
-<td style="text-align:center">每月 1B 文字</td>
-<td style="text-align:right">每月 $6K，超额部分每 1M 文字 $6.00</td>
-</tr>
-<tr>
-<td>S4 标准</td>
-<td style="text-align:center">每月 10B 文字</td>
-<td style="text-align:right">每月 $45K，超额部分每 1M 文字 $4.5</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Translator 语音 API</strong></p>
-<table>
-<thead>
-<tr>
-<th>Plan</th>
-<th style="text-align:center">Description</th>
-<th style="text-align:right">Price</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>免费</td>
-<td style="text-align:center">限每月 2小时</td>
-<td style="text-align:right">免费</td>
-</tr>
-<tr>
-<td>S1 标准</td>
-<td style="text-align:center">基于Azure使用量</td>
-<td style="text-align:right">每小时 $12</td>
-</tr>
-<tr>
-<td>S2 标准</td>
-<td style="text-align:center">每月 100 小时</td>
-<td style="text-align:right">每月 $1K，超出部分每小时 $10</td>
-</tr>
-<tr>
-<td>S2 标准</td>
-<td style="text-align:center">每月 1000 小时</td>
-<td style="text-align:right">每月 $7K，超额部分每小时 $7</td>
-</tr>
-<tr>
-<td>S4 标准</td>
-<td style="text-align:center">每月 10,000 小时</td>
-<td style="text-align:right">每月 $35K，超额部分每小时 $3.50</td>
-</tr>
-</tbody>
-</table>
-<p>PS：还有<a href="https://www.microsoft.com/cognitive-services/en-us/face-api" target="_blank" rel="external">face api</a></p>
-<p>具体的文档地址：<a href="http://docs.microsofttranslator.com/text-translate.html" target="_blank" rel="external">text-translate</a></p>
-<h2 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h2><p><del>一个封装了Microsoft Speech Translator服务的功能库<a href="https://github.com/bitmapdata/MSTranslateVendor" target="_blank" rel="external">MSTranslateVendor</a></del></p>
-<p><del><a href="https://msdn.microsoft.com/en-us/library/hh454950.aspx" target="_blank" rel="external">Obtaining an Access Token</a></del></p>
-<p>上面举出的Microsoft的API资料都是过期了的文档。不要花时间在这上面-，-。。。</p>
-<p>一句话就是：最新的API 已经不需要去注册<code>Azure DataMarket application</code>了，不用<code>client_id</code>和<code>client_secret</code>。直接使用<code>Subscription Key</code>即可</p>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ASR/">ASR</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Translator/">Translator</a></li></ul>
 
       </footer>
     
