@@ -13,8 +13,7 @@ Xcode6 - iOS8
 Xcode7 - iOS9
 
 如果不做任何处理的话，在第一套打包环境下会出现 ‘XX.h’ file not found.
-我们希望编写的代码能够兼容这两套打包环境. 
-Google 区分iOS系统版本 得到以下结果">
+我们希望编写的代码能够兼容这两套打包环境. 在 iOS9下 编译我们的feature代码，在">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Different iOS SDK Version Compile">
 <meta property="og:url" content="http://yoursite.com/2015/10/08/2015-10-08-Different-iOS-SDK-Version-Compile/index.html">
@@ -27,9 +26,8 @@ Xcode6 - iOS8
 Xcode7 - iOS9
 
 如果不做任何处理的话，在第一套打包环境下会出现 ‘XX.h’ file not found.
-我们希望编写的代码能够兼容这两套打包环境. 
-Google 区分iOS系统版本 得到以下结果">
-<meta property="og:updated_time" content="2016-12-29T13:48:46.000Z">
+我们希望编写的代码能够兼容这两套打包环境. 在 iOS9下 编译我们的feature代码，在">
+<meta property="og:updated_time" content="2017-09-28T08:06:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Different iOS SDK Version Compile">
 <meta name="twitter:description" content="前言
@@ -40,8 +38,7 @@ Xcode6 - iOS8
 Xcode7 - iOS9
 
 如果不做任何处理的话，在第一套打包环境下会出现 ‘XX.h’ file not found.
-我们希望编写的代码能够兼容这两套打包环境. 
-Google 区分iOS系统版本 得到以下结果">
+我们希望编写的代码能够兼容这两套打包环境. 在 iOS9下 编译我们的feature代码，在">
   
   
     <link rel="icon" href="/favicon.png">
@@ -116,12 +113,8 @@ Google 区分iOS系统版本 得到以下结果">
 <li>Xcode7 - iOS9</li>
 </ul>
 <p>如果不做任何处理的话，在第一套打包环境下会出现 ‘XX.h’ file not found.</p>
-<p>我们希望编写的代码能够兼容这两套打包环境. </p>
-<p>Google 区分iOS系统版本 得到以下结果：</p>
-<p><a href="http://www.yifeiyang.net/iphone-development-techniques-of-environmental-chapter-7-distinguish-between-different-versions-of-the-iphone/" target="_blank" rel="external">iPhone开发技巧之环境篇（7）— 区分不同版本的iPhone</a></p>
-<p><a href="http://justsee.iteye.com/blog/1621533" target="_blank" rel="external">区分ios设备，os版本，sdk版本</a></p>
-<p>我们只关心文章最后的段落:iPhone OS SDK版本，我们希望在 iOS9下 编译我们的feature代码，在iOS9之前的系统版本不编译，不执行。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; __IPHONE_2_2</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; __IPHONE_3_1</span></span><br><span class="line">        <span class="comment">// iPhone OS SDK 4.0 以后版本的处理</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">        <span class="comment">// iPhone OS SDK 3.0 ~ 4.0 版本的处理</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="comment">// iPhone OS SDK 3.0 之前版本的处理</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p>我们希望编写的代码能够兼容这两套打包环境. 在 iOS9下 编译我们的feature代码，在iOS9之前的系统版本不编译，不执行。</p>
+<p>详细的定义在 <code>usr/include/Availabilaty.h</code><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; __IPHONE_2_2</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> __IPHONE_OS_VERSION_MAX_ALLOWED &gt; __IPHONE_3_1</span></span><br><span class="line">        <span class="comment">// iPhone OS SDK 4.0 以后版本的处理</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">        <span class="comment">// iPhone OS SDK 3.0 ~ 4.0 版本的处理</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="comment">// iPhone OS SDK 3.0 之前版本的处理</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure></p>
 <p>但是，这还是有一个坑。 我们来看一下 具体的宏定义在 <code>AvailabilityInternal.h</code> 中。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED</span><br><span class="line">   /* make sure a default max version is set */</span><br><span class="line">   #ifndef __IPHONE_OS_VERSION_MAX_ALLOWED</span><br><span class="line">       #define __IPHONE_OS_VERSION_MAX_ALLOWED     __IPHONE_9_0</span><br><span class="line">   #endif</span><br><span class="line">   /* make sure a valid min is set */</span><br><span class="line">   #if __IPHONE_OS_VERSION_MIN_REQUIRED &lt; __IPHONE_2_0</span><br><span class="line">       #undef __IPHONE_OS_VERSION_MIN_REQUIRED</span><br><span class="line">       #define __IPHONE_OS_VERSION_MIN_REQUIRED    __IPHONE_2_0 </span><br><span class="line">   #endif</span><br></pre></td></tr></table></figure>
 <p>我查看的是iOS 9.0的定义，里面定义 <code>__IPHONE_OS_VERSION_MAX_ALLOWED</code> 为 <code>__IPHONE_9_0</code>(90000)</p>

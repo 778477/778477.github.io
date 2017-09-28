@@ -260,6 +260,58 @@
 
 
     
+      <article id="post-2017-04-20-iClean 一款Mac OS 软件的诞生" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/20/2017-04-20-iClean 一款Mac OS 软件的诞生/">iClean 一款Mac OS 软件的诞生</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/04/20/2017-04-20-iClean 一款Mac OS 软件的诞生/" class="article-date">
+  <time datetime="2017-04-20T00:00:00.000Z" itemprop="datePublished">2017-04-20</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/macOS/">macOS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我工作用的Mac Pro是256GB ssd硬盘。开发iOS久了，经常提示磁盘空间不够，其中最大原因是来自Xcode®</p>
+<p>可以打开 <code>~/Library/Developer/Xcode/DerivedData</code> 看看，这里存放了Xcode编译构建过的所有项目工程数据。</p>
+<p>这如 <code>watchdog</code> 磁盘清理软件描述提及的那样 <code>automatically cleans up stale cache files</code>。将陈腐失效的缓存数据及时清理掉，你的ssd硬盘可用空间就多起来了。</p>
+<p>作为一个要强的iOS开发工程师，自己能做的东西，为什么要用别人的？</p>
+<p>所以，我确定做一款自己的磁盘清理软件</p>
+<blockquote>
+<p><a href="https://www.cerebralgardens.com/watchdog" target="_blank" rel="external">watchdog for Xcode</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocoa/">cocoa</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2017-04-24-iClean" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -301,58 +353,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - NSTableViewDelegate</span><br><span class="line">- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row&#123;</span><br><span class="line">    NSTextField *cell = [tableView makeViewWithIdentifier:@&quot;cellReuseId&quot; owner:self];</span><br><span class="line">    if(!cell)&#123;</span><br><span class="line">        cell = [NSTextField labelWithString:@&quot;&quot;];</span><br><span class="line">        cell.identifier = @&quot;cellReuseId&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@&quot;%@ \n%@&quot;,self.data[row].path.lastPathComponent,self.data[row].formatSize] attributes:@&#123;NSForegroundColorAttributeName:[NSColor blackColor]&#125;];</span><br><span class="line">    </span><br><span class="line">    cell.placeholderAttributedString = str;</span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row&#123;</span><br><span class="line">    return 50.f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)tableViewSelectionDidChange:(NSNotification *)notification&#123;</span><br><span class="line">    NSInteger row = [[notification object] selectedRow];</span><br><span class="line">    NSLog(@&quot;%ld&quot;,row);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#pragma mark - NSTableViewDataSource</span><br><span class="line">- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView&#123;</span><br><span class="line">    return self.data.count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>注意是 <code>AppKit</code>里面是没有<code>Label</code>控件的，我这是使用的是<code>NSTextField</code>。就是输入框了，借助<code>placeholderString</code>属性能实现文本展示的效果。</p>
 <p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/iClean-snapshot1.png" alt="目前的产品形态"></p>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocoa/">cocoa</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-2017-04-20-iClean 一款Mac OS 软件的诞生" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/20/2017-04-20-iClean 一款Mac OS 软件的诞生/">iClean 一款Mac OS 软件的诞生</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2017/04/20/2017-04-20-iClean 一款Mac OS 软件的诞生/" class="article-date">
-  <time datetime="2017-04-20T00:00:00.000Z" itemprop="datePublished">2017-04-20</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/macOS/">macOS</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我工作用的Mac Pro是256GB ssd硬盘。开发iOS久了，经常提示磁盘空间不够，其中最大原因是来自Xcode®</p>
-<p>可以打开 <code>~/Library/Developer/Xcode/DerivedData</code> 看看，这里存放了Xcode编译构建过的所有项目工程数据。</p>
-<p>这如 <code>watchdog</code> 磁盘清理软件描述提及的那样 <code>automatically cleans up stale cache files</code>。将陈腐失效的缓存数据及时清理掉，你的ssd硬盘可用空间就多起来了。</p>
-<p>作为一个要强的iOS开发工程师，自己能做的东西，为什么要用别人的？</p>
-<p>所以，我确定做一款自己的磁盘清理软件</p>
-<blockquote>
-<p><a href="https://www.cerebralgardens.com/watchdog" target="_blank" rel="external">watchdog for Xcode</a></p>
-</blockquote>
 
       
     </div>
