@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>UTF8 编码识别 - 778477</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="背景早些年，java应用的开发环境是windows下使用eclipse。eclipse默认工程中文编码是GBK，这就为以后的业务埋下了隐患。
+在大型native客户端开发中，模块按照功能/页面划分解耦。要解除相互之间的符号依赖(编译期间)和业务依赖(运行期间)，可以使用”路由中心”，借鉴pc url思想来描述native页面。
+恰好，我负责的搜索页面，native url中带有中文参数就牵涉这块编">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UTF8 编码识别">
+<meta property="og:url" content="http://yoursite.com/2017/11/06/2017-11-06-UTF8编码识别/index.html">
+<meta property="og:site_name" content="778477">
+<meta property="og:description" content="背景早些年，java应用的开发环境是windows下使用eclipse。eclipse默认工程中文编码是GBK，这就为以后的业务埋下了隐患。
+在大型native客户端开发中，模块按照功能/页面划分解耦。要解除相互之间的符号依赖(编译期间)和业务依赖(运行期间)，可以使用”路由中心”，借鉴pc url思想来描述native页面。
+恰好，我负责的搜索页面，native url中带有中文参数就牵涉这块编">
+<meta property="og:updated_time" content="2017-11-06T06:29:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UTF8 编码识别">
+<meta name="twitter:description" content="背景早些年，java应用的开发环境是windows下使用eclipse。eclipse默认工程中文编码是GBK，这就为以后的业务埋下了隐患。
+在大型native客户端开发中，模块按照功能/页面划分解耦。要解除相互之间的符号依赖(编译期间)和业务依赖(运行期间)，可以使用”路由中心”，借鉴pc url思想来描述native页面。
+恰好，我负责的搜索页面，native url中带有中文参数就牵涉这块编">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">778477</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-2017-11-06-UTF8编码识别" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      UTF8 编码识别
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/11/06/2017-11-06-UTF8编码识别/" class="article-date">
+  <time datetime="2017-11-06T00:00:00.000Z" itemprop="datePublished">2017-11-06</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/编码识别/">编码识别</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>早些年，java应用的开发环境是windows下使用eclipse。eclipse默认工程中文编码是GBK，这就为以后的业务埋下了隐患。</p>
+<p>在大型native客户端开发中，模块按照功能/页面划分解耦。要解除相互之间的符号依赖(编译期间)和业务依赖(运行期间)，可以使用”路由中心”，借鉴pc url思想来描述native页面。</p>
+<p>恰好，我负责的搜索页面，native url中带有中文参数就牵涉这块编码问题了。</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>由于业务上后端应用一直是GBK编码，所以搭建起来的一些运营系统对外投放的h5页面数据上中文是使用GBK的。这些上游页面使用url跳转会被”路由中心”拦截到我的页面，并且会将url中的params参数一一对应的填充到我的页面属性中，其中的中文参数会使用GBK解码。</p>
+<p>随着开发环境的升级差异和前端同学推广UTF8的使用等，业务上上游页面渐渐出现了使用UTF8编码的情况。我们尝试通过约定来避免线上业务使用乱码的问题，比如：</p>
+<ol>
+<li>强制要求上游业务必须使用GBK编码</li>
+<li>url中携带_input_charset参数表示是哪种编码方式(_input_charset=gbk/_input_charset=utf8)</li>
+</ol>
+<p>但迭代下来，仍然线上会出现乱码问题 (UTF8编码使用GBK解码)。</p>
+<p>主要原因是，历史上搭建的运营系统使用GBK编码，产生的上游页面并不会按照约定2来执行。而新系统正在积极的使用UTF8编码不按照约定1。在可预见的未来，UTF8应该会普及开来。</p>
+<p>所以，会了应对乱码问题。客户端需要编码识别能力。</p>
+<h2 id="技术方案"><a href="#技术方案" class="headerlink" title="技术方案"></a>技术方案</h2><p>我们先确定一下要解决的问题：识别链接中的中文参数是GBK编码还是UTF8编码(注意只有这两种编码情况,且不混合夹杂编码一半是GBK，一半是UTF8的情况)。</p>
+<p>我们基于识别的理论基础是:</p>
+<blockquote>
+<p>UTF-8 是兼容 ASCII 的，所以 0~127 就和 ASCII 完全一致了。<br>GBK 的第一字节是高位为 1 的，第 2 字节可能高位为 0 。这种情况一定是 GBK ，因为 UTF-8 对 &gt;127 的编码一定每个字节高位为 1 。<br>另外，对于中文，UTF-8 一定编码成 3 字节。（似乎亚洲文字都是，UTF-8 中双字节好象只用于西方字符集）<br>所以型如 110<strong>*</strong> 10<strong>**</strong> 的，我们一概看成 GBK/GB2312 编码。这就解决了“位”的问题。<br>汉字以及汉字标点（包括日文汉字等），在 UTF8 中一定被编码成：1110<strong><strong> 10**</strong></strong> 10<strong>**</strong></p>
+<p>连续汉字数量不是 3 的倍数的 GB2312 编码的汉字字符串一定不会被误认为 UTF-8 。用了一些GBK 扩展字，或是插入了一些 ASCII 符号的字符串也几乎不会被认为是 UTF-8 。</p>
+<p>一般说来，只要汉字稍微多几个，GBK 串被误认为 UTF-8 的可能性极其低。（只需要默认不使用 UTF-8 中双字节表示的字符）可能性低，这里还有另外一个原因。UTF-8 中汉字编码的第一个字节是 1110<em>**</em> ，这处于汉字的 GB2312 中二级汉字（不常用汉字，区码从 11011000 开始）的编码空间。一般是一些生僻字才会碰上。</p>
+</blockquote>
+<p>所以，我们重点观察汉字被编码之后，是否符合1110<strong><strong> 10**</strong></strong> 10<strong>**</strong>这种情况。我们一开始假设是UTF-8编码，一旦发现不符合的话我们就反推认为是GBK编码。</p>
+<p>实现上，正好和leetcode上一道题目相同 <a href="https://leetcode.com/problems/utf-8-validation/description/" target="_blank" rel="external">393. UTF-8 Validation</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Solution &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">validUtf8</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">size_t</span> len = data.size();</span><br><span class="line">        <span class="keyword">for</span>( <span class="keyword">auto</span> i = <span class="number">0</span>; i&lt;len; i++ )&#123;</span><br><span class="line">            <span class="keyword">if</span>((data[i]|<span class="number">0x7f</span>) == <span class="number">0x7f</span>) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="number">3</span>;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>((data[i]&amp;mask[j]) == val[j])&#123;</span><br><span class="line">                    cnt = j+<span class="number">2</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(!cnt) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">if</span>(i+cnt &gt; len) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;cnt;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>((data[i+j]&amp;<span class="number">0xc0</span>) != <span class="number">0x80</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;   </span><br><span class="line">            i += (cnt - <span class="number">1</span>);</span><br><span class="line">        &#125;   </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> mask[<span class="number">3</span>] = &#123;<span class="number">0xe0</span>,<span class="number">0xf0</span>,<span class="number">0xf8</span>&#125;; <span class="comment">// 2,3,4</span></span><br><span class="line">    <span class="keyword">int</span>  val[<span class="number">3</span>] = &#123;<span class="number">0xc0</span>,<span class="number">0xe0</span>,<span class="number">0xf0</span>&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>额外要注意是对于一些<a href="https://en.wikipedia.org/wiki/Percent-encoding" target="_blank" rel="external">标点符号保留字</a>非ASCII码的单字节是跳过识别的。 </p>
+<p>线上已经跑了两年多了，再也没有乱码问题的反馈了。</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编码识别/">编码识别</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/11/02/2017-11-02-Leetcode Attempted Algorithms/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Leetcode Attempted Algorithms&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 miaoyou.gmy&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

@@ -54,6 +54,74 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2017-11-06-UTF8编码识别" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/06/2017-11-06-UTF8编码识别/">UTF8 编码识别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/11/06/2017-11-06-UTF8编码识别/" class="article-date">
+  <time datetime="2017-11-06T00:00:00.000Z" itemprop="datePublished">2017-11-06</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/编码识别/">编码识别</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>早些年，java应用的开发环境是windows下使用eclipse。eclipse默认工程中文编码是GBK，这就为以后的业务埋下了隐患。</p>
+<p>在大型native客户端开发中，模块按照功能/页面划分解耦。要解除相互之间的符号依赖(编译期间)和业务依赖(运行期间)，可以使用”路由中心”，借鉴pc url思想来描述native页面。</p>
+<p>恰好，我负责的搜索页面，native url中带有中文参数就牵涉这块编码问题了。</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>由于业务上后端应用一直是GBK编码，所以搭建起来的一些运营系统对外投放的h5页面数据上中文是使用GBK的。这些上游页面使用url跳转会被”路由中心”拦截到我的页面，并且会将url中的params参数一一对应的填充到我的页面属性中，其中的中文参数会使用GBK解码。</p>
+<p>随着开发环境的升级差异和前端同学推广UTF8的使用等，业务上上游页面渐渐出现了使用UTF8编码的情况。我们尝试通过约定来避免线上业务使用乱码的问题，比如：</p>
+<ol>
+<li>强制要求上游业务必须使用GBK编码</li>
+<li>url中携带_input_charset参数表示是哪种编码方式(_input_charset=gbk/_input_charset=utf8)</li>
+</ol>
+<p>但迭代下来，仍然线上会出现乱码问题 (UTF8编码使用GBK解码)。</p>
+<p>主要原因是，历史上搭建的运营系统使用GBK编码，产生的上游页面并不会按照约定2来执行。而新系统正在积极的使用UTF8编码不按照约定1。在可预见的未来，UTF8应该会普及开来。</p>
+<p>所以，会了应对乱码问题。客户端需要编码识别能力。</p>
+<h2 id="技术方案"><a href="#技术方案" class="headerlink" title="技术方案"></a>技术方案</h2><p>我们先确定一下要解决的问题：识别链接中的中文参数是GBK编码还是UTF8编码(注意只有这两种编码情况,且不混合夹杂编码一半是GBK，一半是UTF8的情况)。</p>
+<p>我们基于识别的理论基础是:</p>
+<blockquote>
+<p>UTF-8 是兼容 ASCII 的，所以 0~127 就和 ASCII 完全一致了。<br>GBK 的第一字节是高位为 1 的，第 2 字节可能高位为 0 。这种情况一定是 GBK ，因为 UTF-8 对 &gt;127 的编码一定每个字节高位为 1 。<br>另外，对于中文，UTF-8 一定编码成 3 字节。（似乎亚洲文字都是，UTF-8 中双字节好象只用于西方字符集）<br>所以型如 110<strong>*</strong> 10<strong>**</strong> 的，我们一概看成 GBK/GB2312 编码。这就解决了“位”的问题。<br>汉字以及汉字标点（包括日文汉字等），在 UTF8 中一定被编码成：1110<strong><strong> 10**</strong></strong> 10<strong>**</strong></p>
+<p>连续汉字数量不是 3 的倍数的 GB2312 编码的汉字字符串一定不会被误认为 UTF-8 。用了一些GBK 扩展字，或是插入了一些 ASCII 符号的字符串也几乎不会被认为是 UTF-8 。</p>
+<p>一般说来，只要汉字稍微多几个，GBK 串被误认为 UTF-8 的可能性极其低。（只需要默认不使用 UTF-8 中双字节表示的字符）可能性低，这里还有另外一个原因。UTF-8 中汉字编码的第一个字节是 1110<em>**</em> ，这处于汉字的 GB2312 中二级汉字（不常用汉字，区码从 11011000 开始）的编码空间。一般是一些生僻字才会碰上。</p>
+</blockquote>
+<p>所以，我们重点观察汉字被编码之后，是否符合1110<strong><strong> 10**</strong></strong> 10<strong>**</strong>这种情况。我们一开始假设是UTF-8编码，一旦发现不符合的话我们就反推认为是GBK编码。</p>
+<p>实现上，正好和leetcode上一道题目相同 <a href="https://leetcode.com/problems/utf-8-validation/description/" target="_blank" rel="external">393. UTF-8 Validation</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Solution &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">validUtf8</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">size_t</span> len = data.size();</span><br><span class="line">        <span class="keyword">for</span>( <span class="keyword">auto</span> i = <span class="number">0</span>; i&lt;len; i++ )&#123;</span><br><span class="line">            <span class="keyword">if</span>((data[i]|<span class="number">0x7f</span>) == <span class="number">0x7f</span>) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="number">3</span>;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>((data[i]&amp;mask[j]) == val[j])&#123;</span><br><span class="line">                    cnt = j+<span class="number">2</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(!cnt) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">if</span>(i+cnt &gt; len) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;cnt;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>((data[i+j]&amp;<span class="number">0xc0</span>) != <span class="number">0x80</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;   </span><br><span class="line">            i += (cnt - <span class="number">1</span>);</span><br><span class="line">        &#125;   </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> mask[<span class="number">3</span>] = &#123;<span class="number">0xe0</span>,<span class="number">0xf0</span>,<span class="number">0xf8</span>&#125;; <span class="comment">// 2,3,4</span></span><br><span class="line">    <span class="keyword">int</span>  val[<span class="number">3</span>] = &#123;<span class="number">0xc0</span>,<span class="number">0xe0</span>,<span class="number">0xf0</span>&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>额外要注意是对于一些<a href="https://en.wikipedia.org/wiki/Percent-encoding" target="_blank" rel="external">标点符号保留字</a>非ASCII码的单字节是跳过识别的。 </p>
+<p>线上已经跑了两年多了，再也没有乱码问题的反馈了。</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编码识别/">编码识别</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2017-11-02-Leetcode Attempted Algorithms" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -739,71 +807,8 @@
 
 
     
-      <article id="post-2017-02-04-12年Mac Pro机械硬盘更换" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/04/2017-02-04-12年Mac Pro机械硬盘更换/">12年Mac Pro机械硬盘更换</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2017/02/04/2017-02-04-12年Mac Pro机械硬盘更换/" class="article-date">
-  <time datetime="2017-02-04T00:00:00.000Z" itemprop="datePublished">2017-02-04</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/生活/">生活</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="12年Mac-Pro机械硬盘更换"><a href="#12年Mac-Pro机械硬盘更换" class="headerlink" title="12年Mac Pro机械硬盘更换"></a>12年Mac Pro机械硬盘更换</h2><p>这是一台12年中的高分雾面屏15寸Mac Pro。在大三(2013年)购买的，现在用起来性能是越发的不行了。开机时间巨久，所以 想着说要不把机械硬盘更换成固态硬盘。</p>
-<p>更换之前，先看一下 机械硬盘的读写数据吧：</p>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/Intel%207%20Series%20Chipset.png" alt=""></p>
-<h2 id="0x1-准备工作"><a href="#0x1-准备工作" class="headerlink" title="0x1 准备工作"></a>0x1 准备工作</h2><ol>
-<li>一块2.5英寸的 SSD硬盘</li>
-<li>一根SATA转USB 硬盘转接线<br>格外一点，购买SSD硬盘之前最好确认一下电脑的SATA 串口是第几代，这个会影响读写性能的。<br>我的是 SATA III，对应购买了 <strong>TOSHIBA A100 240GB</strong></li>
-</ol>
-<h2 id="0x2-备份"><a href="#0x2-备份" class="headerlink" title="0x2 备份"></a>0x2 备份</h2><ol>
-<li>使用 SATA转USB硬盘转接线，将SSD硬盘接入电脑。 使用 磁盘工具 将其 格式化为 <code>Mac OS 扩展</code></li>
-<li>下载 <a href="https://bombich.com/" target="_blank" rel="external">CCC - Carbon Copy Cloner</a> 将机械硬盘中的所有文件 备份到 固态硬盘中</li>
-<li>按住 <code>option</code>键，重新启动。查看是否可以从固态硬盘启动系统。若可以，则备份成功</li>
-</ol>
-<h2 id="0x3-拆机"><a href="#0x3-拆机" class="headerlink" title="0x3 拆机"></a>0x3 拆机</h2><ol>
-<li>断电，拨开电源插在主板上插头。</li>
-<li>卸下锁住硬盘的螺丝，小心拔掉SATA串口线</li>
-<li>安装 固态硬盘。<br><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/UNADJUSTEDNONRAW_thumb_3c5.jpg" alt=""><br><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/UNADJUSTEDNONRAW_thumb_3c6.jpg" alt=""></li>
-</ol>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>开启 SSD TRIM设置，能提高SSD性能。<br>替换为 TOSHIBA A100 SSD的读写数据：<br><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/TOSHIBA%20A100%20SSD.png" alt=""></p>
-<p>READ方面提升还是蛮明显的</p>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSD/">SSD</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
       <nav id="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
       </nav>
     </section>
     <footer id="footer">

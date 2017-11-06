@@ -54,6 +54,66 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-2015-11-24-为iOS建立 Travis CI" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/11/24/2015-11-24-为iOS建立 Travis CI/">为iOS建立 Travis CI</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/11/24/2015-11-24-为iOS建立 Travis CI/" class="article-date">
+  <time datetime="2015-11-24T00:00:00.000Z" itemprop="datePublished">2015-11-24</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/持续集成/">持续集成</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://objccn.io/issue-6-5/" target="_blank" rel="external">为iOS建立 Travis CI</a></p>
+<p>我给自己的GMYHotSpotView项目 关联了这个 持续集成的工具 .travis.yml文件编写如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">language: objective-c</span><br><span class="line">script: xcodebuild -workspace GMYHotSpotView.xcworkspace -scheme GMYHotSpotView</span><br></pre></td></tr></table></figure>
+<p><a href="https://docs.travis-ci.com/user/languages/objective-c/" target="_blank" rel="external">Building an Objective-C Project</a></p>
+<p>我后面遇到的一个比较麻烦的问题是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Check dependencies</span><br><span class="line">Code Sign error: No code signing identities found: No valid signing identities.</span><br></pre></td></tr></table></figure>
+<p>最后修改.travis.yml文件，主要是新增了 <strong> CODE_SIGN_IDENTITY=”” CODE_SIGNING_REQUIRED=NO </strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">## http://lint.travis-ci.org/</span><br><span class="line">language: objective-c</span><br><span class="line">xcode_workspace: GMYHotSpotView.xcworkspace</span><br><span class="line">xcode_scheme: GMYHotSpotView</span><br><span class="line">script: xcodebuild -workspace GMYHotSpotView.xcworkspace -scheme GMYHotSpotView CODE_SIGN_IDENTITY=&quot;&quot; CODE_SIGNING_REQUIRED=NO</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/travis-ci1.png" alt="CI"></p>
+<p>指示灯是可以拿来使用的  <a href="https://travis-ci.org/778477/GMYHotSpotView" target="_blank" rel="external"><img src="https://travis-ci.org/778477/GMYHotSpotView.svg?branch=master" alt="Build Status"></a></p>
+<p><del>GitHub上还有一个很完善的YAML配置 <a href="https://github.com/BoltsFramework/Bolts-iOS/blob/master/.travis.yml" target="_blank" rel="external">https://github.com/BoltsFramework/Bolts-iOS/blob/master/.travis.yml</a></del> <strong>这个没啥卵用</strong></p>
+<blockquote>
+<p><a href="http://www.infoq.com/cn/articles/build-ios-continuous-integration-platform-part3" target="_blank" rel="external">构建iOS持续集成平台（三）——CI服务器与自动化部署 @infoQ</a></p>
+<p><a href="http://stackoverflow.com/questions/27671854/travis-ci-fails-to-build-with-a-code-signing-error" target="_blank" rel="external">http://stackoverflow.com/questions/27671854/travis-ci-fails-to-build-with-a-code-signing-error</a></p>
+<p><a href="http://stackoverflow.com/questions/27671854/travis-ci-fails-to-build-with-a-code-signing-error" target="_blank" rel="external">http://stackoverflow.com/questions/27671854/travis-ci-fails-to-build-with-a-code-signing-error</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+    
       <article id="post-2015-10-23-Valid-Number" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -702,75 +762,8 @@
 
 
     
-      <article id="post-2015-08-29-hdu-3839" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/29/2015-08-29-hdu-3839/">hdu 3839</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/08/29/2015-08-29-hdu-3839/" class="article-date">
-  <time datetime="2015-08-29T00:00:00.000Z" itemprop="datePublished">2015-08-29</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a><span>></span><a class="article-category-link" href="/categories/Algorithm/HDU-OJ/">HDU OJ</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="http://acm.hdu.edu.cn/showproblem.php?pid=3839" target="_blank" rel="external">Ancient Messages</a></p>
-<p>题目大意：给出以下6种象形文字，编程识别出来。<br><img src="http://acm.hdu.edu.cn/data/images/3839-1.jpg" alt="figureC1"></p>
-<p>输入：有多组测试样例，每组测试样例使用0（白色像素） 和 1（黑色像素）来描述一张图片。出于<strong>节约空间</strong>的目的，使用1位16进制数 表示 4位二进制数。图片最大size为（50<em> 200）。二进制解码之后实际大小为（200</em> 200）</p>
-<p>给出的测试样例符合以下条件：</p>
-<ul>
-<li>图片中只会出现 这6种象形文字</li>
-<li>图片中至少有一个象形文字存在</li>
-<li>每一个黑色像素都是一个象形文字的一部分（可以理解为文字笔画是标准的）</li>
-<li>黑色像素是拼接成了文字笔画</li>
-<li>文字之间不会有重叠 和 接触</li>
-<li>两颗黑色像素如果是对角接触，也可以认为这两个像素是同一个文字的一部分。(这个条件我貌似没在意，遍历只在乎 上左下右 四个方向)</li>
-<li>文字可能会比较潦草，但还是6个象形文字的符号结构</li>
-</ul>
-<p>输出： <strong>字母顺序</strong> 输出图片中的所有象形文字</p>
-<p>思考：题目乍一看毫无头绪，但是观察这6种符号，就能发现一个明显的特征，每一种符号都有各自的“封闭区域”。</p>
-<p>AnKh有1个“封闭区域”，Wedjat有3个“封闭区域”，Djed有5个“封闭区域”，Scarab有4个“封闭区域”，Was有0个“封闭区域”，Akeht有2个“封闭区域”。</p>
-<p>我们可以对不同的“封闭区域”进行染色标记，再沿着黑色像素遍历，看能接触到多少种不同颜色的“封闭区域”。 如果有1种的话，那么所遍历的黑色像素 描绘的就是 Was符号了，以此类推</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line">//</span><br><span class="line">//  main.cpp</span><br><span class="line">//  hdu 3839</span><br><span class="line">//</span><br><span class="line">//  Created by miaoyou.gmy on 15/8/29.</span><br><span class="line">//  Copyright (c) 2015年 miaoyou.gmy. All rights reserved.</span><br><span class="line">//</span><br><span class="line"></span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;string&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">const int H = 205;</span><br><span class="line">const int W = 205;</span><br><span class="line">int maze[H][W],h,w,colorCount;</span><br><span class="line">bool colorVis[H],vis[H][W];</span><br><span class="line">const int dir[4][2] = &#123; &#123;0,1&#125;,&#123;1,0&#125;,&#123;-1,0&#125;,&#123;0,-1&#125; &#125;;</span><br><span class="line">const char hieroglyphMap[] = &#123;&apos;W&apos;,&apos;A&apos;,&apos;K&apos;,&apos;J&apos;,&apos;S&apos;,&apos;D&apos;&#125;;</span><br><span class="line"></span><br><span class="line">bool judge(const int x, const int y)&#123;</span><br><span class="line">    return (x&gt;-1&amp;&amp;x&lt;h&amp;&amp;y&gt;-1&amp;&amp;y&lt;w&amp;&amp;!vis[x][y]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void dfs(int x,int y,int color)&#123;</span><br><span class="line">    maze[x][y] = color;</span><br><span class="line">    for(int i = 0; i &lt; 4; i++)&#123;</span><br><span class="line">        int xx = x+dir[i][0];</span><br><span class="line">        int yy = y+dir[i][1];</span><br><span class="line">        if(judge(xx,yy) &amp;&amp; !maze[xx][yy])&#123;</span><br><span class="line">            vis[xx][yy] = true;</span><br><span class="line">            dfs(xx,yy,color);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void countDiffentColor(int x,int y)&#123;</span><br><span class="line">    for(int i = 0; i &lt; 4; i++)&#123;</span><br><span class="line">        int xx = x + dir[i][0];</span><br><span class="line">        int yy = y + dir[i][1];</span><br><span class="line">        if(judge(xx, yy))&#123;</span><br><span class="line">            if(maze[xx][yy] != 1)&#123;</span><br><span class="line">                if(!colorVis[maze[xx][yy]]) colorCount++;</span><br><span class="line">                colorVis[maze[xx][yy]] = true;</span><br><span class="line">            &#125;</span><br><span class="line">            else&#123;</span><br><span class="line">                vis[xx][yy] = true;</span><br><span class="line">                countDiffentColor(xx, yy);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    int caseNumber = 1;</span><br><span class="line">    while(~scanf(&quot;%d%d&quot;,&amp;h,&amp;w))&#123;</span><br><span class="line">        if(0 == h &amp;&amp; 0 == w) break;</span><br><span class="line">        memset(maze, 0, sizeof(int) * H * W);</span><br><span class="line">        char strs[51];</span><br><span class="line">        for(int i = 0; i &lt; h; i++)&#123;</span><br><span class="line">            scanf(&quot;%s&quot;,strs);</span><br><span class="line">            for(int j = 0; j &lt; w; j++)&#123;</span><br><span class="line">                int tmp = 0;</span><br><span class="line">                if(strs[j]&gt;=&apos;0&apos; &amp;&amp; strs[j]&lt;=&apos;9&apos;) tmp = strs[j] - &apos;0&apos;;</span><br><span class="line">                else tmp = 10+strs[j]-&apos;a&apos;;</span><br><span class="line">                </span><br><span class="line">                for(int k = 0; k &lt; 4 ; k++)&#123;</span><br><span class="line">                    maze[i+1][4*j+k+1] = ((tmp&gt;&gt;(3-k))&amp;1);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        h+=2, w*=4,w+=2;</span><br><span class="line">        int color = 2;</span><br><span class="line">        memset(vis, false, sizeof(bool) * H * W);</span><br><span class="line">        for(int i = 0; i &lt; h; i++)&#123;</span><br><span class="line">            for(int j = 0; j &lt; w; j++)&#123;</span><br><span class="line">                if(!maze[i][j])&#123;</span><br><span class="line">                    dfs(i,j,color);</span><br><span class="line">                    color++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        vector&lt;char&gt; ans;</span><br><span class="line">        memset(vis, false, sizeof(bool) * H * W);</span><br><span class="line">        for(int i = 0; i &lt; h; i++)&#123;</span><br><span class="line">            for(int j = 0; j &lt; w; j++)&#123;</span><br><span class="line">                if(maze[i][j] == 1 &amp;&amp; !vis[i][j])&#123;</span><br><span class="line">                    colorCount = 0;</span><br><span class="line">                    memset(colorVis, false, sizeof(bool) * H);</span><br><span class="line">                    countDiffentColor(i,j);</span><br><span class="line">                    ans.push_back(hieroglyphMap[colorCount - 1]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        sort(ans.begin(), ans.end());</span><br><span class="line">        string str(ans.begin(),ans.end());</span><br><span class="line">        cout&lt;&lt;&quot;Case &quot;&lt;&lt;caseNumber++&lt;&lt;&quot;: &quot;&lt;&lt;str&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/hdu-3839-accepted.png" alt="hdu-3839-accepted"></p>
-<blockquote>
-<p>如有任何知识产权、版权问题或理论错误，还请指正。</p>
-<p>转载请注明原作者及以上信息。</p>
-</blockquote>
-
-      
-    </div>
-    
-    
-      <footer class="article-footer">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ACM/">ACM</a></li></ul>
-
-      </footer>
-    
-  </div>
-  
-</article>
-
-
-    
       <nav id="page-nav">
-        <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+        <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
       </nav>
     </section>
     <footer id="footer">
