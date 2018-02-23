@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>iOS客户端稳定性体系 - 778477</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="客户端稳定性客户端稳定性重要性毋庸置疑。在高举用户体验第一的移动时代，稳定性就是用户体验的基线。
+这里简单的介绍一下在工作中遇到的和想到的一些思路。
+稳定性体系的搭建可分为业务上线前中后三个阶段
+
+代码上线之前
+代码线上运行
+运行崩溃产生
+
+我们这里讨论的稳定性主要是指崩溃(Crash率)，不涵盖其他性能指标(滑动帧率，CPU使用率，内存使用情况等)。
+关于 Crash Reports Appl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS客户端稳定性体系">
+<meta property="og:url" content="http://yoursite.com/2018/02/23/2018-02-23-iOS客户端稳定性体系/index.html">
+<meta property="og:site_name" content="778477">
+<meta property="og:description" content="客户端稳定性客户端稳定性重要性毋庸置疑。在高举用户体验第一的移动时代，稳定性就是用户体验的基线。
+这里简单的介绍一下在工作中遇到的和想到的一些思路。
+稳定性体系的搭建可分为业务上线前中后三个阶段
+
+代码上线之前
+代码线上运行
+运行崩溃产生
+
+我们这里讨论的稳定性主要是指崩溃(Crash率)，不涵盖其他性能指标(滑动帧率，CPU使用率，内存使用情况等)。
+关于 Crash Reports Appl">
+<meta property="og:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/iOS%20Client%20Stability%20p1.png">
+<meta property="og:updated_time" content="2018-02-23T11:02:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS客户端稳定性体系">
+<meta name="twitter:description" content="客户端稳定性客户端稳定性重要性毋庸置疑。在高举用户体验第一的移动时代，稳定性就是用户体验的基线。
+这里简单的介绍一下在工作中遇到的和想到的一些思路。
+稳定性体系的搭建可分为业务上线前中后三个阶段
+
+代码上线之前
+代码线上运行
+运行崩溃产生
+
+我们这里讨论的稳定性主要是指崩溃(Crash率)，不涵盖其他性能指标(滑动帧率，CPU使用率，内存使用情况等)。
+关于 Crash Reports Appl">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/778477/778477.github.io/master/img/iOS%20Client%20Stability%20p1.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">778477</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-2018-02-23-iOS客户端稳定性体系" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS客户端稳定性体系
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2018/02/23/2018-02-23-iOS客户端稳定性体系/" class="article-date">
+  <time datetime="2018-02-23T00:00:00.000Z" itemprop="datePublished">2018-02-23</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a><span>></span><a class="article-category-link" href="/categories/iOS/稳定性/">稳定性</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://raw.githubusercontent.com/778477/778477.github.io/master/img/iOS%20Client%20Stability%20p1.png" alt="客户端稳定性导图"></p>
+<h1 id="客户端稳定性"><a href="#客户端稳定性" class="headerlink" title="客户端稳定性"></a>客户端稳定性</h1><p>客户端稳定性重要性毋庸置疑。在高举用户体验第一的移动时代，稳定性就是用户体验的基线。</p>
+<p>这里简单的介绍一下在工作中遇到的和想到的一些思路。</p>
+<p>稳定性体系的搭建可分为业务上线前中后三个阶段</p>
+<ol>
+<li>代码上线之前</li>
+<li>代码线上运行</li>
+<li>运行崩溃产生</li>
+</ol>
+<p>我们这里讨论的稳定性主要是指崩溃(Crash率)，不涵盖其他性能指标(滑动帧率，CPU使用率，内存使用情况等)。</p>
+<p>关于 Crash Reports Apple官方有详细的文档<a href="https://developer.apple.com/library/content/technotes/tn2151/_index.html#//apple_ref/doc/uid/DTS40008184-CH1-SYMBOLICATION" target="_blank" rel="external">Understanding and Analyzing Application Crash Reports</a></p>
+<ul>
+<li><p>这里需要区别对待的是 崩溃日志的收集，不能依赖官方的日志采集(时效性)。像大厂对这方面有要求的都是自己实现崩溃日志采集并维护一个崩溃日志分析系统(符号化，业务分拣，监控报警)</p>
+</li>
+<li><p>稳定性线上解决方案，就不得不提热修复了。 这个至关重要，对大厂来说线上一个高频率Crash损失是致命的(对应测试覆盖关键用户操作路径)。业界主流选择是<a href="https://github.com/bang590/JSPatch" target="_blank" rel="external">JSPatch</a> 和 <a href="https://github.com/alibaba/wax" target="_blank" rel="external">wax</a></p>
+</li>
+</ul>
+<h1 id="稳定性防护"><a href="#稳定性防护" class="headerlink" title="稳定性防护"></a>稳定性防护</h1><h2 id="上线前"><a href="#上线前" class="headerlink" title="上线前"></a>上线前</h2><p>充分测试是上线前环节是必不可少的。尽量覆盖各种用户操作路径和数据场景，枚举正常流和异常流情况。建立完善的CI体系也是可以提升应用质量</p>
+<p>Code Review，这个是老生常谈的一个话题。有过实习时上线代码被组内同学review的经历</p>
+<p>将一些安全编码经验沉淀成规则，就有了静态扫描工具。如Xcode自带的Analyze，也可以自定义扫描规则严格控制上线代码逻辑质量。在CI持续集成中可以增加这样的卡口限制不安全代码集成上线</p>
+<p>重要版本迭代进行灰度机制，发布bate版本。小范围试用，影响范围可控</p>
+<h2 id="线上代码运行时"><a href="#线上代码运行时" class="headerlink" title="线上代码运行时"></a>线上代码运行时</h2><h3 id="安全方法"><a href="#安全方法" class="headerlink" title="安全方法"></a>安全方法</h3><p>Apple <code>Foundation</code>中提供的常用数据结构，部分接口是不安全的如<code>NSMutableArray</code>的<code>- (void)addObject:(ObjectType)anObject</code> 文档说明中提及 插入<code>nil</code>会导致程序出现异常进而崩溃</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Description	</span><br><span class="line">Inserts a given object at the end of the array.</span><br><span class="line"></span><br><span class="line">Parameters	</span><br><span class="line">anObject	</span><br><span class="line">The object to add to the end of the array’s content. This value must not be nil.</span><br><span class="line"></span><br><span class="line">Important</span><br><span class="line">Raises an NSInvalidArgumentException if anObject is nil.</span><br></pre></td></tr></table></figure>
+<p>这些不安全的接口，应该禁止调用。在组内推广使用安全的接口(实现扩展对参数进行校验)</p>
+<h3 id="安全气囊"><a href="#安全气囊" class="headerlink" title="安全气囊"></a>安全气囊</h3><p>基于<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtForwarding.html#//apple_ref/doc/uid/TP40008048-CH105-SW12" target="_blank" rel="external">Objective-C Runtime Programming Guide</a>介绍中</p>
+<blockquote>
+<p>Message Forwarding<br>Sending a message to an object that does not handle that message is an error. However, before announcing the error, the runtime system gives the receiving object a second chance to handle the message.</p>
+</blockquote>
+<p>应对 <code>unrecognized selector sent to instance/class</code> 安全气囊实现软着陆，避免崩溃</p>
+<h3 id="try-catch"><a href="#try-catch" class="headerlink" title="try catch"></a>try catch</h3><p>Objective-C 中实际编程应用<code>try catch</code>场景并不多。但比如<code>NSJSONSerialization</code>序列化时 出现非JSON数据类型，系统还是会抛出异常让开发者处理的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">If obj will not produce valid JSON, an exception is thrown. This exception is thrown prior to parsing and represents a programming error, not an internal error. You should check whether the input will produce valid JSON before calling this method by using isValidJSONObject:.</span><br></pre></td></tr></table></figure>
+<p>主要还是开发者编码时的安全意识，防御式编程。使用系统API时，尽量多考虑异常情况的出现。</p>
+<h2 id="崩溃产生后"><a href="#崩溃产生后" class="headerlink" title="崩溃产生后"></a>崩溃产生后</h2><p>由于上线了有逻辑缺陷的代码导致的崩溃，可由热修复方案来实现替换。</p>
+<p>但存在这样一种场景：由于错误数据导致的客户端崩溃。虽然回滚了服务端的发布没有新增设备的崩溃，但老设备持有了脏数据缓存导致应用启动崩溃。这个时候热修复方案就显得有点”棘手”。 </p>
+<ol>
+<li>当然可以选择热修复去掉缓存逻辑，并不是很好，至少一个版本用户不能体验到缓存带来的优化。</li>
+<li>热修复也存在时机问题，热修复带有网络交互。除非阻塞式拉取最新补丁逻辑，否则无法及时修复启动崩溃</li>
+</ol>
+<p>这里就有一个”安全模式”的思路：<br>在客户端本地产生超过阈值的崩溃时(高频)，自启动或提示用户启动 安全模式逻辑。主要就是针对上述场景做的一次补救，<strong>注意 逻辑时机一定要早于任何业务处理时机</strong></p>
+<p>导图中枚举了常见的几种脏数据数据缓存场景，具体实现还要结合自身业务发展考虑。</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/稳定性/">稳定性</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/11/06/2017-11-06-UTF8编码识别/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">UTF8 编码识别&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 miaoyou.gmy&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>
